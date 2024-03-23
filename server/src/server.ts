@@ -13,6 +13,7 @@ import errorHandler from './middleware/errorHandler.js'
 import requestLimit from './middleware/requestLimit.js'
 import setHeaders from './middleware/setHeaders.js'
 import { connectMongo } from './mongo/connect.js'
+import getCors from './cors.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -20,14 +21,7 @@ const app = express()
 const server = http.createServer(app)
 
 // CORS
-if (config.env === 'development') {
-  app.use(
-    cors({
-      credentials: true,
-      origin: config.server.origins,
-    })
-  )
-}
+app.use(getCors(config.env))
 
 // Production middlewares
 if (config.env === 'production') {
