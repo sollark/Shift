@@ -72,17 +72,10 @@ function validateRefreshTokenStructure(
     return false
   }
 
-  if (!tokenData.userData || typeof tokenData.userData !== 'object') {
+  if (!tokenData.userData || typeof tokenData.userData !== 'object')
     return false
-  }
-
-  if (!tokenData.iat || typeof tokenData.iat !== 'number') {
-    return false
-  }
-
-  if (!tokenData.exp || typeof tokenData.exp !== 'number') {
-    return false
-  }
+  if (!tokenData.iat || typeof tokenData.iat !== 'number') return false
+  if (!tokenData.exp || typeof tokenData.exp !== 'number') return false
 
   return true
 }
@@ -94,17 +87,10 @@ function validateAccessTokenStructure(
     return false
   }
 
-  if (!tokenData.userData || typeof tokenData.userData !== 'object') {
+  if (!tokenData.userData || typeof tokenData.userData !== 'object')
     return false
-  }
-
-  if (!tokenData.iat || typeof tokenData.iat !== 'number') {
-    return false
-  }
-
-  if (!tokenData.exp || typeof tokenData.exp !== 'number') {
-    return false
-  }
+  if (!tokenData.iat || typeof tokenData.iat !== 'number') return false
+  if (!tokenData.exp || typeof tokenData.exp !== 'number') return false
 
   return true
 }

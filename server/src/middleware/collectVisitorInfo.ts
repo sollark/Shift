@@ -1,39 +1,76 @@
 import { NextFunction, Request, Response } from 'express'
+import geoip from 'geoip-lite'
+import { parseUserAgent } from '../lib/UserAgentParser.js'
 import VisitorModel from '../mongo/models/visitor.model.js'
+import logger from '../service/logger.service.js'
 
 async function collectVisitorInfo(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  const ip = req.ip
+  const ip = req.ip || ''
   const userAgent = req.headers['user-agent'] || ''
   const path = req.path
 
-  // Determine the device type
+  // Collect request data from cookie
+  const publicId = req.cookies['publicId']
+
+  // Lookup IP address
+  const geo = geoip.lookup(ip)
+
+  // Visitor's device type
   let device = 'computer'
-  if (/android/i.test(userAgent)) {
-    device = 'android'
-  } else if (/iphone|ipad/i.test(userAgent)) {
+  if (/android|mobi/i.test(userAgent)) {
+    device = 'mobile'
+  } else if (/tablet/i.test(userAgent)) {
+    device = 'tablet'
+  } else if (/iphone|ipod|ipad/i.test(userAgent)) {
     device = 'iphone'
+  } else if (/blackberry/i.test(userAgent)) {
+    device = 'blackberry'
+  } else if (/win/i.test(userAgent)) {
+    device = 'windows_phone'
+  } else if (/mac/i.test(userAgent)) {
+    device = 'desktop'
+  } else if (/linux/i.test(userAgent)) {
+    device = 'linux_desktop'
+  } else if (/tv/i.test(userAgent)) {
+    device = 'tv'
+  } else if (/watch/i.test(userAgent)) {
+    device = 'watch'
   }
 
-  let visitor = await VisitorModel.findOne({ ip, userAgent })
-
+  let visitor = await VisitorModel.findOne({ publicId })
   if (!visitor) {
     visitor = new VisitorModel({
-      ip,
-      userAgent,
-      paths: [path],
-      timestamps: [new Date()],
-      device,
+      publicId,
     })
-  } else {
-    visitor.paths.push(path)
-    visitor.timestamps.push(new Date())
   }
 
+  // Parse user agent
+  const userAgentInfo = parseUserAgent(userAgent)
+
+  // Visitor's device info
+  visitor.deviceInfo.device = device
+  visitor.deviceInfo.os.name = userAgentInfo.os.name
+  visitor.deviceInfo.os.version = userAgentInfo.os.version
+  visitor.deviceInfo.browser.name = userAgentInfo.browser.name
+  visitor.deviceInfo.browser.version = userAgentInfo.browser.version
+  visitor.deviceInfo.browser.major = userAgentInfo.browser.major
+
+  // Visitor's paths
+  visitor.ips.push(ip)
+  visitor.paths.push(path)
+  visitor.timestamps.push(new Date())
+
+  // Visitor's geodata
+  visitor.geoInfo.country = geo?.country || ''
+  visitor.geoInfo.city = geo?.city || ''
   await visitor.save()
+
+  // Log visitor info
+  logger.info('Visitor', ip, userAgent, device, geo?.country, geo?.city)
 
   next()
 }
