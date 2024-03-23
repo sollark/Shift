@@ -28,9 +28,26 @@ export async function registration(
     return
   }
 
-  const { uuid, accessToken, refreshToken } = await authService.registration(
-    credentials
-  )
+  const uuid = await authService.registration(credentials)
+  if (!uuid) {
+    res.status(200).json({
+      success: false,
+      message: 'Could not create new account.',
+    })
+
+    return
+  }
+
+  const tokens = await authService.generateTokens(uuid)
+  if (!tokens) {
+    res.status(200).json({
+      success: false,
+      message: 'Could not create tokens.',
+    })
+
+    return
+  }
+  const { accessToken, refreshToken } = tokens
 
   res.cookie('refreshToken', refreshToken, cookieOptions)
   res.cookie('publicId', uuid, cookieOptions)

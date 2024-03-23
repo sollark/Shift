@@ -7,8 +7,8 @@ import authModel, { Credentials } from '../../mongo/models/auth.model.js'
 import { SessionData, setUserDataToALS } from '../../service/als.service.js'
 import logger from '../../service/logger.service.js'
 import { tokenService } from '../../service/token.service.js'
-// import { accountService } from '../account/account.service.js'
-// import { profileService } from '../profile/profile.service.js'
+import { accountService } from '../account/account.service.js'
+import { profileService } from '../profile/profile.service.js'
 
 async function registration(credentials: Credentials) {
   const { email, password } = credentials
@@ -19,6 +19,7 @@ async function registration(credentials: Credentials) {
   // create new authentication
   const uuid = uuidv4()
   const auth = await authModel.create({ uuid, email, password: hashPassword })
+  if (!auth) throw new InternalServerError('Could not create authentication')
   logger.info(`authService - New authentication created for email: ${email}`)
 
   // create new profile and new account
@@ -27,16 +28,7 @@ async function registration(credentials: Credentials) {
   const account = await accountService.createAccount(uuid, profile._id)
   if (!account) throw new BadRequestError('Could not create account')
 
-  // generate tokens
-  const tokens = await generateTokens(auth.uuid)
-  if (!tokens) throw new BadRequestError('Could not generate tokens')
-
-  const { accessToken, refreshToken } = tokens
-
-  // save refresh token to db
-  await tokenService.saveToken(refreshToken)
-
-  return { uuid, accessToken, refreshToken }
+  return account
 }
 
 async function signIn(email: string, password: string) {
@@ -64,12 +56,8 @@ async function generateTokens(uuid: string) {
   const account = await accountService.getAccount(uuid)
   if (!account) return null
 
-  const { employee } = account
-  const employeeNumber = employee ? employee.employeeNumber : undefined
-  const companyNumber = employee ? employee.company?.companyNumber : undefined
-
   const payload: SessionData = {
-    userData: { uuid, companyNumber, employeeNumber },
+    userData: { uuid },
   }
 
   // generate tokens
@@ -78,11 +66,6 @@ async function generateTokens(uuid: string) {
 
   // save refresh token to db
   await tokenService.saveToken(refreshToken)
-
-  const data: SessionData = {
-    userData: { uuid, companyNumber, employeeNumber },
-  }
-  tokenService.generateTokens(data)
 
   return tokens
 }
