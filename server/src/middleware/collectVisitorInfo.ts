@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import VisitorModel from '../mongodb/models/visitor.model.js'
+import VisitorModel from '../mongo/models/visitor.model.js'
 
 async function collectVisitorInfo(
   req: Request,

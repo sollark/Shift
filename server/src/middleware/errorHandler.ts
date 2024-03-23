@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { config } from '../config/config.js'
+import { config } from '../config.js'
 import CustomError from '../errors/CustomError.js'
 import InternalServerError from '../errors/InternalServerError.js'
 import logger from '../service/logger.service.js'
@@ -26,7 +26,7 @@ function errorHandler(
     })
   }
 
-  // unknown error 500
+  // Unknown error 500
   const internalServerError = new InternalServerError('Internal Server Error')
   return res.status(internalServerError.statusCode).json({
     errors: internalServerError.serializeErrors(),

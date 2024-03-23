@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { config } from '../config.js'
 import RefreshTokenDataModel from '../mongo/models/refreshToken.model.js'
+import { AccessTokenPayload, RefreshTokenPayload } from '../types/token.js'
 import { SessionData } from './als.service.js'
 
 const { refreshSecret, accessSecret } = config.jwt
@@ -49,8 +50,9 @@ async function validateAccessToken(token: string) {
 
   try {
     const payload = jwt.verify(token, accessSecret)
+    console.log('validateAccessToken, payload: ', payload)
 
-    return payload as jwt.JwtPayload
+    return payload as AccessTokenPayload
   } catch (error: any) {
     console.log('validateAccessToken error', error.message)
 
@@ -63,8 +65,9 @@ async function validateRefreshToken(token: string) {
 
   try {
     const payload = jwt.verify(token, refreshSecret)
-    console.log('validateRefreshToken, payload', payload)
-    return payload as jwt.JwtPayload
+    console.log('validateRefreshToken, payload: ', payload)
+
+    return payload as RefreshTokenPayload
   } catch (error: any) {
     console.log('validateRefreshToken error', error.message)
 

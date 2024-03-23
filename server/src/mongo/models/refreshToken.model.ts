@@ -5,15 +5,10 @@ export type RefreshTokenData = {
   createdAt: Date
 }
 
-const RefreshTokenDataSchema = new Schema(
-  {
-    refreshToken: { type: String, required: true, unique: true },
-  },
-  { timestamps: true }
-)
+const RefreshTokenSchema = new Schema()
 
-const RefreshTokenDataModel = model<RefreshTokenData>(
+const RefreshTokenModel = model<RefreshTokenData>(
   'RefreshTokenData',
-  RefreshTokenDataSchema
+  RefreshTokenSchema
 )
-export default RefreshTokenDataModel
+export default RefreshTokenModel

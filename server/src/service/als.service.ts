@@ -1,22 +1,15 @@
 import { AsyncLocalStorage } from 'async_hooks'
 import UnauthorizedError from '../errors/UnauthorizedError.js'
-import {
-  default as logger,
-  default as loggerService,
-} from './logger.service.js'
-
-export type userData = {
-  uuid: string
-  companyNumber?: string
-  employeeNumber?: string
-}
+import { TokenUserData } from '../types/token.js'
+import logger from './logger.service.js'
+// import { default as logger } from './logger.service.js'
 
 export type requestData = {
   publicId?: string
 }
 
 export type SessionData = {
-  userData?: userData
+  userData?: TokenUserData
   requestData?: requestData
 }
 
@@ -29,7 +22,7 @@ export function setUuidToALS(uuid: string) {
   store.userData = { uuid }
 }
 
-export function setUserDataToALS(userData: userData) {
+export function setUserDataToALS(userData: TokenUserData) {
   const store = asyncLocalStorage.getStore()
   if (!store) return
 
@@ -54,32 +47,6 @@ export function getUuidFromALS() {
   if (!uuid) throw new UnauthorizedError('You are not unauthorized')
 
   return uuid
-}
-
-export function getCompanyNumberFromALS() {
-  const store = asyncLocalStorage.getStore()
-  const companyNumber = store?.userData?.companyNumber
-
-  if (!companyNumber) {
-    logger.warn(`getCompanyNumberFromALS - cannot get companyNumber from ALS`)
-  } else
-    logger.info(`getCompanyNumberFromALS - companyNumber: ${companyNumber}`)
-
-  return companyNumber
-}
-
-export function getEmployeeNumberFromALS() {
-  const store = asyncLocalStorage.getStore()
-  const employeeNumber = store?.userData?.employeeNumber
-
-  if (!employeeNumber) {
-    logger.warn(`getEmployeeNumberFromALS - cannot get employeeNumber from ALS`)
-  } else
-    loggerService.info(
-      `getEmployeeNumberFromALS - employeeNumber: ${employeeNumber}`
-    )
-
-  return employeeNumber
 }
 
 export function getPublicIdFromALS() {
