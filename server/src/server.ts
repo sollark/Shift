@@ -1,6 +1,5 @@
 import bodyParser from 'body-parser'
 import compression from 'compression'
-import cors from 'cors'
 import express from 'express'
 import http from 'http'
 import { createProxyMiddleware } from 'http-proxy-middleware'
@@ -8,12 +7,12 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import router from './apiRouter.js'
 import { config } from './config.js'
+import getCors from './cors.js'
 import collectVisitorInfo from './middleware/collectVisitorInfo.js'
 import errorHandler from './middleware/errorHandler.js'
 import requestLimit from './middleware/requestLimit.js'
 import setHeaders from './middleware/setHeaders.js'
 import { connectMongo } from './mongo/connect.js'
-import getCors from './cors.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -79,14 +78,7 @@ server.listen(config.server.port, () =>
 
 // Connect to MongoDB
 try {
-  switch (config.env) {
-    case 'development':
-    case 'production':
-      await connectMongo(config.env)
-      break
-    default:
-      throw new Error('NODE_ENV is not defined')
-  }
+  await connectMongo(config.env)
 } catch (error) {
   console.error(error)
   process.exit(1)
