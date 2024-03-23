@@ -2,7 +2,6 @@ import { AsyncLocalStorage } from 'async_hooks'
 import UnauthorizedError from '../errors/UnauthorizedError.js'
 import { TokenUserData } from '../types/token.js'
 import logger from './logger.service.js'
-// import { default as logger } from './logger.service.js'
 
 export type requestData = {
   publicId?: string

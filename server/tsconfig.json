@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "typeRoots": [
+      // default type folder
+      "node_modules/@types",
+      //our type folder
+      "@types"
+    ]
+  },
+  "include": ["src/**/*", "tests/**/*", "@types"],
+  "exclude": ["node_modules", "dist"]
+  //   "ts-node": {
+  //     "esm": true,
+  //     "compiler": "typescript"
+  //   }
+}
