@@ -3,13 +3,13 @@ import UnauthorizedError from '../errors/UnauthorizedError.js'
 import { TokenUserData } from '../types/token.js'
 import logger from './logger.service.js'
 
-export type requestData = {
+export type RequestData = {
   publicId?: string
 }
 
 export type SessionData = {
   userData?: TokenUserData
-  requestData?: requestData
+  requestData?: RequestData
 }
 
 export const asyncLocalStorage = new AsyncLocalStorage<SessionData>()
@@ -30,7 +30,7 @@ export function setUserDataToALS(userData: TokenUserData) {
   logger.info(`setUserDataToALS - userData: ${JSON.stringify(userData)}`)
 }
 
-export function setRequestDataToALS(requestData: requestData) {
+export function setRequestDataToALS(requestData: RequestData) {
   const store = asyncLocalStorage.getStore()
   if (!store) return
 
