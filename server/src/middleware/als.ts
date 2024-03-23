@@ -13,7 +13,7 @@ async function setupAsyncLocalStorage(
     const alsStore = asyncLocalStorage.getStore()
     if (!alsStore) return next()
 
-    // collect user data from token
+    // Collect user's data from token
     const accessToken = getAuthToken(req)
     if (!accessToken) return next()
 
@@ -24,7 +24,7 @@ async function setupAsyncLocalStorage(
 
     alsStore.userData = { uuid, companyNumber, employeeNumber }
 
-    // collect request data from cookie
+    // Collect request data from cookie
     const publicId = req.cookies['publicId']
 
     alsStore.requestData = { publicId }

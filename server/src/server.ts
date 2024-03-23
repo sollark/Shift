@@ -53,7 +53,7 @@ if (config.env === 'development') {
     createProxyMiddleware({
       target: config.server.proxy,
       changeOrigin: true,
-      ws: true, // proxy websockets
+      ws: true, // proxy websocket
     })
   )
 }
