@@ -12,19 +12,23 @@ const rateLimit = {
   requests: {} as Record<string, RequestRecord>,
 }
 
-// Cleanup mechanism
+// Cleanup old entries
 setInterval(() => {
   const now = Date.now()
-  for (let ip in rateLimit.requests) {
+
+  Object.keys(rateLimit.requests).forEach((ip) => {
     if (now - rateLimit.requests[ip].startTime > rateLimit.windowMs) {
       delete rateLimit.requests[ip]
     }
-  }
+  })
 }, rateLimit.windowMs)
 
 function requestLimit(req: Request, res: Response, next: NextFunction) {
   const now = Date.now()
-  const ip = req.ip
+  const ip = req.ip ?? req.socket.remoteAddress
+  if (!ip) {
+    return res.status(400).send('IP address not found')
+  }
 
   if (!rateLimit.requests[ip]) {
     rateLimit.requests[ip] = { count: 1, startTime: now }
