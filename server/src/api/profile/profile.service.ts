@@ -1,6 +1,6 @@
 import { Types } from 'mongoose'
 import BadRequestError from '../../errors/BadRequestError.js'
-import ProfileModel, { Profile } from '../../mongodb/models/profile.model.js'
+import ProfileModel, { Profile } from '../../mongo/models/profile.model.js'
 import logger from '../../service/logger.service.js'
 
 async function createBlankProfile(): Promise<

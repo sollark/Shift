@@ -1,190 +1,111 @@
 import { Types } from 'mongoose'
 import BadRequestError from '../../errors/BadRequestError.js'
+import InternalServerError from '../../errors/InternalServerError.js'
+import NotFoundError from '../../errors/NotFoundError.js'
 import AccountModel, {
   Account,
   AccountDoc,
   Role,
   Status,
-} from '../../mongodb/models/account.model.js'
-import CompanyModel, { Company } from '../../mongodb/models/company.model.js'
-import DepartmentModel, {
-  Department,
-} from '../../mongodb/models/department.model.js'
-import EmployeeModel, { Employee } from '../../mongodb/models/employee.model.js'
-import ProfileModel, { Profile } from '../../mongodb/models/profile.model.js'
+} from '../../mongo/models/account.model.js'
+import ProfileModel, { Profile } from '../../mongo/models/profile.model.js'
 import logger from '../../service/logger.service.js'
-import { employeeService } from '../employee/employee.service.js'
 import { profileService } from '../profile/profile.service.js'
 
-async function createAccount(
-  uuid: string,
-  profileId: Types.ObjectId
-): Promise<Partial<Account>> {
-  const accountDoc = await AccountModel.create({
-    uuid,
-    profile: profileId,
-  })
+async function createAccount(uuid: string): Promise<Partial<Account>> {
+  try {
+    // Create an account
+    const accountDoc = await AccountModel.create({ uuid })
+    if (!accountDoc) {
+      logger.warn(`accountService - cannot create account: ${uuid}`)
+      throw new NotFoundError('Could not create account')
+    }
 
-  if (!accountDoc) {
-    logger.warn(`accountService - cannot create account: ${uuid}`)
-    throw new BadRequestError('Could not create account')
+    // Cast a document to an object
+    const account = (await AccountModel.findById(
+      accountDoc._id
+    ).lean()) as Account
+    if (!account) {
+      logger.warn(`accountService - cannot get account: ${accountDoc._id}`)
+      throw new NotFoundError('Could not get account')
+    }
+
+    logger.info(
+      `accountService - createAccount, account is created:  ${account}`
+    )
+
+    return account
+  } catch (error) {
+    logger.error(`accountService - createAccount, error: ${error}`)
+    throw new InternalServerError('Error creating account')
   }
-
-  const account = await AccountModel.findById(accountDoc._id)
-    .populate<{ profile: Profile }>('profile')
-    .populate<{ employee: Employee }>('employee')
-    .lean()
-    .exec()
-
-  if (!account) {
-    logger.warn(`accountService - account is not found: ${uuid}`)
-    throw new BadRequestError('Account is not found')
-  }
-
-  logger.info(
-    `accountService - createAccount, account is created:  ${account._id}`
-  )
-
-  return account
 }
 
 async function getAccount(
   uuid: string
-): Promise<(Account & { _id: Types.ObjectId }) | null> {
-  const account = await AccountModel.findOne({ uuid })
-    .populate<{ role: Role }>('role')
-    .populate<{ profile: Profile }>('profile')
-    .populate<{ employee: Employee }>({
-      path: 'employee',
-      select: '-profile',
-      populate: [
-        {
-          path: 'company',
-          select: 'companyName companyNumber departments',
-          populate: {
-            path: 'departments',
-            select: 'departmentName',
-          },
-        },
-        {
-          path: 'department',
-          select: 'departmentName',
-        },
-        { path: 'supervisor' },
-        { path: 'subordinates' },
-      ],
-    })
-    .populate<{ status: Status }>('status')
-    .lean()
-    .exec()
+): Promise<Account & { _id: Types.ObjectId }> {
+  try {
+    const account = await AccountModel.findOne({ uuid })
+      .populate<{ role: Role }>('role')
+      .populate<{ profile: Profile }>('profile')
+      .populate<{ status: Status }>('status')
+      .lean()
+      .exec()
+    if (!account) {
+      logger.warn(`accountService - getAccount, account is not found: ${uuid}`)
+      throw new NotFoundError('Account is not found')
+    }
 
-  if (!account) {
-    logger.warn(`accountService - getAccount, account is not found: ${uuid}`)
-    throw new BadRequestError('Account is not found')
+    logger.info(`accountService - getAccount, account fetched: ${account}`)
+
+    return account
+  } catch (error) {
+    logger.error(`accountService - getAccount, error: ${error}`)
+    throw new InternalServerError('Error getting account')
   }
-
-  logger.info(`accountService - getAccount, account fetched: ${account._id}`)
-
-  return account
 }
 
-async function getAccounts(
-  employeeIds: Types.ObjectId[]
-): Promise<(Account & { _id: Types.ObjectId })[] | null> {
-  const accounts = await AccountModel.find(
-    { employee: { $in: employeeIds } },
-    { isComplete: 0 }
-  )
-    .select('-isComplete')
-    .populate<{ profile: Profile }>('profile')
-    .populate<{ employee: Employee }>({
-      path: 'employee',
-      select: '-profile -supervisor -subordinates',
-      populate: [
-        {
-          path: 'company',
-          select: 'companyName',
-        },
-        {
-          path: 'department',
-          select: 'departmentName',
-        },
-      ],
-    })
-    .lean()
-    .exec()
+async function getAccountDoc(uuid: string): Promise<AccountDoc> {
+  try {
+    const account = await AccountModel.findOne({ uuid })
+    if (!account) {
+      logger.warn(
+        `accountService - getAccountDoc, account is not found: ${uuid}`
+      )
+      throw new BadRequestError('Account is not found')
+    }
 
-  if (!accounts) {
-    logger.warn(`accountService - getAccounts, accounts are not found`)
-    throw new BadRequestError('Accounts are not found')
+    return account
+  } catch (error) {
+    logger.error(`accountService - getAccountDoc, error: ${error}`)
+    throw new InternalServerError('Error getting account doc')
   }
-
-  logger.info(
-    `accountService - getAccounts, number of accounts fetched: ${accounts.length}`
-  )
-
-  return accounts
 }
 
-async function getAccountDoc(
-  uuid: string
-): Promise<(AccountDoc & { _id: Types.ObjectId }) | null> {
-  const account = await AccountModel.findOne({ uuid }).lean().exec()
-
-  if (!account) {
-    logger.warn(`accountService - getAccountDoc, account is not found: ${uuid}`)
-    throw new BadRequestError('Account is not found')
-  }
-
-  return account
-}
-
-async function getEmployeeAccountDoc(
-  employeeId: Types.ObjectId
-): Promise<(AccountDoc & { _id: Types.ObjectId }) | null> {
-  const accountDoc = await AccountModel.findOne({ employee: employeeId })
-    .lean()
-    .exec()
-
-  return accountDoc
-}
-
-async function setProfile(
+async function updateRole(
   accountId: Types.ObjectId,
-  profileId: Types.ObjectId
-) {
-  const accountDoc = await AccountModel.findById(accountId)
-  if (!accountDoc) throw new BadRequestError('Account is not found')
-
-  const oldProfileId = accountDoc.profile
-  if (oldProfileId) await profileService.deleteProfile(oldProfileId)
-
-  const account = await AccountModel.findByIdAndUpdate(
-    accountId,
-    { profile: profileId },
-    // returns new version of document, if false returns original version, before updates
-    { new: true }
-  )
-    .lean()
-    .exec()
-
-  if (!account) {
-    logger.warn(
-      `accountService - setProfile, cannot set profile: ${accountId} ${profileId}`
+  role: Role
+): Promise<Account> {
+  try {
+    const updatedAccount = await AccountModel.findByIdAndUpdate(
+      accountId,
+      { role },
+      // { new: true } // returns new version of document, if false returns original version, before updates
+      { new: true }
     )
-    throw new BadRequestError('Account cannot be updated')
+    if (!updatedAccount) {
+      logger.warn(
+        `accountService - updateRole, account is not found: ${accountId}`
+      )
+      throw new NotFoundError('Account is not found')
+    }
+    const account = await updatedAccount.lean().exec()
+
+    return account
+  } catch (error) {
+    logger.error(`accountService - updateRole, error: ${error}`)
+    throw new InternalServerError('Error updating account')
   }
-
-  logger.info(`accountService - setProfile, profileId: ${profileId}`)
-}
-
-async function setRole(accountId: Types.ObjectId, role: Role) {
-  const account = await AccountModel.findByIdAndUpdate(
-    accountId,
-    { role },
-    // returns new version of document, if false returns original version, before updates
-    { new: true }
-  ).exec()
 }
 
 async function setStatus(accountId: Types.ObjectId, status: Status) {
@@ -409,7 +330,7 @@ export const accountService = {
   getAccountDoc,
   getEmployeeAccountDoc,
   setProfile,
-  setRole,
+  updateRole,
   setStatus,
   connectEmployee,
   disconnectEmployee,

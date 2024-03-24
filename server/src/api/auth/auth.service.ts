@@ -13,19 +13,17 @@ import { profileService } from '../profile/profile.service.js'
 async function registration(credentials: Credentials) {
   const { email, password } = credentials
 
-  // hash password
+  // Hash password
   const hashPassword = await bcrypt.hash(password, 10)
 
-  // create new authentication
+  // Create a new authentication
   const uuid = uuidv4()
   const auth = await authModel.create({ uuid, email, password: hashPassword })
   if (!auth) throw new InternalServerError('Could not create authentication')
   logger.info(`authService - New authentication created for email: ${email}`)
 
-  // create new profile and new account
-  const profile = await profileService.createBlankProfile()
-  if (!profile) throw new BadRequestError('Could not create profile')
-  const account = await accountService.createAccount(uuid, profile._id)
+  // create a new account
+  const account = await accountService.createAccount(uuid)
   if (!account) throw new BadRequestError('Could not create account')
 
   return account
