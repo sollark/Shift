@@ -12,6 +12,7 @@ export type Status = keyof typeof ACCOUNT_STATUS
 
 export const USER_ROLE = {
   guest: 'guest',
+  user: 'user',
   employee: 'employee',
   manager: 'manager',
   supervisor: 'supervisor',
@@ -27,10 +28,11 @@ export type Account = {
 }
 
 export type AccountDoc = {
+  _id: Types.ObjectId
   uuid: string
-  profile: Types.ObjectId
+  profile?: Types.ObjectId
   status: Status
-  role?: Role
+  role: Role
 }
 
 const AccountSchema = new Schema({
@@ -38,7 +40,6 @@ const AccountSchema = new Schema({
   profile: {
     type: Schema.Types.ObjectId,
     ref: 'Profile',
-    required: true,
   },
   status: {
     type: String,
@@ -49,7 +50,7 @@ const AccountSchema = new Schema({
   role: {
     type: String,
     enum: Object.values(USER_ROLE),
-    default: USER_ROLE.employee,
+    default: USER_ROLE.user,
     required: true,
   },
 })
