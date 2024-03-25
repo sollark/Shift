@@ -19,7 +19,6 @@ async function createProfile(profile: Profile) {
   const { ID } = profile
 
   const isExist = await isIDExist(ID)
-
   if (isExist) {
     logger.warn(
       `profileService- createProfile, attempt to create new profile with existing ID: ${ID}`

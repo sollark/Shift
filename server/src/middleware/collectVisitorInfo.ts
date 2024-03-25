@@ -5,7 +5,7 @@ import VisitorModel from '../mongo/models/visitor.model.js'
 import logger from '../service/logger.service.js'
 import { uuidService } from '../service/uuid.service.js'
 
-// save publicId in cookie for 365 days
+// cookie for 365 days
 const publicIdCookieOptions = {
   maxAge: 365 * 24 * 60 * 60 * 1000,
   sameSite: 'strict' as const,
@@ -53,11 +53,7 @@ async function collectVisitorInfo(
   }
 
   let visitor = await VisitorModel.findOne({ publicId })
-  if (!visitor) {
-    visitor = new VisitorModel({
-      publicId,
-    })
-  }
+  if (!visitor) visitor = new VisitorModel({ publicId })
 
   // Parse user agent
   const userAgentInfo = parseUserAgent(userAgent)
