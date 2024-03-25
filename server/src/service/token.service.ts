@@ -77,15 +77,12 @@ async function validateRefreshToken(token: string) {
 
 async function isExpired(token: string) {
   const payload = await validateRefreshToken(token)
-
   if (!payload) return true
 
   const { exp } = payload
-
   if (!exp) return true
 
   const now = Math.floor(Date.now() / 1000)
-
   if (now > exp) return true
 
   return false
