@@ -28,7 +28,7 @@ async function getVisitorUuid(): Promise<string> {
   return uuid
 }
 
-export const authService = {
+export const uuidService = {
   getAuthUuid,
   getVisitorUuid,
 }
