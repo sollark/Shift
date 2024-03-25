@@ -1,8 +1,8 @@
 import express from 'express'
 import asyncHandler from '../../middleware/asyncHandler.js'
 import requireAuth from '../../middleware/requireAuth.js'
-import { accountSchema } from '../../middleware/validations/accountSchema.js'
-import validateRequest from '../../middleware/validations/validationHandler.js'
+import { accountSchema } from '../../validations/account.schema.js'
+import validateRequest from '../../middleware/validationHandler.js'
 import { getAccount, updateAccount } from './account.controller.js'
 
 // This api is used for controlling  user's account
