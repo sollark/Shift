@@ -9,7 +9,7 @@ export const userDetailsSchema = [
     .withMessage('Name must be a valid text')
     .isLength({ min: 2, max: 24 })
     .withMessage('Name must be between 2 and 24 characters'),
-  body('lastname')
+  body('lastName')
     .exists()
     .withMessage('Last name is required')
     .bail()
