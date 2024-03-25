@@ -8,7 +8,7 @@ import { SessionData, setUserDataToALS } from '../../service/als.service.js'
 import logger from '../../service/logger.service.js'
 import { tokenService } from '../../service/token.service.js'
 import { accountService } from '../account/account.service.js'
-import { profileService } from '../profile/profile.service.js'
+import { Account } from '../../mongo/models/account.model.js'
 
 async function registration(credentials: Credentials) {
   const { email, password } = credentials
@@ -29,24 +29,35 @@ async function registration(credentials: Credentials) {
   return account
 }
 
-async function signIn(email: string, password: string) {
-  const result = await authModel.findOne({ email }).select('+password')
-  if (!result) return null
+async function signIn(
+  email: string,
+  password: string
+): Promise<Account | null> {
+  const auth = await authModel.findOne({ email }).select('+password')
+  if (!auth) return null
 
-  const hashPassword = result.password
+  const hashPassword = auth.password
   const isPasswordValid = await bcrypt.compare(password, hashPassword)
-
-  if (isPasswordValid) {
-    setUserDataToALS({ uuid: result.uuid })
-
-    logger.info(
-      `authService - Sign in successful for email: ${email}, uuid: ${result.uuid}`
-    )
-  } else {
+  if (!isPasswordValid) {
     logger.warn(`authService - Sign in failed for email: ${email}`)
+
+    return null
   }
 
-  return isPasswordValid ? result.uuid : null
+  const { uuid } = auth
+  setUserDataToALS({ uuid: auth.uuid })
+
+  const account = await accountService.getAccount(uuid)
+  if (!account) {
+    logger.error(`authService - Sign in failed for email: ${email}`)
+    return null
+  }
+
+  logger.info(
+    `authService - Sign in successful for email: ${email}, uuid: ${auth.uuid}`
+  )
+
+  return account
 }
 
 async function generateTokens(uuid: string) {
@@ -101,11 +112,10 @@ async function refresh(refreshToken: string) {
 }
 
 async function isEmailExists(email: string) {
-  const existingAuthUser = await authModel.findOne({ email })
-  if (!existingAuthUser)
-    logger.warn(`authService - email does not exist: ${email}`)
+  const existingEmail = await authModel.findOne({ email })
+  if (existingEmail) logger.warn(`authService - email already taken: ${email}`)
 
-  return existingAuthUser ? true : false
+  return existingEmail ? true : false
 }
 
 export const authService = {

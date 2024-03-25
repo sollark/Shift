@@ -28,7 +28,17 @@ export async function registration(
     return
   }
 
-  const uuid = await authService.registration(credentials)
+  const account = await authService.registration(credentials)
+  if (!account) {
+    res.status(200).json({
+      success: false,
+      message: 'Could not create new account.',
+    })
+
+    return
+  }
+
+  const { uuid } = account
   if (!uuid) {
     res.status(200).json({
       success: false,
@@ -71,14 +81,15 @@ export async function signIn(req: Request, res: Response, next: NextFunction) {
     })
   }
 
-  const uuid = await authService.signIn(email, password)
-  if (!uuid) {
+  const account = await authService.signIn(email, password)
+  if (!account) {
     return res.status(200).json({
       success: false,
       message: 'Invalid credentials',
     })
   }
 
+  const { uuid } = account
   const tokens = await authService.generateTokens(uuid)
   if (!tokens) {
     logger.warn(`authService - signIn, cannot generate tokens for ${email}`)
