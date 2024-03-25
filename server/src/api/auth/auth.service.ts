@@ -9,6 +9,7 @@ import logger from '../../service/logger.service.js'
 import { tokenService } from '../../service/token.service.js'
 import { accountService } from '../account/account.service.js'
 import { Account } from '../../mongo/models/account.model.js'
+import { uuidService } from '../../service/uuid.service.js'
 
 async function registration(credentials: Credentials) {
   const { email, password } = credentials
@@ -17,7 +18,7 @@ async function registration(credentials: Credentials) {
   const hashPassword = await bcrypt.hash(password, 10)
 
   // Create a new authentication
-  const uuid = uuidv4()
+  const uuid = await uuidService.getAuthUuid()
   const auth = await authModel.create({ uuid, email, password: hashPassword })
   if (!auth) throw new InternalServerError('Could not create authentication')
   logger.info(`authService - New authentication created for email: ${email}`)

@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from 'express'
 import BadRequestError from '../../errors/BadRequestError.js'
 import logger from '../../service/logger.service.js'
+import { uuidService } from '../../service/uuid.service.js'
 import { authService } from './auth.service.js'
 
 // save refresh token in cookie for 7 days
-const cookieOptions = {
+const tokenCookieOptions = {
   maxAge: 7 * 24 * 60 * 60 * 1000,
   sameSite: 'strict' as const,
   httpOnly: true,
@@ -58,9 +59,7 @@ export async function registration(
     return
   }
   const { accessToken, refreshToken } = tokens
-
-  res.cookie('refreshToken', refreshToken, cookieOptions)
-  res.cookie('publicId', uuid, cookieOptions)
+  res.cookie('refreshToken', refreshToken, tokenCookieOptions)
 
   res.status(200).json({
     success: true,
@@ -101,8 +100,7 @@ export async function signIn(req: Request, res: Response, next: NextFunction) {
   }
 
   const { accessToken, refreshToken } = tokens
-  res.cookie('refreshToken', refreshToken, cookieOptions)
-  res.cookie('publicId', uuid, cookieOptions)
+  res.cookie('refreshToken', refreshToken, tokenCookieOptions)
 
   res.status(200).json({
     success: true,
@@ -141,7 +139,7 @@ export async function refresh(req: Request, res: Response, next: NextFunction) {
   logger.info('refreshing expired access token')
 
   // save refresh token in cookie for 7 days
-  res.cookie('refreshToken', newRefreshToken, cookieOptions)
+  res.cookie('refreshToken', newRefreshToken, tokenCookieOptions)
 
   res.status(200).json({
     success: true,

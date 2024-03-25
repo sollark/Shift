@@ -42,6 +42,9 @@ export async function updateAccount(
     updatedProfileData
   )
   if (!updatedProfile) {
+    logger.error(
+      `authService - updateAccount, cannot update profile for uuid: ${uuid}`
+    )
     throw new BadRequestError('Cannot update profile')
   }
 

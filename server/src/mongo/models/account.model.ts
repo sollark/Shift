@@ -13,9 +13,6 @@ export type Status = keyof typeof ACCOUNT_STATUS
 export const USER_ROLE = {
   guest: 'guest',
   user: 'user',
-  employee: 'employee',
-  manager: 'manager',
-  supervisor: 'supervisor',
   admin: 'admin',
 } as const
 export type Role = keyof typeof USER_ROLE
@@ -38,7 +35,7 @@ export type AccountDoc = {
 const AccountSchema = new Schema({
   uuid: { type: String, unique: true },
   profile: {
-    type: Schema.Types.ObjectId,
+    type: Types.ObjectId,
     ref: 'Profile',
   },
   status: {
