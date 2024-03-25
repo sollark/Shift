@@ -1,10 +1,9 @@
 import express from 'express'
 import asyncHandler from '../../middleware/asyncHandler.js'
 import requireAuth from '../../middleware/requireAuth.js'
-import { accessSchema } from '../../middleware/validations/accessSchema.js'
 import { accountSchema } from '../../middleware/validations/accountSchema.js'
 import validateRequest from '../../middleware/validations/validationHandler.js'
-import { getAccount, joinCompany, updateAccount } from './account.controller.js'
+import { getAccount, updateAccount } from './account.controller.js'
 
 // This api is used for controlling  user's account
 
@@ -16,14 +15,6 @@ router.post(
   accountSchema,
   validateRequest,
   asyncHandler(updateAccount)
-)
-
-router.post(
-  '/join',
-  requireAuth,
-  accessSchema,
-  validateRequest,
-  asyncHandler(joinCompany)
 )
 
 router.get('/', requireAuth, asyncHandler(getAccount))
