@@ -1,47 +1,40 @@
-import { Role, Status, USER_ROLE } from '@/models/Account'
+import { ACCOUNT_STATUS, Role, Status, USER_ROLE } from '@/models/Account'
 import { create } from 'zustand'
-import { devtools, persist } from 'zustand/middleware'
+import { devtools } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 import { zustandLogger } from './zustandLogger'
 
 type AccountState = {
   status: Status | null
   role: Role
-  isComplete: () => boolean
-  isVerified: () => boolean
-  updateStatus: () => void
-  setStatus: (status: Status) => void
-  setRole: (role: Role) => void
-  clearAccount: () => void
+  isVerified: boolean
+  isComplete: boolean
 }
 
-const useAccountStore = create<AccountState>()(
+type AccountActions = {
+  setStatus: (status: Status) => void
+  setRole: (role: Role) => void
+}
+
+const useAccountStore = create<AccountState & AccountActions>()(
   zustandLogger(
-    persist(
-      devtools(
-        immer((set, get) => ({
-          status: null,
-          role: USER_ROLE.guest,
-          isComplete: () =>
-            get().status !== 'incomplete' && get().status !== null,
-          isVerified: () => get().status !== 'pending' && get().status !== null,
-          updateStatus: () => {
-            const status = get().role === 'admin' ? 'active' : 'pending'
-            set(() => ({ status }))
-          },
-          setStatus: (status: Status) => set(() => ({ status })),
-          setRole: (role: Role) => set(() => ({ role })),
-          clearAccount: () => {
-            set(() => ({
-              status: null,
-              role: USER_ROLE.guest,
-            }))
-          },
-        }))
-      ),
-      { name: 'account-storage' }
+    devtools(
+      immer((set) => ({
+        status: null,
+        role: USER_ROLE.guest,
+        isVerified: false,
+        isComplete: false,
+        setStatus: (status) => set((state) => ({ ...state, status })),
+        setRole: (role) => set((state) => ({ ...state, role })),
+      }))
     )
   )
 )
+
+export const selectors = {
+  isVerified: (state: AccountState) => state.status !== ACCOUNT_STATUS.pending,
+  isComplete: (state: AccountState) =>
+    state.status !== ACCOUNT_STATUS.incomplete,
+}
 
 export default useAccountStore
