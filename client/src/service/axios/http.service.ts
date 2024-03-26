@@ -47,12 +47,18 @@ async function sendRequest<D>(
     })
 
     return response.data
-  } catch (error: any) {
-    fail(`Error with ${config.method} request to ${config.url}: ${error}`)
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      fail(`Error with ${config.method} request to ${config.url}: ${error}`)
+      return {
+        success: false,
+        message: error.message,
+      }
+    }
 
     return {
       success: false,
-      message: error.message,
+      message: 'An unknown error occurred',
     }
   }
 }

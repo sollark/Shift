@@ -1,7 +1,6 @@
 import { config } from '@/config/config'
 
-const NODE_ENV = config.env
-const isDevEnv = NODE_ENV === 'development'
+const isDevEnv = config.env === 'development'
 
 function log(...args: any[]) {
   if (isDevEnv) {
@@ -9,13 +8,13 @@ function log(...args: any[]) {
   }
 }
 
-function fail(...args: any[]) {
+function logError(...args: any[]) {
   if (isDevEnv) {
     console.error(...args)
   }
 }
 
-function warn(...args: any[]) {
+function logWarn(...args: any[]) {
   if (isDevEnv) {
     console.warn(...args)
   }
@@ -23,4 +22,4 @@ function warn(...args: any[]) {
 
 // Add other console methods as needed
 
-export { fail, log, warn }
+export { logError, log, logWarn }
