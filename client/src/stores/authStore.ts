@@ -4,24 +4,21 @@ import { immer } from 'zustand/middleware/immer'
 import { zustandLogger } from './zustandLogger'
 
 type AuthState = {
-  isAuthenticated: boolean
-  setAsAuthenticated: () => void
-  setAsUnauthenticated: () => void
   token: string | null
+}
+
+type AuthActions = {
   setToken: (token: string) => void
   clearToken: () => void
 }
 
 // TODO split this store into two stores: authStore and tokenStore
 // Create a store with initial state
-const useAuthStore = create<AuthState>()(
+const useAuthStore = create<AuthState & AuthActions>()(
   zustandLogger(
     persist(
       devtools(
         immer((set) => ({
-          isAuthenticated: false,
-          setAsAuthenticated: () => set(() => ({ isAuthenticated: true })),
-          setAsUnauthenticated: () => set(() => ({ isAuthenticated: false })),
           token: null,
           setToken: (token) => set(() => ({ token })),
           clearToken: () => set(() => ({ token: null })),
@@ -33,3 +30,7 @@ const useAuthStore = create<AuthState>()(
 )
 
 export default useAuthStore
+
+export const selectors = {
+  isAuthenticated: (state: AuthState) => state.token !== null,
+}
