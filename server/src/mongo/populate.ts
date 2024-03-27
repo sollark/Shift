@@ -7,7 +7,7 @@
 // import { USER_ROLE } from './models/account.model.js'
 
 // async function populateTestData() {
-//   console.log('Populating test data in the database...')
+//   log('Populating test data in the database...')
 
 //   // register employee, manager, supervisor and admin
 //   const { uuid: employeeUuid } = await authService.registration({
@@ -30,7 +30,7 @@
 //   // Company
 //   const company = await companyService.createCompany('Test Company')
 //   if (!company) {
-//     console.log('Failed to create company')
+//     log('Failed to create company')
 //     return
 //   }
 
@@ -67,7 +67,7 @@
 //     !productionDepartment ||
 //     !managementDepartment
 //   ) {
-//     console.log('Failed to create department')
+//     log('Failed to create department')
 //     return
 //   }
 
@@ -95,7 +95,7 @@
 //     ID: '7777777777',
 //   })
 //   if (!managerProfile || !supervisorProfile || !adminProfile) {
-//     console.log('Failed to create manager, supervisor and admin profiles')
+//     log('Failed to create manager, supervisor and admin profiles')
 //     return
 //   }
 
@@ -121,7 +121,7 @@
 //     ID: '4444444444',
 //   })
 //   if (!profile1 || !profile2 || !profile3 || !profile4) {
-//     console.log('Failed to create employee profiles')
+//     log('Failed to create employee profiles')
 //     return
 //   }
 
@@ -150,7 +150,7 @@
 //   )
 
 //   if (!managerEmployee || !supervisorEmployee || !adminEmployee) {
-//     console.log('Failed to create employee')
+//     log('Failed to create employee')
 //     return
 //   }
 
@@ -180,7 +180,7 @@
 //     'Operator'
 //   )
 //   if (!employee1 || !employee2 || !employee3 || !employee4) {
-//     console.log('Failed to create employee')
+//     log('Failed to create employee')
 //     return
 //   }
 
@@ -215,7 +215,7 @@
 //     await accountService.connectEmployee(employeeAccount?._id, employee4._id)
 //     await accountService.setRole(employeeAccount?._id, USER_ROLE.employee)
 //   } else {
-//     console.log('Error in joining account to company')
+//     log('Error in joining account to company')
 //   }
 
 //   // join manager's account to company manager
@@ -228,7 +228,7 @@
 //     )
 //     await accountService.setRole(managerAccount?._id, USER_ROLE.manager)
 //   } else {
-//     console.log('Error in joining account to company')
+//     log('Error in joining account to company')
 //   }
 
 //   // join supervisor's account to company supervisor
@@ -244,13 +244,13 @@
 //     )
 //     await accountService.setRole(supervisorAccount?._id, USER_ROLE.supervisor)
 //   } else {
-//     console.log('Error in joining account to company')
+//     log('Error in joining account to company')
 //   }
 
 //   // join admin's account to company admin
 //   const adminAccount = await accountService.getAccountDoc(adminUuid)
 //   if (adminAccount) {
-//     console.log(
+//     log(
 //       'Setting profile to admin account:',
 //       adminAccount?._id,
 //       adminProfile._id
@@ -259,10 +259,10 @@
 //     await accountService.connectEmployee(adminAccount?._id, adminEmployee._id)
 //     await accountService.setRole(adminAccount?._id, USER_ROLE.admin)
 //   } else {
-//     console.log('Error in joining account to company')
+//     log('Error in joining account to company')
 //   }
 
-//   console.log('Population completed')
+//   log('Population completed')
 // }
 
 // export const populate = { populateTestData }

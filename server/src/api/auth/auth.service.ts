@@ -1,15 +1,15 @@
 import bcrypt from 'bcrypt'
-import { v4 as uuidv4 } from 'uuid'
 import BadRequestError from '../../errors/BadRequestError.js'
 import InternalServerError from '../../errors/InternalServerError.js'
 import UnauthorizedError from '../../errors/UnauthorizedError.js'
+import { Account } from '../../mongo/models/account.model.js'
 import authModel, { Credentials } from '../../mongo/models/auth.model.js'
 import { SessionData, setUserDataToALS } from '../../service/als.service.js'
+import { log } from '../../service/console.service.js'
 import logger from '../../service/logger.service.js'
 import { tokenService } from '../../service/token.service.js'
-import { accountService } from '../account/account.service.js'
-import { Account } from '../../mongo/models/account.model.js'
 import { uuidService } from '../../service/uuid.service.js'
+import { accountService } from '../account/account.service.js'
 
 async function registration(credentials: Credentials) {
   const { email, password } = credentials
@@ -100,8 +100,8 @@ async function refresh(refreshToken: string) {
   const payload = await tokenService.validateRefreshToken(refreshTokenCopy)
   const sessionData = payload as SessionData
   const uuid = sessionData.userData?.uuid
-  console.log('sessiondata and uuid', sessionData, uuid)
   if (!uuid) throw new InternalServerError('Could not get payload')
+  log('sessiondata and uuid', sessionData, uuid)
 
   const tokens = await generateTokens(uuid)
   if (!tokens) throw new InternalServerError('Could not generate tokens')

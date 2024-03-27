@@ -4,7 +4,7 @@ import Header from './layouts/Header'
 import Main from './layouts/Main'
 
 function App() {
-  console.log('App is connected')
+  log('App is connected')
 
   return (
     <>

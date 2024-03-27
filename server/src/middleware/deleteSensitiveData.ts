@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
+import { log } from '../service/console.service'
 
 const sensitiveData = ['__v', '_id', 'identifier', 'password', 'uuid']
 
@@ -7,7 +8,7 @@ export function deleteSensitiveData(
   res: Response,
   next: NextFunction
 ) {
-  console.log('deleteSensitiveData middleware')
+  log('deleteSensitiveData middleware')
 
   const originalJson = res.json
   res.json = function (body) {

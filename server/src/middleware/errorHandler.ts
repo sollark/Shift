@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
-import { config } from '../config.js'
 import CustomError from '../errors/CustomError.js'
 import InternalServerError from '../errors/InternalServerError.js'
+import { log } from '../service/console.service.js'
 import logger from '../service/logger.service.js'
 
 function errorHandler(
@@ -10,11 +10,8 @@ function errorHandler(
   res: Response,
   next: NextFunction
 ) {
-  console.log('errorHandler middleware')
-
-  if (config.env === 'development') {
-    console.log(error.stack)
-  }
+  log('errorHandler middleware')
+  log(error.stack)
 
   logger.error(error.message)
   logger.error(error.stack)

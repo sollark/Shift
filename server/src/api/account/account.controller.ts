@@ -1,15 +1,16 @@
 import { NextFunction, Request, Response } from 'express'
 import BadRequestError from '../../errors/BadRequestError.js'
+import InternalServerError from '../../errors/InternalServerError.js'
 import {
   ACCOUNT_STATUS,
   Account,
   USER_ROLE,
 } from '../../mongo/models/account.model.js'
 import { getUuidFromALS } from '../../service/als.service.js'
+import { log } from '../../service/console.service.js'
 import logger from '../../service/logger.service.js'
 import { profileService } from '../profile/profile.service.js'
 import { accountService } from './account.service.js'
-import InternalServerError from '../../errors/InternalServerError.js'
 
 // TODO
 // {
@@ -28,7 +29,7 @@ export async function updateAccount(
   const uuid = getUuidFromALS()
   const accountData: Account = req.body
 
-  console.log('updateAccount, account: ', accountData)
+  log('updateAccount, account: ', accountData)
 
   const [updatedProfileData] = accountService.sortAccountData(accountData)
 

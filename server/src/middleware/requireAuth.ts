@@ -1,15 +1,16 @@
 import { NextFunction, Request, Response } from 'express'
 import UnauthorizedError from '../errors/UnauthorizedError.js'
 import { tokenService } from '../service/token.service.js'
+import { log } from '../service/console.service.js'
 
 async function requireAuth(req: Request, res: Response, next: NextFunction) {
-  console.log('requireAuth middleware')
+  log('requireAuth middleware')
 
   try {
     // check if authorization header is present
     const authorizationKey = req.headers.authorization
     if (!authorizationKey) {
-      // console.log('headers', req.headers)
+      // log('headers', req.headers)
       return next(
         new UnauthorizedError(
           'You are not authorized to access this resource. Error code 1'

@@ -27,13 +27,13 @@ function configureInterceptors(api: AxiosInstance) {
     async (error) => {
       const originalRequest: InternalAxiosRequestConfig = error.config
 
-      console.log('get error in response')
+      log('get error in response')
       if (error.response?.status === 401 && !isRetry) {
         isRetry = true
 
-        console.log('the error is 401 first time')
+        log('the error is 401 first time')
         if (originalRequest.headers.Authorization) {
-          console.log('send refresh')
+          log('send refresh')
           await authService.refreshTokens()
 
           // Retry the original request with the updated headers

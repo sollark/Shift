@@ -2,7 +2,7 @@ import { FC } from 'react'
 import Logo from '../ui/Logo'
 
 const Header: FC = () => {
-  console.log('Header is connected')
+  log('Header is connected')
 
   return (
     <header

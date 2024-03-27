@@ -1,9 +1,9 @@
 import CustomLink from '@/cmps/link/CustomLink'
 import TestSignIn from '@/cmps/oneClickSignIn/OneClickSignIn'
+import SignInForm from '@/components/forms/SignInForm'
 import { log } from '@/service/console.service'
 import { Box } from '@mui/material'
 import { FC } from 'react'
-import SignInForm from '../cmps/forms/SignInForm'
 import { useTranslation } from 'react-i18next'
 
 const SigninPage: FC = () => {

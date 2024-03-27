@@ -10,6 +10,7 @@ import AccountModel, {
 } from '../../mongo/models/account.model.js'
 import ProfileModel, { Profile } from '../../mongo/models/profile.model.js'
 import logger from '../../service/logger.service.js'
+import { log } from '../../service/console.service.js'
 
 async function createAccount(uuid: string): Promise<Partial<Account>> {
   try {
@@ -195,7 +196,7 @@ function sortAccountData(
     }
   )
 
-  console.log('sortAccountData, updatedProfileData: ', updatedProfileData)
+  log('sortAccountData, updatedProfileData: ', updatedProfileData)
 
   return [updatedProfileData as Partial<Profile>]
 }

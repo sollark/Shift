@@ -1,12 +1,13 @@
 import { Db } from 'mongodb'
 import { Connection } from 'mongoose'
+import { log } from '../service/console.service'
 
 export async function deleteDatabase(
   mongooseInstance: Connection
 ): Promise<void> {
-  console.log(`deleteDatabase ${mongooseInstance}`)
+  log(`deleteDatabase ${mongooseInstance}`)
   const dbName = mongooseInstance.name
-  console.log(`Deleting database '${dbName}'...`)
+  log(`Deleting database '${dbName}'...`)
 
   try {
     // Get a reference to the native MongoDB driver
@@ -14,7 +15,7 @@ export async function deleteDatabase(
 
     // Delete the entire database
     await db.dropDatabase()
-    console.log(`Database '${dbName}' deleted successfully`)
+    log(`Database '${dbName}' deleted successfully`)
   } catch (error) {
     console.error('Error deleting database:', error)
   }

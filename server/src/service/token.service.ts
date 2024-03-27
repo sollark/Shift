@@ -3,6 +3,7 @@ import { config } from '../config.js'
 import RefreshTokenDataModel from '../mongo/models/refreshToken.model.js'
 import { AccessTokenPayload, RefreshTokenPayload } from '../types/token.js'
 import { SessionData } from './als.service.js'
+import { log } from './console.service.js'
 
 const { refreshSecret, accessSecret } = config.jwt
 
@@ -13,7 +14,7 @@ function generateTokens(payload: SessionData): {
   if (!accessSecret) throw new Error('JWT_ACCESS_SECRET is not defined')
   if (!refreshSecret) throw new Error('JWT_REFRESH_SECRET is not defined')
 
-  console.log('generateTokens, payload', payload)
+  log('generateTokens, payload', payload)
 
   const accessToken = jwt.sign(payload, accessSecret, {
     expiresIn: '10m',
@@ -50,11 +51,11 @@ async function validateAccessToken(token: string) {
 
   try {
     const payload = jwt.verify(token, accessSecret)
-    console.log('validateAccessToken, payload: ', payload)
+    log('validateAccessToken, payload: ', payload)
 
     return payload as AccessTokenPayload
   } catch (error: any) {
-    console.log('validateAccessToken error', error.message)
+    log('validateAccessToken error', error.message)
 
     return null
   }
@@ -65,11 +66,11 @@ async function validateRefreshToken(token: string) {
 
   try {
     const payload = jwt.verify(token, refreshSecret)
-    console.log('validateRefreshToken, payload: ', payload)
+    log('validateRefreshToken, payload: ', payload)
 
     return payload as RefreshTokenPayload
   } catch (error: any) {
-    console.log('validateRefreshToken error', error.message)
+    log('validateRefreshToken error', error.message)
 
     return null
   }
