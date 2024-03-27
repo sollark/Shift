@@ -15,8 +15,7 @@ export function useNavigationMenu(role: Role) {
         navigationPages = getAdminPages()
         break
       case 'guest':
-      case 'employee':
-      case 'supervisor':
+      case 'user':
       default:
         navigationPages = getUserPages()
         break
@@ -27,4 +26,3 @@ export function useNavigationMenu(role: Role) {
 
   return pages
 }
-multilanguage
