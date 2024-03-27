@@ -1,7 +1,7 @@
-import './App.css'
 import Footer from './layouts/Footer'
 import Header from './layouts/Header'
 import Main from './layouts/Main'
+import { log } from './service/console.service'
 
 function App() {
   log('App is connected')
