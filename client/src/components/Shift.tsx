@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { Shift } from '../models/Shift'
-import PersonName from './PersonName'
+import FullName from './FullName'
 import CustomDate from './date/CustomDate'
 
 type ShiftProps = {
@@ -10,13 +10,13 @@ type ShiftProps = {
 const Shift: FC<ShiftProps> = ({ shift }) => {
   if (!shift) return <div>No shift</div>
 
-  const { startTime, endTime, person } = shift
+  const { startTime, endTime, profile } = shift
 
   return (
     <div>
       <h3>Shift</h3>
       <p>
-        <PersonName person={person} /> Start time:{' '}
+        <FullName profile={profile} /> Start time:{' '}
         <CustomDate date={startTime} /> End time: <CustomDate date={endTime} />
       </p>
     </div>

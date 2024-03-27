@@ -7,7 +7,7 @@ import SignInForm from '../cmps/forms/SignInForm'
 import { useTranslation } from 'react-i18next'
 
 const SigninPage: FC = () => {
-  log('Signin connected')
+  log('SigninPage connected')
 
   const { t } = useTranslation()
 
