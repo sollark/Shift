@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useLanguage } from './hooks/useLanguage'
 import useThemeMode from './hooks/useThemeMode'
 import { log } from './service/console.service'
-import { getDesignTokens } from './ui/theme/theme'
+import { getDesignTokens } from './theme/theme'
 
 // All application has access to the same query client to share data
 const queryClient = new QueryClient({
