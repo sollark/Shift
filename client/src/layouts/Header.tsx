@@ -1,6 +1,6 @@
-import { FC } from 'react'
-import Logo from '../ui/Logo'
+import Logo from '@/components/Logo'
 import { log } from '@/service/console.service'
+import { FC } from 'react'
 
 const Header: FC = () => {
   log('Header is connected')
