@@ -8,6 +8,19 @@ import useThemeMode from './hooks/useThemeMode'
 import { log } from './service/console.service'
 import { getDesignTokens } from './theme/theme'
 
+export type LanguageContextType = {
+  currentLanguageCode: string
+  setLanguage: (languageCode: string) => void
+}
+
+export type ColorModeContextType = {
+  mode: string
+  toggleColorMode: () => void
+}
+
+export const LanguageContext = createContext<LanguageContextType | null>(null)
+export const ColorModeContext = createContext<ColorModeContextType | null>(null)
+
 // All application has access to the same query client to share data
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,22 +29,15 @@ const queryClient = new QueryClient({
   },
 })
 
-export const LanguageContext = createContext({
-  currentLanguageCode: '',
-  setLanguage: (languageCode: string) => {},
-})
-export const ColorModeContext = createContext({
-  mode: '',
-  toggleColorMode: () => {},
-})
-
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   log('Providers connected')
 
   // Light / Dark
   const [mode, toggleColorMode] = useThemeMode()
+
   // Hebrew, Russian , English
   const [currentLanguageCode, setLanguage] = useLanguage()
+
   // Theme
   const theme = useMemo(
     () => createTheme(getDesignTokens(mode, currentLanguageCode)),

@@ -1,4 +1,4 @@
-import { LanguageContext } from '@/Providers'
+import { LanguageContext, LanguageContextType } from '@/Providers'
 import { config } from '@/config/config'
 import { LANGUAGES } from '@/constants/constants'
 import { i18n } from '@/i18n/config'
@@ -7,7 +7,7 @@ import { useContext, useEffect, useState } from 'react'
 const DEFAULT_LANGUAGE = config.defaultLanguage
 
 export const useLanguage = (): [string, (newLanguageCode: string) => void] => {
-  const languageContext = useContext(LanguageContext)
+  const languageContext = useContext(LanguageContext) as LanguageContextType
 
   const initialLanguageCode =
     LANGUAGES.find((lang) => lang.value === DEFAULT_LANGUAGE)?.value ||

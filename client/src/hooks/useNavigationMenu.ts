@@ -1,4 +1,4 @@
-import { getAdminPages, getUserPages } from '@/cmps/menu/Pages'
+import { getAdminPages, getUserPages } from '@/components/menu/Pages'
 import { Role } from '@/models/Account'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
