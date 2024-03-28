@@ -1,6 +1,6 @@
-import CustomLink from '@/cmps/link/CustomLink'
-import TestSignIn from '@/cmps/oneClickSignIn/OneClickSignIn'
 import SignInForm from '@/components/forms/SignInForm'
+import CustomLink from '@/components/link/CustomLink'
+import TestSignIn from '@/components/oneClickSignIn/OneClickSignIn'
 import { log } from '@/service/console.service'
 import { Box } from '@mui/material'
 import { FC } from 'react'

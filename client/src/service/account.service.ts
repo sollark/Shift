@@ -34,30 +34,6 @@ async function updateAccount(
   return null
 }
 
-async function joinCompany(companyNumber: string, employeeNumber: string) {
-  const response = await httpService.post<AccountData>('account/join', {
-    companyNumber,
-    employeeNumber,
-  })
-
-  log('accountService - joinCompany, response', response)
-  if (!response) return { success: false, message: 'Cannot connect to server' }
-
-  const { success, message } = response
-
-  if (success) {
-    const { data } = response
-    log('joinCompany, message: ', message)
-
-    const { account } = data
-    storeService.saveAccount(account)
-
-    return response
-  }
-
-  return response
-}
-
 async function getAccount(): Promise<Account | null> {
   const response = await httpService.get<AccountData>('account')
 
@@ -73,4 +49,4 @@ async function getAccount(): Promise<Account | null> {
   return null
 }
 
-export const accountService = { updateAccount, joinCompany, getAccount }
+export const accountService = { updateAccount, getAccount }

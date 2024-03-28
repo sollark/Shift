@@ -31,6 +31,13 @@ const useAuthStore = create<AuthState & AuthActions>()(
 
 export default useAuthStore
 
-export const selectors = {
+/*
+ Use selector in components:
+ const isAuthenticated = useAuthStore(selectors.isAuthenticated)
+ 
+ Use selector in function:
+ const isAuthenticated = selectors.isAuthenticated(useAuthStore.getState());
+*/
+export const authSelectors = {
   isAuthenticated: (state: AuthState) => state.token !== null,
 }

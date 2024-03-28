@@ -14,6 +14,7 @@ type AccountState = {
 type AccountActions = {
   setStatus: (status: Status) => void
   setRole: (role: Role) => void
+  clearAccount: () => void
 }
 
 const useAccountStore = create<AccountState & AccountActions>()(
@@ -26,12 +27,19 @@ const useAccountStore = create<AccountState & AccountActions>()(
         isComplete: false,
         setStatus: (status) => set((state) => ({ ...state, status })),
         setRole: (role) => set((state) => ({ ...state, role })),
+        clearAccount: () =>
+          set(() => ({
+            status: null,
+            role: USER_ROLE.guest,
+            isVerified: false,
+            isComplete: false,
+          })),
       }))
     )
   )
 )
 
-export const selectors = {
+export const accountSelector = {
   isVerified: (state: AccountState) => state.status !== ACCOUNT_STATUS.pending,
   isComplete: (state: AccountState) =>
     state.status !== ACCOUNT_STATUS.incomplete,

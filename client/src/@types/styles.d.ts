@@ -4,11 +4,9 @@ export {}
 declare module '@mui/material/styles/createPalette' {
   interface Palette {
     accent: Palette['primary']
-    // accent: PaletteColor
   }
   interface PaletteOptions {
     accent?: PaletteOptions['primary']
-    // accent: SimplePaletteColorOptions
   }
   interface PaletteColor {
     divider?: string

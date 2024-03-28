@@ -1,3 +1,4 @@
+import { accountService } from './account.service'
 import { httpService } from './axios/http.service'
 import { log } from './console.service'
 import { storeService } from './store.service'
@@ -22,7 +23,6 @@ async function registration(email: string, password: string) {
 
     const { accessToken } = data
     storeService.saveAccessToken(accessToken)
-    storeService.setProfileAsAuthenticated()
   }
 
   // TODO clear comments
@@ -37,17 +37,16 @@ async function signIn(email: string, password: string) {
     password,
   })
 
-  if (!signInResponse)
+  if (!signInResponse || !signInResponse.success)
     return { success: false, message: 'Cannot connect to server' }
 
-  const { success, message } = signInResponse
+  const { success, message, data } = signInResponse
+  // Save token in store
+  const { accessToken } = data
+  storeService.saveAccessToken(accessToken)
 
-  if (success) {
-    const { data } = signInResponse
-    const { accessToken } = data
-    storeService.saveAccessToken(accessToken)
-    storeService.setProfileAsAuthenticated()
-  }
+  // Fetch account and save it in store
+  await accountService.getAccount()
 
   return { success, message }
 }
@@ -67,19 +66,13 @@ async function refreshTokens() {
 
   log('refreshTokens, response data', refreshResponse)
 
-  if (!refreshResponse)
-    return { success: false, message: 'Cannot connect to server' }
+  if (!refreshResponse || !refreshResponse.success)
+    return { success: false, message: 'Failed to refresh token' }
 
-  const { success } = refreshResponse
-  if (success) {
-    const { data } = refreshResponse
-    const { accessToken } = data
+  const { data } = refreshResponse
+  const { accessToken } = data
 
-    storeService.saveAccessToken(accessToken)
-    storeService.setProfileAsAuthenticated()
-  } else {
-    log('Failed to refresh token')
-  }
+  storeService.saveAccessToken(accessToken)
 }
 
 export const authService = {
