@@ -1,4 +1,4 @@
-import { fail } from '../console.service'
+import { logError } from '../console.service'
 import { api } from './api'
 import { interceptorService } from './interceptor.service'
 
@@ -49,7 +49,7 @@ async function sendRequest<D>(
     return response.data
   } catch (error: unknown) {
     if (error instanceof Error) {
-      fail(`Error with ${config.method} request to ${config.url}: ${error}`)
+      logError(`Error with ${config.method} request to ${config.url}: ${error}`)
       return {
         success: false,
         message: error.message,
