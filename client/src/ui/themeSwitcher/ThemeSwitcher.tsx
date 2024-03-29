@@ -7,13 +7,13 @@ import { IconButton } from '@mui/material'
 import { useContext } from 'react'
 
 const ThemeSwitcher = () => {
-  const { mode, toggleColorMode } = useContext(
+  const { mode, toggleThemeMode } = useContext(
     ColorModeContext
   ) as ColorModeContextType
   const isDarkMode = mode === 'dark'
 
   const handleThemeChange = () => {
-    toggleColorMode()
+    toggleThemeMode()
   }
 
   return (

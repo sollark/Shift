@@ -15,7 +15,7 @@ export type LanguageContextType = {
 
 export type ColorModeContextType = {
   mode: string
-  toggleColorMode: () => void
+  toggleThemeMode: () => void
 }
 
 export const LanguageContext = createContext<LanguageContextType | null>(null)
@@ -33,7 +33,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
   log('Providers connected')
 
   // Light / Dark
-  const [mode, toggleColorMode] = useThemeMode()
+  const [mode, toggleThemeMode] = useThemeMode()
 
   // Hebrew, Russian , English
   const [currentLanguageCode, setLanguage] = useLanguage()
@@ -49,7 +49,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ColorModeContext.Provider value={{ mode, toggleColorMode }}>
+      <ColorModeContext.Provider value={{ mode, toggleThemeMode }}>
         <LanguageContext.Provider value={{ currentLanguageCode, setLanguage }}>
           <ThemeProvider theme={theme}>
             <SnackbarProvider autoHideDuration={5000} maxSnack={3}>

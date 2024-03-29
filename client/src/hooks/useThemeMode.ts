@@ -1,20 +1,23 @@
+import { log } from '@/service/console.service'
 import { useMediaQuery } from '@mui/material'
 import { useCallback, useEffect, useState } from 'react'
 
 const useThemeMode = (): ['light' | 'dark', () => void] => {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+  const prefersDarkMode =
+    useMediaQuery('(prefers-color-scheme: dark)') ||
+    localStorage.getItem('theme') === 'dark'
+
   const [mode, setMode] = useState<'light' | 'dark'>(
-    localStorage.getItem('theme') === 'dark' || prefersDarkMode
-      ? 'dark'
-      : 'light'
+    prefersDarkMode ? 'dark' : 'light'
   )
 
   useEffect(() => {
     localStorage.setItem('theme', mode)
   }, [mode])
 
-  const toggleColorMode = useCallback(() => {
-    console.log('toggleColorMode')
+  const toggleThemeMode = useCallback(() => {
+    log('toggleThemeMode')
+
     setMode((prevMode) => {
       const newMode = prevMode === 'light' ? 'dark' : 'light'
       localStorage.setItem('theme', newMode)
@@ -23,7 +26,7 @@ const useThemeMode = (): ['light' | 'dark', () => void] => {
     })
   }, [])
 
-  return [mode, toggleColorMode]
+  return [mode, toggleThemeMode]
 }
 
 export default useThemeMode
