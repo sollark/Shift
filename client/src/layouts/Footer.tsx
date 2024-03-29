@@ -3,7 +3,7 @@ import { FC } from 'react'
 const Footer: FC = () => {
   return (
     <footer
-      className='flex flex-col align-center'
+      className='flex flex-column align-center'
       style={{
         width: '100%',
         backgroundColor: 'black',

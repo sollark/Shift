@@ -4,18 +4,30 @@ import LanguageSwitcher from '@/ui/languageSwitcher/LanguageSwitcher'
 import ThemeSwitcher from '@/ui/themeSwitcher/ThemeSwitcher'
 import { FC } from 'react'
 
+const headerStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  paddingBlock: '1rem',
+  paddingInline: '2rem',
+}
+
+const switchersStyle = {
+  display: 'flex',
+  gap: '1rem',
+  alignItems: 'center',
+}
+
 const Header: FC = () => {
   log('Header is connected')
 
   return (
-    <header
-      style={{
-        paddingBlock: '1rem',
-        paddingInline: '2rem',
-      }}>
+    <header style={headerStyle}>
       <Logo />
-      <LanguageSwitcher />
-      <ThemeSwitcher />
+      <div style={switchersStyle}>
+        <LanguageSwitcher />
+        <ThemeSwitcher />
+      </div>
     </header>
   )
 }
