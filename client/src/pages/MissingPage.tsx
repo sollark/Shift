@@ -3,7 +3,7 @@ import { Box } from '@mui/material'
 import { FC } from 'react'
 
 const MissingPage: FC = () => {
-  log('Missing connected')
+  log('MissingPage connected')
 
   return (
     <Box

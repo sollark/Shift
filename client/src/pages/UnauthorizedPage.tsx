@@ -3,7 +3,7 @@ import { Box } from '@mui/material'
 import { FC } from 'react'
 
 const UnauthorizedPage: FC = () => {
-  log('Unauthorized connected')
+  log('UnauthorizedPage connected')
 
   return (
     <Box
