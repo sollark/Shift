@@ -1,9 +1,7 @@
-import { CompanyNameSchema } from '@/models/Company'
-import { DepartmentNameSchema, PositionSchema } from '@/models/Employee'
 import { ProfileSchema } from '@/models/Profile'
 import { accountService } from '@/service/account.service'
 import { log } from '@/service/console.service'
-import useEmployeeStore from '@/stores/employeeStore'
+import useAccountStore, { accountSelector } from '@/stores/accountStore'
 import useUserStore from '@/stores/userStore'
 import { useNavigate } from '@tanstack/react-router'
 import { FC, ReactElement } from 'react'
@@ -15,27 +13,18 @@ interface Props {
   [key: string]: any // allow any other prop that is not explicitly defined
 }
 
-const AccountSchema = z
-  .object({})
-  .merge(ProfileSchema)
-  .merge(CompanyNameSchema)
-  .merge(DepartmentNameSchema)
-  .merge(PositionSchema)
+const AccountSchema = z.object({}).merge(ProfileSchema)
 
 const AccountForm: FC<Props> = (props: Props) => {
   const { children } = props
   const navigate = useNavigate()
 
   const profile = useUserStore((state) => state.profile)
-  const employee = useEmployeeStore((state) => state.employee)
 
   const defaultValues = {
     firstName: profile?.firstName || '',
     lastName: profile?.lastName || '',
     ID: profile?.ID || '',
-    companyName: employee?.company?.companyName || '',
-    departmentName: employee?.department?.departmentName || '',
-    position: employee?.position || '',
   }
 
   async function submit(form: any) {
@@ -52,7 +41,8 @@ const AccountForm: FC<Props> = (props: Props) => {
 
     log('AccountForm, account: ', account)
 
-    if (account?.isComplete) navigate({ to: '/' })
+    if (accountSelector.isComplete(useAccountStore.getState()))
+      navigate({ to: '/' })
   }
 
   return (

@@ -1,6 +1,7 @@
 import { accountService } from '@/service/account.service'
 import { authService } from '@/service/auth.service'
 import { log } from '@/service/console.service'
+import useAccountStore, { accountSelector } from '@/stores/accountStore'
 import { useNavigate } from '@tanstack/react-router'
 import { FC, useState } from 'react'
 import { z } from 'zod'
@@ -47,14 +48,15 @@ const SignInForm: FC = () => {
 
     const response = await authService.signIn(email, password)
     const { success, message } = response
-
     if (!success) {
       setErrorMessage(message)
       return
     }
 
-    const account = await accountService.getAccount()
-    if (account?.isComplete) navigate({ to: '/' })
+    await accountService.getAccount()
+
+    if (accountSelector.isComplete(useAccountStore.getState()))
+      navigate({ to: '/' })
     else navigate({ to: '/account/edit' })
   }
 
