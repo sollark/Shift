@@ -1,20 +1,11 @@
-import Footer from './layouts/Footer'
-import Header from './layouts/Header'
-import Main from './layouts/Main'
+import { RouterProvider } from '@tanstack/react-router'
+import { router } from './routes/router'
 import { log } from './service/console.service'
 
 function App() {
   log('App is connected')
 
-  return (
-    <>
-      <Header />
-      <Main>
-        <h1>Hello, world!</h1>
-      </Main>
-      <Footer />
-    </>
-  )
+  return <RouterProvider router={router} />
 }
 
 export default App

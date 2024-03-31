@@ -1,8 +1,6 @@
 import { accountService } from '@/service/account.service'
 import { authService } from '@/service/auth.service'
 import { log } from '@/service/console.service'
-import useAccountStore, { accountSelector } from '@/stores/accountStore'
-import { useNavigate } from '@tanstack/react-router'
 import { FC, useState } from 'react'
 import { z } from 'zod'
 import ErrorMessage from './ErrorMessage'
@@ -38,7 +36,7 @@ const SignInForm: FC = () => {
   log('SignInForm connected')
 
   const [errorMessage, setErrorMessage] = useState('')
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   async function submit(form: SigninForm) {
     log('Signin form submitted: ', form)
@@ -55,9 +53,9 @@ const SignInForm: FC = () => {
 
     await accountService.getAccount()
 
-    if (accountSelector.isComplete(useAccountStore.getState()))
-      navigate({ to: '/' })
-    else navigate({ to: '/account/edit' })
+    // if (accountSelector.isComplete(useAccountStore.getState()))
+    //   navigate({ to: '/' })
+    // else navigate({ to: '/account/edit' })
   }
 
   return (

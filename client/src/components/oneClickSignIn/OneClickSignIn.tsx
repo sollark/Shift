@@ -1,12 +1,10 @@
 import { accountService } from '@/service/account.service'
 import { authService } from '@/service/auth.service'
-import useAccountStore, { accountSelector } from '@/stores/accountStore'
 import SecondaryButton from '@/ui/button/SecondaryButton'
-import { useNavigate } from '@tanstack/react-router'
 import React from 'react'
 
 const OneClickSignIn: React.FC = () => {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   const handleSignIn = async (role: string) => {
     switch (role) {
@@ -24,11 +22,11 @@ const OneClickSignIn: React.FC = () => {
     await accountService.getAccount()
 
     // Navigate to next page
-    const isAccountComplete = accountSelector.isComplete(
-      useAccountStore.getState()
-    )
-    if (isAccountComplete) navigate({ to: '/' })
-    else navigate({ to: '/account/edit' })
+    // const isAccountComplete = accountSelector.isComplete(
+    //   useAccountStore.getState()
+    // )
+    // if (isAccountComplete) navigate({ to: '/' })
+    // else navigate({ to: '/account/edit' })
   }
 
   return (
