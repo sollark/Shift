@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import geoip from 'geoip-lite'
 import { parseUserAgent } from '../lib/UserAgentParser.js'
 import VisitorModel from '../mongo/models/visitor.model.js'
+import { log } from '../service/console.service.js'
 import logger from '../service/logger.service.js'
 import { uuidService } from '../service/uuid.service.js'
 
@@ -18,6 +19,8 @@ async function collectVisitorInfo(
   res: Response,
   next: NextFunction
 ) {
+  log('collectVisitorInfo middleware')
+
   const ip = req.ip || ''
   const userAgent = req.headers['user-agent'] || ''
   const path = req.path

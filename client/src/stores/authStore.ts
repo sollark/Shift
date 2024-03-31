@@ -33,10 +33,10 @@ export default useAuthStore
 
 /*
  Use selector in components:
- const isAuthenticated = useAuthStore(selectors.isAuthenticated)
+ const isAuthenticated = useAuthStore(authSelectors.isAuthenticated)
  
  Use selector in function:
- const isAuthenticated = selectors.isAuthenticated(useAuthStore.getState());
+ const isAuthenticated = authSelectors.isAuthenticated(useAuthStore.getState());
 */
 export const authSelectors = {
   isAuthenticated: (state: AuthState) => state.token !== null,

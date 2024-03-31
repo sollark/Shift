@@ -1,4 +1,4 @@
-import { logError } from '../console.service'
+import { log, logError } from '../console.service'
 import { api } from './api'
 import { interceptorService } from './interceptor.service'
 
@@ -39,6 +39,8 @@ async function sendRequest<D>(
   }
 
   try {
+    log(`Sending ${config.method} request to ${config.url}`)
+
     const response = await api({
       method: config.method,
       url: config.url,
