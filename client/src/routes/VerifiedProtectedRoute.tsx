@@ -1,6 +1,6 @@
 import UnauthorizedPage from '@/pages/UnauthorizedPage'
 import { log } from '@/service/console.service'
-import useAccountStore from '@/stores/accountStore'
+import useAccountStore, { accountSelector } from '@/stores/accountStore'
 import { ReactNode } from 'react'
 
 type VerifiedProtectedRouteProps = {
@@ -10,7 +10,9 @@ type VerifiedProtectedRouteProps = {
 const VerifiedProtectedRoute = ({
   children,
 }: VerifiedProtectedRouteProps): JSX.Element => {
-  const isAccountVerified = useAccountStore((state) => state.isVerified)()
+  const isAccountVerified = accountSelector.isVerified(
+    useAccountStore.getState()
+  )
   const isAccessAllowed = isAccountVerified
 
   log('VerifiedProtectedRoute, isAccessAllowed: ', isAccessAllowed)
