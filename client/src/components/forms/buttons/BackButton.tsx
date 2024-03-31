@@ -1,4 +1,4 @@
-import SecondaryButton from '@/cmps/button/SecondaryButton'
+import SecondaryButton from '@/ui/button/SecondaryButton'
 import { FC } from 'react'
 import { buttonStyle } from '../style/formStyle'
 

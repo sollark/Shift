@@ -1,4 +1,4 @@
-import AccentButton from '@/cmps/button/AccentButton'
+import AccentButton from '@/ui/button/AccentButton'
 import { FC } from 'react'
 import { buttonStyle } from '../style/formStyle'
 import { useTranslation } from 'react-i18next'
