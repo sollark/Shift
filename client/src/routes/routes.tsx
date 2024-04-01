@@ -2,16 +2,16 @@ import RootPage from '@/layouts/RootPage'
 import HomePage from '@/pages/HomePage'
 import { RootRoute, Route, lazyRouteComponent } from '@tanstack/react-router'
 import AuthProtectedRoute from './AuthProtectedRoute'
-const AccountPage = lazyRouteComponent(() => import('@/pages/AccountPage'))
 
+const AccountPage = lazyRouteComponent(() => import('@/pages/AccountPage'))
 const SigninPage = lazyRouteComponent(() => import('@/pages/SigninPage'))
+const MissingPage = lazyRouteComponent(() => import('@/pages/MissingPage'))
 const RegistrationPage = lazyRouteComponent(
   () => import('@/pages/RegistrationPage')
 )
 const UnauthorizedPage = lazyRouteComponent(
   () => import('@/pages/UnauthorizedPage')
 )
-const MissingPage = lazyRouteComponent(() => import('@/pages/MissingPage'))
 
 export const rootRoute = new RootRoute({
   component: RootPage,
@@ -23,12 +23,7 @@ export const rootRoute = new RootRoute({
 export const homeRoute = new Route({
   getParentRoute: () => rootRoute,
   path: '/',
-
-  component: () => (
-    <AuthProtectedRoute>
-      <HomePage />
-    </AuthProtectedRoute>
-  ),
+  component: HomePage,
 })
 
 export const signinRoute = new Route({
