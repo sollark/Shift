@@ -13,6 +13,7 @@ import errorHandler from './middleware/errorHandler.js'
 import requestLimit from './middleware/requestLimit.js'
 import setHeaders from './middleware/setHeaders.js'
 import { connectMongo } from './mongo/connect.js'
+import cookieParser from 'cookie-parser'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -29,6 +30,7 @@ if (config.env === 'production') {
 }
 
 // Middlewares
+app.use(cookieParser())
 app.use(collectVisitorInfo)
 app.use(compression())
 app.use(bodyParser.json())
