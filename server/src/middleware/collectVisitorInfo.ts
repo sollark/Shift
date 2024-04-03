@@ -5,13 +5,14 @@ import VisitorModel from '../mongo/models/visitor.model.js'
 import { log } from '../service/console.service.js'
 import logger from '../service/logger.service.js'
 import { uuidService } from '../service/uuid.service.js'
+import { asyncLocalStorage } from '../service/als.service.js'
 
 // cookie for 365 days
 const publicIdCookieOptions = {
   maxAge: 365 * 24 * 60 * 60 * 1000,
   sameSite: 'strict' as const,
   httpOnly: true,
-  secure: true,
+  // secure: true,
 }
 
 async function collectVisitorInfo(
@@ -20,6 +21,8 @@ async function collectVisitorInfo(
   next: NextFunction
 ) {
   log('collectVisitorInfo middleware')
+  const alsStore = asyncLocalStorage.getStore()
+  if (!alsStore) return next()
 
   const ip = req.ip || ''
   const userAgent = req.headers['user-agent'] || ''
@@ -27,7 +30,12 @@ async function collectVisitorInfo(
 
   // Get publicId from cookie or create a new one
   let publicId = req.cookies['publicId']
+  // log('cookies:', req)
   if (!publicId) publicId = await uuidService.getVisitorUuid()
+  log('publicId:', publicId)
+
+  // Save publicId to ALS store and set cookie
+  alsStore.requestData = { publicId }
   res.cookie('publicId', publicId, publicIdCookieOptions)
 
   // Lookup IP address

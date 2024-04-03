@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import BadRequestError from '../../errors/BadRequestError.js'
 import logger from '../../service/logger.service.js'
-import { uuidService } from '../../service/uuid.service.js'
 import { authService } from './auth.service.js'
 
 // save refresh token in cookie for 7 days

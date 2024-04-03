@@ -39,11 +39,6 @@ async function setupAsyncLocalStorage(
     alsStore.userData = { uuid }
     logger.info(`User ${uuid} is making api request.`)
 
-    // Collect request data from cookie
-    const publicId = req.cookies['publicId']
-
-    alsStore.requestData = { publicId }
-
     next()
   })
 }
