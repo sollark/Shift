@@ -26,7 +26,7 @@ function doLog(level: string, ...args: any[]): void {
   // get the publicId from the async local storage
   let publicId
   try {
-    publicId = getPublicIdFromALS() ?? 'No publicId'
+    publicId = getPublicIdFromALS() || 'No publicId'
   } catch (error) {}
 
   // get the user uuid from the async local storage
@@ -36,7 +36,7 @@ function doLog(level: string, ...args: any[]): void {
   } catch (error) {}
 
   const uuidStr = uuid ? `(user: ${uuid})` : 'unauthenticated'
-  const publicIdStr = publicId ? `(publicId: ${publicId})` : 'unauthenticated'
+  const publicIdStr = `(publicId: ${publicId})`
   line = `${getTime()} - ${level} - ${publicIdStr} - ${uuidStr} \n ${line}`
   console.log(line)
 

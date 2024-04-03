@@ -51,7 +51,6 @@ export function getUuidFromALS() {
 export function getPublicIdFromALS() {
   const store = asyncLocalStorage.getStore()
   const publicId = store?.requestData?.publicId
-  if (!publicId) throw new UnauthorizedError('You are not unauthorized')
 
-  return publicId
+  return publicId ? publicId : null
 }

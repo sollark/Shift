@@ -1,10 +1,9 @@
 import express from 'express'
-import setupAsyncLocalStorage from './middleware/als.js'
 import { deleteSensitiveData } from './middleware/deleteSensitiveData.js'
 
 const router = express.Router()
 
-router.use(setupAsyncLocalStorage)
+// router.use(setupAsyncLocalStorage)
 router.use(deleteSensitiveData)
 
 // router.use('/auth', authRoutes)
