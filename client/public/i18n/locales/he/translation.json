@@ -1,0 +1,101 @@
+{
+  "navigation": {
+    "next": "הבא",
+    "back": "אחורה"
+  },
+  "actions": {
+    "actions": "פעולות",
+    "ok": "אישור",
+    "cancel": "ביטול",
+    "save": "שמור",
+    "edit": "ערוך",
+    "delete": "מחק",
+    "add": "הוסף",
+    "submit": "שליחה"
+  },
+  "ui": {
+    "search": "חיפוש",
+    "close": "סגור",
+    "loading": "טוען...",
+    "error": "שגיאה",
+    "empty": "ריק",
+    "confirmation": "האם אתה בטוח?"
+  },
+  "labels": {
+    "logo": "לוגו"
+  },
+
+  "pages": {
+    "sign_in": "התחברות",
+    "registration": "הרשמה",
+    "home": "בית",
+    "company": "חברה",
+    "employees": "עובדים",
+    "accounts": "חשבונות"
+  },
+  "account_menu": {
+    "account": "חשבון"
+  },
+  "sign_in_page": {
+    "Don't have an account?": "אין חשבון?"
+  },
+  "registration_page": {
+    "Already have an account?": "היו חשבונות?"
+  },
+  "company_page": {
+    "number_of_employees": "מספר עובדים"
+  },
+  "employees_page": {
+    "employee_table": "טבלת עובדים"
+  },
+  "accounts_page": {
+    "account_table": "טבלת חשבונות"
+  },
+  "auth": {
+    "email": "דואר אלקטרוני",
+    "password": "סיסמה",
+    "registration": "הרשמה",
+    "sign_in": "התחברות",
+    "sign_out": "התנתק"
+  },
+  "account": {
+    "account": "חשבון"
+  },
+  "account_status": {
+    "account_status": "מצב החשבון",
+    "incomplete": "לא שלם",
+    "pending": "ממתין",
+    "active": "פעיל",
+    "inactive": "לא פעיל",
+    "suspended": "מושעה"
+  },
+  "user_role": {
+    "user_role": "תפקיד משתמש",
+    "guest": "אורח",
+    "manager": "מנהל",
+    "admin": "מנהל מערכת",
+    "supervisor": "מנהל עליון"
+  },
+  "profile": {
+    "profile": "פרופיל",
+    "first_name": "שם פרטי",
+    "last_name": "שם משפחה",
+    "id": "ת.ז.",
+    "email": "דואר אלקטרוני",
+    "phone": "טלפון",
+    "address": "כתובת"
+  },
+  "employee": {
+    "employee": "עובד",
+    "employee_number": "מספר עובד",
+    "position": "תפקיד"
+  },
+  "company": {
+    "company": "חברה",
+    "company_name": "שם החברה",
+    "company_number": "מספר החברה"
+  },
+  "department": {
+    "department": "מחלקה"
+  }
+}

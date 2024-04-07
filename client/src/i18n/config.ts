@@ -10,8 +10,8 @@ i18next
   .use(initReactI18next) // Pass options to initReactI18next
   .init<HttpBackendOptions>({
     backend: {
-      // loadPath: './i18n/locales/{{lng}}/{{ns}}.json',
-      loadPath: 'http://localhost:3030/i18n/locales/{{lng}}/{{ns}}.json',
+      // files are loaded from vite server public folder
+      loadPath: './i18n/locales/{{lng}}/{{ns}}.json',
     },
     fallbackLng: localStorage.getItem('languageCode') || config.defaultLanguage,
     defaultNS: 'translation',

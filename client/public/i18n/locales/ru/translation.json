@@ -1,0 +1,100 @@
+{
+  "navigation": {
+    "next": "Далее",
+    "back": "Назад"
+  },
+  "actions": {
+    "actions": "Действия",
+    "ok": "ОК",
+    "cancel": "Отмена",
+    "save": "Сохранить",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "add": "Добавить",
+    "submit": "Отправить"
+  },
+  "ui": {
+    "search": "Поиск",
+    "close": "Закрыть",
+    "loading": "Загрузка...",
+    "error": "Ошибка",
+    "empty": "Пусто",
+    "confirmation": "Вы уверены?"
+  },
+  "labels": {
+    "logo": "Лого"
+  },
+  "pages": {
+    "sign_in": "Вход",
+    "registration": "Регистрация",
+    "home": "Главная",
+    "company": "Компания",
+    "employees": "Сотрудники",
+    "accounts": "Учетные записи"
+  },
+  "account_menu": {
+    "account": "Аккаунт"
+  },
+  "sign_in_page": {
+    "Don't have an account?": "Нет аккаунта?"
+  },
+  "registration_page": {
+    "Already have an account?": "Уже есть аккаунт?"
+  },
+  "company_page": {
+    "number_of_employees": "Количество сотрудников"
+  },
+  "employees_page": {
+    "employee_table": "Таблица сотрудников"
+  },
+  "accounts_page": {
+    "account_table": "Таблица учетных записей"
+  },
+  "auth": {
+    "email": "Электронная почта",
+    "password": "Пароль",
+    "registration": "Регистрация",
+    "sign_in": "Войти",
+    "sign_out": "Выйти"
+  },
+  "account": {
+    "account": "Учетная запись"
+  },
+  "account_status": {
+    "account_status": "Статус учетной записи",
+    "incomplete": "Неполный",
+    "pending": "В ожидании",
+    "active": "Активный",
+    "inactive": "Неактивный",
+    "suspended": "Приостановлен"
+  },
+  "user_role": {
+    "user_role": "Роль пользователя",
+    "guest": "Гость",
+    "manager": "Менеджер",
+    "admin": "Администратор",
+    "supervisor": "Супервайзер"
+  },
+  "profile": {
+    "profile": "Профиль",
+    "first_name": "Имя",
+    "last_name": "Фамилия",
+    "id": "Номер паспорта",
+    "email": "Электронная почта",
+    "phone": "Телефон",
+    "address": "Адрес"
+  },
+  "employee": {
+    "employee": "Сотрудник",
+    "employee_number": "Номер сотрудника",
+    "position": "Должность"
+  },
+  "company": {
+    "company": "Компания",
+    "company_name": "Название компании",
+    "company_number": "Номер компании"
+  },
+  "department": {
+    "department": "Отдел"
+  }
+}
