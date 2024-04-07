@@ -11,8 +11,6 @@ import { asyncLocalStorage } from '../service/als.service.js'
 const publicIdCookieOptions = {
   maxAge: 365 * 24 * 60 * 60 * 1000,
   sameSite: 'strict' as const,
-  httpOnly: true,
-  // secure: true,
 }
 
 async function collectVisitorInfo(
@@ -21,6 +19,7 @@ async function collectVisitorInfo(
   next: NextFunction
 ) {
   log('collectVisitorInfo middleware')
+
   const alsStore = asyncLocalStorage.getStore()
   if (!alsStore) return next()
 
@@ -30,7 +29,7 @@ async function collectVisitorInfo(
 
   // Get publicId from cookie or create a new one
   let publicId = req.cookies['publicId']
-  // log('cookies:', req)
+  log('cookies:', req.cookies)
   if (!publicId) publicId = await uuidService.getVisitorUuid()
   log('publicId:', publicId)
 

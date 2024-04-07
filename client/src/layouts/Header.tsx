@@ -1,4 +1,5 @@
 import Logo from '@/components/Logo'
+import User from '@/components/user/User'
 import { log } from '@/service/console.service'
 import LanguageSwitcher from '@/ui/languageSwitcher/LanguageSwitcher'
 import ThemeSwitcher from '@/ui/themeSwitcher/ThemeSwitcher'
@@ -27,6 +28,7 @@ const Header: FC = () => {
       <div style={switchersStyle}>
         <LanguageSwitcher />
         <ThemeSwitcher />
+        <User />
       </div>
     </header>
   )

@@ -43,6 +43,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
     () => createTheme(getDesignTokens(mode, currentLanguageCode)),
     [mode, currentLanguageCode]
   )
+
   // Text direction
   const { i18n } = useTranslation()
   document.body.dir = i18n.dir()
