@@ -28,8 +28,6 @@
     "sign_in": "Вход",
     "registration": "Регистрация",
     "home": "Главная",
-    "company": "Компания",
-    "employees": "Сотрудники",
     "accounts": "Учетные записи"
   },
   "account_menu": {
@@ -40,12 +38,6 @@
   },
   "registration_page": {
     "Already have an account?": "Уже есть аккаунт?"
-  },
-  "company_page": {
-    "number_of_employees": "Количество сотрудников"
-  },
-  "employees_page": {
-    "employee_table": "Таблица сотрудников"
   },
   "accounts_page": {
     "account_table": "Таблица учетных записей"
@@ -66,14 +58,13 @@
     "pending": "В ожидании",
     "active": "Активный",
     "inactive": "Неактивный",
-    "suspended": "Приостановлен"
+    "deleted": "Удален"
   },
   "user_role": {
     "user_role": "Роль пользователя",
     "guest": "Гость",
-    "manager": "Менеджер",
-    "admin": "Администратор",
-    "supervisor": "Супервайзер"
+    "user": "Пользователь",
+    "admin": "Администратор"
   },
   "profile": {
     "profile": "Профиль",
@@ -83,18 +74,5 @@
     "email": "Электронная почта",
     "phone": "Телефон",
     "address": "Адрес"
-  },
-  "employee": {
-    "employee": "Сотрудник",
-    "employee_number": "Номер сотрудника",
-    "position": "Должность"
-  },
-  "company": {
-    "company": "Компания",
-    "company_name": "Название компании",
-    "company_number": "Номер компании"
-  },
-  "department": {
-    "department": "Отдел"
   }
 }

@@ -29,8 +29,6 @@
     "sign_in": "התחברות",
     "registration": "הרשמה",
     "home": "בית",
-    "company": "חברה",
-    "employees": "עובדים",
     "accounts": "חשבונות"
   },
   "account_menu": {
@@ -41,12 +39,6 @@
   },
   "registration_page": {
     "Already have an account?": "היו חשבונות?"
-  },
-  "company_page": {
-    "number_of_employees": "מספר עובדים"
-  },
-  "employees_page": {
-    "employee_table": "טבלת עובדים"
   },
   "accounts_page": {
     "account_table": "טבלת חשבונות"
@@ -67,14 +59,13 @@
     "pending": "ממתין",
     "active": "פעיל",
     "inactive": "לא פעיל",
-    "suspended": "מושעה"
+    "deleted": "נמחק"
   },
   "user_role": {
     "user_role": "תפקיד משתמש",
     "guest": "אורח",
-    "manager": "מנהל",
-    "admin": "מנהל מערכת",
-    "supervisor": "מנהל עליון"
+    "user": "משתמש",
+    "admin": "מנהל מערכת"
   },
   "profile": {
     "profile": "פרופיל",
@@ -84,18 +75,5 @@
     "email": "דואר אלקטרוני",
     "phone": "טלפון",
     "address": "כתובת"
-  },
-  "employee": {
-    "employee": "עובד",
-    "employee_number": "מספר עובד",
-    "position": "תפקיד"
-  },
-  "company": {
-    "company": "חברה",
-    "company_name": "שם החברה",
-    "company_number": "מספר החברה"
-  },
-  "department": {
-    "department": "מחלקה"
   }
 }

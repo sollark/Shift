@@ -28,8 +28,6 @@
     "sign_in": "Sign in",
     "registration": "Registration",
     "home": "Home",
-    "company": "Company",
-    "employees": "Employees",
     "accounts": "Accounts"
   },
   "account_menu": {
@@ -40,12 +38,6 @@
   },
   "registration_page": {
     "Already have an account?": "Already have an account?"
-  },
-  "company_page": {
-    "number_of_employees": "Number of employees"
-  },
-  "employees_page": {
-    "employee_table": "Employee table"
   },
   "accounts_page": {
     "account_table": "Account table"
@@ -66,14 +58,13 @@
     "pending": "Pending",
     "active": "Active",
     "inactive": "Inactive",
-    "suspended": "Suspended"
+    "deleted": "Deleted"
   },
   "user_role": {
     "user_role": "User role",
     "guest": "Guest",
-    "manager": "Manager",
-    "admin": "Admin",
-    "supervisor": "Supervisor"
+    "user": "User",
+    "admin": "Admin"
   },
   "profile": {
     "profile": "Profile",
@@ -83,18 +74,5 @@
     "email": "Email",
     "phone": "Phone",
     "address": "Address"
-  },
-  "employee": {
-    "employee": "Employee",
-    "employee_number": "Employee number",
-    "position": "Position"
-  },
-  "company": {
-    "company": "Company",
-    "company_name": "Company name",
-    "company_number": "Company number"
-  },
-  "department": {
-    "department": "Department"
   }
 }
