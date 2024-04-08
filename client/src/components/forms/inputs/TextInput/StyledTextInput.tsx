@@ -2,6 +2,9 @@ import { TextField, TextFieldProps, styled } from '@mui/material'
 
 const StyledTextInput = styled(TextField)<TextFieldProps>(({ theme }) => ({
   margin: '1rem 0',
+  '& label': {
+    color: theme.palette.neutral.dark,
+  },
   // input label when focused
   '& label.Mui-focused': {
     color: theme.palette.primary.divider,
@@ -14,10 +17,12 @@ const StyledTextInput = styled(TextField)<TextFieldProps>(({ theme }) => ({
   '& .MuiFilledInput-underline:after': {
     borderBottomColor: theme.palette.primary.divider,
   },
-  // focused color for input with variant='outlined'
+  // Root class for the outlined input field
   '& .MuiOutlinedInput-root': {
-    '&.Mui-focused fieldset': {
+    // Border around the input field
+    '& .MuiOutlinedInput-notchedOutline': {
       borderColor: theme.palette.primary.divider,
+      borderWidth: '2px',
     },
   },
 }))

@@ -1,8 +1,9 @@
 import { log } from '@/service/console.service'
 import { Box } from '@mui/material'
 import { Outlet } from '@tanstack/react-router'
+import { FC } from 'react'
 
-const AccountPage = () => {
+const AccountPage: FC = () => {
   log('AccountPage connected')
 
   return (

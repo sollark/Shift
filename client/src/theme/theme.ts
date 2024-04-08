@@ -17,6 +17,7 @@ export const getDesignTokens = (mode: PaletteMode, lang: string) => {
             primary: {
               main: colors.primary[700],
               contrastText: colors.grey[100], // Add contrast text color
+              divider: colors.grey[100], // Add divider color
             },
             secondary: {
               main: colors.secondary[800],
@@ -42,6 +43,7 @@ export const getDesignTokens = (mode: PaletteMode, lang: string) => {
             primary: {
               main: colors.primary[100],
               contrastText: colors.grey[800], // Add contrast text color
+              divider: colors.grey[100], // Add divider color
             },
             secondary: {
               main: colors.secondary[200],
