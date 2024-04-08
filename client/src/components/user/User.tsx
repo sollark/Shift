@@ -24,7 +24,6 @@ const User: FC = () => {
 
   const profile = useUserStore((state) => state.profile)
 
-  // build profile menu
   useEffect(() => {
     // User menu
     menu.length = 0
@@ -50,6 +49,7 @@ const User: FC = () => {
             color: 'secondary.contrastText',
             width: 45,
             height: 45,
+            fontSize: 14,
           }}>
           {initials}
         </Avatar>

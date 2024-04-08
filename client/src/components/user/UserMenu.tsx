@@ -1,20 +1,20 @@
 import { authService } from '@/service/auth.service'
 import { Link } from '@tanstack/react-router'
-import { useTranslation } from 'react-i18next'
+import i18next from 'i18next'
 
 export function getUserMenu() {
-  const { t } = useTranslation()
-
   return [
     {
       key: 'Account',
-      link: <Link to='/account/details'>{t('account_menu.account')}</Link>,
+      link: (
+        <Link to='/account/details'>{i18next.t('account_menu.account')}</Link>
+      ),
     },
     {
       key: 'SignOut',
       link: (
         <Link onClick={() => authService.signOut()} to='/signin'>
-          {t('auth.sign_out')}
+          {i18next.t('auth.sign_out')}
         </Link>
       ),
     },
@@ -25,7 +25,7 @@ export function getGuestMenu() {
   return [
     {
       key: 'SignIn',
-      link: <Link to='/signin'>Sign in</Link>,
+      link: <Link to='/signin'>{i18next.t('auth.sign_in')}</Link>,
     },
   ]
 }

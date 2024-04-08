@@ -26,3 +26,11 @@ i18next
   })
 
 export const i18n = i18next
+
+// Usage
+// In component
+// const {t} = useTranslation()
+// t('key') // returns the translation
+//
+// In function
+// const translation = i18next.t('key')
