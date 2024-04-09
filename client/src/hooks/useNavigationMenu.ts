@@ -1,4 +1,8 @@
-import { getAdminPages, getUserPages } from '@/components/menu/Pages'
+import {
+  getAdminNavigationLinks,
+  getGuestNavigationLinks,
+  getUserNavigationLinks,
+} from '@/components/menu/NavigationLinks'
 import { Role } from '@/models/Account'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -12,12 +16,16 @@ export function useNavigationMenu(role: Role) {
 
     switch (role) {
       case 'admin':
-        navigationPages = getAdminPages()
+        navigationPages = getUserNavigationLinks()
+        break
+      case 'user':
+        navigationPages = getAdminNavigationLinks()
         break
       case 'guest':
-      case 'user':
+        navigationPages = getGuestNavigationLinks()
+        break
       default:
-        navigationPages = getUserPages()
+        navigationPages = getGuestNavigationLinks()
         break
     }
 

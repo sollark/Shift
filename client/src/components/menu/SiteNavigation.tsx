@@ -2,12 +2,13 @@ import { useNavigationMenu } from '@/hooks/useNavigationMenu'
 import { Role } from '@/models/Account'
 import useAccountStore from '@/stores/accountStore'
 import { Button } from '@mui/material'
+import { FC } from 'react'
 
 type SiteNavigationProps = {
   handleCloseNavMenu: () => void
 }
 
-const SiteNavigation = (props: SiteNavigationProps) => {
+const SiteNavigation: FC<SiteNavigationProps> = (props) => {
   const { handleCloseNavMenu } = props
   const role: Role = useAccountStore((state) => state.role)
   const pages = useNavigationMenu(role)

@@ -1,11 +1,12 @@
-import { IconButton } from '@mui/material'
 import { default as Icon } from '@mui/icons-material/Menu'
+import { IconButton } from '@mui/material'
+import { FC } from 'react'
 
 type MenuIconProps = {
   handleOpenNavMenu: (event: React.MouseEvent<HTMLElement>) => void
 }
 
-const MenuIcon = (props: MenuIconProps) => {
+const MenuIcon: FC<MenuIconProps> = (props) => {
   const { handleOpenNavMenu } = props
 
   return (
