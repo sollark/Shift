@@ -4,22 +4,22 @@ import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 
 type LogoProps = {
-  sxImg?: SxProps
+  sxLogo?: SxProps
   sxText?: SxProps
 }
 
 const Logo: FC<LogoProps> = (props: LogoProps) => {
-  const { sxImg, sxText } = props
+  const { sxLogo, sxText } = props
   const { t } = useTranslation()
 
   return (
     <Box
       sx={{
-        ...sxImg,
         mr: 1,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        ...sxLogo,
       }}>
       <img src={logo} alt='Logo Image' />
       <Typography
@@ -28,13 +28,13 @@ const Logo: FC<LogoProps> = (props: LogoProps) => {
         component='a'
         href='/'
         sx={{
-          ...sxText,
           mr: 2,
           fontFamily: 'monospace',
           fontWeight: 700,
           letterSpacing: '.3rem',
           color: 'inherit',
           textDecoration: 'none',
+          ...sxText,
         }}>
         {t('labels.logo')}
       </Typography>{' '}

@@ -1,16 +1,17 @@
 import { log } from '@/service/console.service'
-import Footer from './Footer'
-import Header from './Header'
-import Main from './Main'
 import { Box } from '@mui/material'
 import { Outlet } from '@tanstack/react-router'
+import { FC } from 'react'
+import Footer from './Footer'
+import Main from './Main'
+import ResponsiveAppBar from './ResponsiveAppBar'
 
-const RootPage = () => {
+const RootPage: FC = () => {
   log('RootPage is connected')
 
   return (
     <>
-      <Header />
+      <ResponsiveAppBar />
       <Main>
         <Box component='main' sx={{ flexGrow: 1, pt: 8 }}>
           <Outlet />
