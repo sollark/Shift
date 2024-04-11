@@ -4,9 +4,9 @@ import {
   Brightness7 as LightIcon,
 } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
-import { useContext } from 'react'
+import { FC, useContext } from 'react'
 
-const ThemeSwitcher = () => {
+const ThemeSwitcher: FC = () => {
   const { mode, toggleThemeMode } = useContext(
     ColorModeContext
   ) as ColorModeContextType

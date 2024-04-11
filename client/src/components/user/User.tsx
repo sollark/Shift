@@ -1,6 +1,13 @@
 import { log } from '@/service/console.service'
 import useUserStore from '@/stores/userStore'
-import { Avatar, IconButton, Menu, MenuItem, Typography } from '@mui/material'
+import {
+  Avatar,
+  IconButton,
+  Menu,
+  MenuItem,
+  Tooltip,
+  Typography,
+} from '@mui/material'
 import React, { FC, ReactNode, useEffect, useState } from 'react'
 import { getGuestMenu, getUserMenu } from './UserMenu'
 import { useTranslation } from 'react-i18next'
@@ -40,21 +47,22 @@ const User: FC = () => {
 
   return (
     <>
-      <IconButton onClick={handleOpenUserMenu} sx={{ p: '5px' }}>
-        <Avatar
-          alt='Avatar'
-          src=''
-          sx={{
-            bgcolor: 'secondary.main',
-            color: 'secondary.contrastText',
-            width: 45,
-            height: 45,
-            fontSize: 14,
-          }}>
-          {initials}
-        </Avatar>
-      </IconButton>
-
+      <Tooltip title='Open settings'>
+        <IconButton onClick={handleOpenUserMenu} sx={{ p: '5px' }}>
+          <Avatar
+            alt='Avatar'
+            src=''
+            sx={{
+              bgcolor: 'secondary.main',
+              color: 'secondary.contrastText',
+              width: 45,
+              height: 45,
+              fontSize: 14,
+            }}>
+            {initials}
+          </Avatar>
+        </IconButton>
+      </Tooltip>
       <Menu
         sx={{ mt: '60px' }}
         id='menu-appbar'
