@@ -1,6 +1,6 @@
 import { Account } from '@/models/Account'
 import useAccountStore from '@/stores/accountStore'
-import useAuthStore from '@/stores/authStore'
+import useAuthStore from '@/stores/tokenStore'
 import useProfileStore from '@/stores/userStore'
 import { log } from './console.service'
 

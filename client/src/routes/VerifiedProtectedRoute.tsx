@@ -14,7 +14,6 @@ const VerifiedProtectedRoute = ({
     useAccountStore.getState()
   )
   const isAccessAllowed = isAccountVerified
-
   log('VerifiedProtectedRoute, isAccessAllowed: ', isAccessAllowed)
   return <>{isAccessAllowed ? children : <UnauthorizedPage />}</>
 }

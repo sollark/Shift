@@ -1,4 +1,4 @@
-import useAuthStore from '@/stores/authStore'
+import useAuthStore from '@/stores/tokenStore'
 import { AxiosRequestConfig } from 'axios'
 
 function getHeaders(): [string, string][] {
