@@ -1,6 +1,7 @@
 import RootPage from '@/layouts/RootPage'
 import HomePage from '@/pages/HomePage'
 import { RootRoute, Route, lazyRouteComponent } from '@tanstack/react-router'
+import { Suspense } from 'react'
 import AuthProtectedRoute from './AuthProtectedRoute'
 const AccountPage = lazyRouteComponent(() => import('@/pages/AccountPage'))
 const ProfilePage = lazyRouteComponent(() => import('@/pages/ProfilePage'))
@@ -61,16 +62,22 @@ export const accountRoute = new Route({
   getParentRoute: () => rootRoute,
   path: '/account',
   component: () => (
-    <AuthProtectedRoute>
+    // <AuthProtectedRoute>
+    <Suspense fallback={<div>Loading...</div>}>
       <AccountPage />
-    </AuthProtectedRoute>
+    </Suspense>
+    // </AuthProtectedRoute>
   ),
 })
 
 export const accountEditRoute = new Route({
-  getParentRoute: () => accountRoute,
-  path: '/edit',
-  component: () => <AccountEditPage />,
+  getParentRoute: () => rootRoute,
+  path: '/account/edit',
+  component: () => (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AccountEditPage />
+    </Suspense>
+  ),
 })
 
 export const missingRoute = new Route({
