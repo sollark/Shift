@@ -39,7 +39,11 @@ export const signinRoute = new Route({
 export const registrationRoute = new Route({
   getParentRoute: () => rootRoute,
   path: '/registration',
-  component: RegistrationPage,
+  component: () => (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RegistrationPage />
+    </Suspense>
+  ),
 })
 
 export const unauthorizedRoute = new Route({

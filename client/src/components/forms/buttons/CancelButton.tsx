@@ -1,6 +1,7 @@
 import SecondaryButton from '@/ui/button/SecondaryButton'
 import { FC } from 'react'
 import { buttonStyle } from '../style/formStyle'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
   children?: any
@@ -9,6 +10,7 @@ type Props = {
 
 const CancelButton: FC<Props> = (props: Props) => {
   const { children, onClick } = props
+  const { t } = useTranslation()
 
   return (
     <SecondaryButton
@@ -16,7 +18,7 @@ const CancelButton: FC<Props> = (props: Props) => {
       type='button'
       sx={buttonStyle}
       onClick={onClick}>
-      {children ? children : 'Cancel'}
+      {children ? children : t('actions.cancel')}
     </SecondaryButton>
   )
 }

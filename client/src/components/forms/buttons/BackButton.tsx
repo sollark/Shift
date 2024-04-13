@@ -1,5 +1,6 @@
 import SecondaryButton from '@/ui/button/SecondaryButton'
 import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 import { buttonStyle } from '../style/formStyle'
 
 type Props = {
@@ -9,6 +10,7 @@ type Props = {
 
 const BackButton: FC<Props> = (props: Props) => {
   const { children, onClick } = props
+  const { t } = useTranslation()
 
   return (
     <SecondaryButton
@@ -16,7 +18,7 @@ const BackButton: FC<Props> = (props: Props) => {
       type='button'
       sx={buttonStyle}
       onClick={onClick}>
-      {children ? children : 'Back'}
+      {children ? children : t('navigation.back')}
     </SecondaryButton>
   )
 }
