@@ -15,7 +15,7 @@ export const getDesignTokens = (mode: PaletteMode, lang: string) => {
       ...(mode === 'dark'
         ? {
             primary: {
-              main: colors.primary[700],
+              main: colors.primary[500],
               contrastText: colors.grey[100], // Add contrast text color
               divider: colors.grey[100], // Add divider color
             },

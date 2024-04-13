@@ -36,6 +36,7 @@ const Input: FC<InputProps> = (props: InputProps) => {
           {...field}
           type={type}
           label={label}
+          variant='outlined'
           id={name}
           placeholder={label}
           onChange={handleChange}

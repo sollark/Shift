@@ -5,25 +5,17 @@ const StyledTextInput = styled(TextField)<TextFieldProps>(({ theme }) => ({
   '& label': {
     color: theme.palette.neutral.dark,
   },
-  // input label when focused
-  '& label.Mui-focused': {
-    color: theme.palette.primary.divider,
+  '& .MuiOutlinedInput-input': {
+    color: theme.palette.neutral.dark,
   },
-  // focused color for input with variant='standard'
-  '& .MuiInput-underline:after': {
-    borderBottomColor: theme.palette.primary.divider,
+  // Border
+  '& .MuiOutlinedInput-notchedOutline': {
+    borderColor: theme.palette.primary.divider,
+    borderWidth: '2px',
   },
-  // focused color for input with variant='filled'
-  '& .MuiFilledInput-underline:after': {
-    borderBottomColor: theme.palette.primary.divider,
-  },
-  // Root class for the outlined input field
-  '& .MuiOutlinedInput-root': {
-    // Border around the input field
-    '& .MuiOutlinedInput-notchedOutline': {
-      borderColor: theme.palette.primary.divider,
-      borderWidth: '2px',
-    },
+  '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+    borderColor: theme.palette.primary.main,
+    borderWidth: '2px',
   },
 }))
 
