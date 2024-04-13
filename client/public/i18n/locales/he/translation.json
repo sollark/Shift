@@ -29,7 +29,8 @@
     "sign_in": "התחברות",
     "registration": "הרשמה",
     "home": "בית",
-    "accounts": "חשבונות"
+    "accounts": "חשבונות",
+    "about": "אודות"
   },
   "account_menu": {
     "account": "חשבון"
@@ -75,5 +76,8 @@
     "email": "דואר אלקטרוני",
     "phone": "טלפון",
     "address": "כתובת"
+  },
+  "ui": {
+    "settings": "הגדרות"
   }
 }

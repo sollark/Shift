@@ -18,7 +18,7 @@ export function getUserMenu() {
     },
     {
       key: 'Settings',
-      link: <Link to='/settings'>{i18next.t('auth.settings')}</Link>,
+      link: <Link to='/settings'>{i18next.t('ui.settings')}</Link>,
     },
     {
       key: 'SignOut',
@@ -39,7 +39,7 @@ export function getGuestMenu() {
     },
     {
       key: 'Settings',
-      link: <Link to='/settings'>{i18next.t('auth.settings')}</Link>,
+      link: <Link to='/settings'>{i18next.t('ui.settings')}</Link>,
     },
   ]
 }

@@ -28,7 +28,8 @@
     "sign_in": "Sign in",
     "registration": "Registration",
     "home": "Home",
-    "accounts": "Accounts"
+    "accounts": "Accounts",
+    "about": "About us"
   },
   "account_menu": {
     "account": "Account"
@@ -74,5 +75,8 @@
     "email": "Email",
     "phone": "Phone",
     "address": "Address"
+  },
+  "ui": {
+    "settings": "Settings"
   }
 }
