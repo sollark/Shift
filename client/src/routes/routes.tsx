@@ -3,9 +3,7 @@ import HomePage from '@/pages/HomePage'
 import { RootRoute, Route, lazyRouteComponent } from '@tanstack/react-router'
 import AuthProtectedRoute from './AuthProtectedRoute'
 const AccountPage = lazyRouteComponent(() => import('@/pages/AccountPage'))
-const AccountDetailsPage = lazyRouteComponent(
-  () => import('@/pages/AccountDetailsPage')
-)
+const ProfilePage = lazyRouteComponent(() => import('@/pages/ProfilePage'))
 const AccountEditPage = lazyRouteComponent(
   () => import('@/pages/AccountEditPage')
 )
@@ -49,6 +47,16 @@ export const unauthorizedRoute = new Route({
   component: UnauthorizedPage,
 })
 
+export const profileRoute = new Route({
+  getParentRoute: () => rootRoute,
+  path: '/profile',
+  component: () => (
+    <AuthProtectedRoute>
+      <ProfilePage />
+    </AuthProtectedRoute>
+  ),
+})
+
 export const accountRoute = new Route({
   getParentRoute: () => rootRoute,
   path: '/account',
@@ -57,12 +65,6 @@ export const accountRoute = new Route({
       <AccountPage />
     </AuthProtectedRoute>
   ),
-})
-
-export const accountDetailsRoute = new Route({
-  getParentRoute: () => accountRoute,
-  path: '/details',
-  component: () => <AccountDetailsPage />,
 })
 
 export const accountEditRoute = new Route({

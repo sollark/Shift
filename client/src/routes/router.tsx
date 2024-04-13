@@ -2,7 +2,6 @@ import { config } from '@/config/config'
 import { Router } from '@tanstack/react-router'
 import React from 'react'
 import {
-  accountDetailsRoute,
   accountEditRoute,
   accountRoute,
   homeRoute,
@@ -36,7 +35,7 @@ const routeTree = rootRoute.addChildren([
   homeRoute,
   signinRoute,
   registrationRoute,
-  accountRoute.addChildren([accountDetailsRoute, accountEditRoute]),
+  accountRoute.addChildren([accountEditRoute]),
   unauthorizedRoute,
   missingRoute,
 ])

@@ -1,6 +1,5 @@
 import { log } from '@/service/console.service'
 import { Box } from '@mui/material'
-import { Outlet } from '@tanstack/react-router'
 import { FC } from 'react'
 
 const AccountPage: FC = () => {
@@ -12,7 +11,6 @@ const AccountPage: FC = () => {
         p: 4,
       }}>
       <h1>Account Page</h1>
-      <Outlet />
     </Box>
   )
 }
