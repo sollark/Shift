@@ -11,7 +11,7 @@ i18next
   .init<HttpBackendOptions>({
     backend: {
       // files are loaded from vite server public folder
-      loadPath: './i18n/locales/{{lng}}/{{ns}}.json',
+      loadPath: '/i18n/locales/{{lng}}/{{ns}}.json',
     },
     fallbackLng: localStorage.getItem('languageCode') || config.defaultLanguage,
     defaultNS: 'translation',
