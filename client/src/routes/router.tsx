@@ -8,6 +8,7 @@ import {
   missingRoute,
   registrationRoute,
   rootRoute,
+  settingsRoute,
   signinRoute,
   unauthorizedRoute,
 } from './routes'
@@ -36,6 +37,7 @@ const routeTree = rootRoute.addChildren([
   signinRoute,
   registrationRoute,
   accountRoute.addChildren([accountEditRoute]),
+  settingsRoute,
   unauthorizedRoute,
   missingRoute,
 ])
