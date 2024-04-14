@@ -1,4 +1,5 @@
 import RootPage from '@/layouts/RootPage'
+import AboutPage from '@/pages/AboutPage'
 import HomePage from '@/pages/HomePage'
 import SettingsPage from '@/pages/SettingsPage'
 import { RootRoute, Route, lazyRouteComponent } from '@tanstack/react-router'
@@ -83,6 +84,12 @@ export const accountEditRoute = new Route({
       <AccountEditPage />
     </Suspense>
   ),
+})
+
+export const aboutRoute = new Route({
+  getParentRoute: () => rootRoute,
+  path: '/about',
+  component: AboutPage,
 })
 
 export const settingsRoute = new Route({
