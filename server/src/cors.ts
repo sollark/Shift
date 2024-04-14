@@ -6,7 +6,8 @@ const whitelist = config.server.origins
 const corsOptions: CorsOptions = {
   origin: (origin, callback) => {
     if (typeof origin === 'string' && whitelist.includes(origin)) {
-      callback(null, true)
+      console.log('Origin allowed:', origin)
+      callback(null, origin)
     } else {
       callback(new Error('Not allowed by CORS'))
     }
@@ -15,7 +16,7 @@ const corsOptions: CorsOptions = {
 }
 
 const getCors = (env: 'development' | 'production') => {
-  if (env === 'development') return cors()
+  if (env === 'production') return cors()
   return cors(corsOptions)
 }
 

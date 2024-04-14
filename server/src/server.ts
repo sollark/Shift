@@ -1,5 +1,6 @@
 import bodyParser from 'body-parser'
 import compression from 'compression'
+import cookieParser from 'cookie-parser'
 import express from 'express'
 import http from 'http'
 import { createProxyMiddleware } from 'http-proxy-middleware'
@@ -8,14 +9,12 @@ import { fileURLToPath } from 'url'
 import router from './apiRouter.js'
 import { config } from './config.js'
 import getCors from './cors.js'
+import setupAsyncLocalStorage from './middleware/als.js'
 import collectVisitorInfo from './middleware/collectVisitorInfo.js'
 import errorHandler from './middleware/errorHandler.js'
 import requestLimit from './middleware/requestLimit.js'
 import setHeaders from './middleware/setHeaders.js'
 import { connectMongo } from './mongo/connect.js'
-import cookieParser from 'cookie-parser'
-import setupAsyncLocalStorage from './middleware/als.js'
-
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const app = express()
