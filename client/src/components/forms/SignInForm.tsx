@@ -7,6 +7,7 @@ import ErrorMessage from './ErrorMessage'
 import Form from './Form'
 import SubmitButton from './buttons/SubmitButton'
 import Input from './inputs/TextInput/TextInput'
+import { useTranslation } from 'react-i18next'
 
 type SigninForm = {
   email: string
@@ -37,6 +38,7 @@ const SignInForm: FC = () => {
 
   const [errorMessage, setErrorMessage] = useState('')
   // const navigate = useNavigate()
+  const { t } = useTranslation()
 
   async function submit(form: SigninForm) {
     log('Signin form submitted: ', form)
@@ -58,6 +60,9 @@ const SignInForm: FC = () => {
     // else navigate({ to: '/account/edit' })
   }
 
+  const emailLabel = t('labels.email')
+  const passwordLabel = t('labels.password')
+
   return (
     <>
       <Form
@@ -65,8 +70,8 @@ const SignInForm: FC = () => {
         defaultValues={defaultValues}
         submit={submit}
         submitButton={<SubmitButton />}>
-        <Input name='email' label='Email' type='email' />
-        <Input name='password' label='Password' type='password' />
+        <Input name='email' label={emailLabel} type='email' />
+        <Input name='password' label={passwordLabel} type='password' />
         <ErrorMessage message={errorMessage} />
       </Form>
     </>

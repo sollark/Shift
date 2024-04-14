@@ -19,10 +19,14 @@
     "loading": "Загрузка...",
     "error": "Ошибка",
     "empty": "Пусто",
-    "confirmation": "Вы уверены?"
+    "confirmation": "Вы уверены?",
+    "settings": "Настройки"
   },
   "labels": {
-    "logo": "Лого"
+    "logo": "Лого",
+    "email": "Электронная почта",
+    "password": "Пароль",
+    "confirm_password": "Подтвердите пароль"
   },
   "pages": {
     "sign_in": "Вход",
@@ -75,8 +79,5 @@
     "email": "Электронная почта",
     "phone": "Телефон",
     "address": "Адрес"
-  },
-  "ui": {
-    "settings": "Настройки"
   }
 }

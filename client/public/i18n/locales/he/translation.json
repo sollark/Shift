@@ -19,10 +19,14 @@
     "loading": "טוען...",
     "error": "שגיאה",
     "empty": "ריק",
-    "confirmation": "האם אתה בטוח?"
+    "confirmation": "האם אתה בטוח?",
+    "settings": "הגדרות"
   },
   "labels": {
-    "logo": "לוגו"
+    "logo": "לוגו",
+    "email": "דואר אלקטרוני",
+    "password": "סיסמה",
+    "confirm_password": "אישור סיסמה"
   },
 
   "pages": {
@@ -76,8 +80,5 @@
     "email": "דואר אלקטרוני",
     "phone": "טלפון",
     "address": "כתובת"
-  },
-  "ui": {
-    "settings": "הגדרות"
   }
 }

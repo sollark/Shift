@@ -19,10 +19,14 @@
     "loading": "Loading...",
     "error": "Error",
     "empty": "Empty",
-    "confirmation": "Are you sure?"
+    "confirmation": "Are you sure?",
+    "settings": "Settings"
   },
   "labels": {
-    "logo": "Logo"
+    "logo": "Logo",
+    "email": "Email",
+    "password": "Password",
+    "confirm_password": "Confirm password"
   },
   "pages": {
     "sign_in": "Sign in",
@@ -75,8 +79,5 @@
     "email": "Email",
     "phone": "Phone",
     "address": "Address"
-  },
-  "ui": {
-    "settings": "Settings"
   }
 }

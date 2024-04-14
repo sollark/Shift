@@ -1,6 +1,7 @@
 import { authService } from '@/service/auth.service'
 import { log } from '@/service/console.service'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 import ErrorMessage from './ErrorMessage'
 import Form from './Form'
@@ -48,6 +49,7 @@ const RegistrationForm = () => {
 
   const [errorMessage, setErrorMessage] = useState('')
   // const navigate = useNavigate()
+  const { t } = useTranslation()
 
   async function submit(form: RegistrationForm) {
     log('Registration form submitted: ', form)
@@ -63,17 +65,21 @@ const RegistrationForm = () => {
     // else setErrorMessage(message)
   }
 
+  const emailLabel = t('labels.email')
+  const passwordLabel = t('labels.password')
+  const confirmPasswordLabel = t('labels.confirm_password')
+
   return (
     <Form
       schema={RegistrationSchema}
       defaultValues={defaultValues}
       submit={submit}
       submitButton={<SubmitButton />}>
-      <Input name='email' label='Email' type='email' />
-      <Input name='password' label='Password' type='password' />
+      <Input name='email' label={emailLabel} type='email' />
+      <Input name='password' label={passwordLabel} type='password' />
       <Input
         name='confirmedPassword'
-        label='Confirm password'
+        label={confirmPasswordLabel}
         type='password'
       />
       <ErrorMessage message={errorMessage} />
