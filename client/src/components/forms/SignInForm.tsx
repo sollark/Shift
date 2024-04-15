@@ -8,6 +8,8 @@ import Form from './Form'
 import SubmitButton from './buttons/SubmitButton'
 import Input from './inputs/TextInput/TextInput'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from '@tanstack/react-router'
+import useAccountStore, { accountSelector } from '@/stores/accountStore'
 
 type SigninForm = {
   email: string
@@ -37,7 +39,7 @@ const SignInForm: FC = () => {
   log('SignInForm connected')
 
   const [errorMessage, setErrorMessage] = useState('')
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
   const { t } = useTranslation()
 
   async function submit(form: SigninForm) {
@@ -55,9 +57,9 @@ const SignInForm: FC = () => {
 
     await accountService.getAccount()
 
-    // if (accountSelector.isComplete(useAccountStore.getState()))
-    //   navigate({ to: '/' })
-    // else navigate({ to: '/account/edit' })
+    if (accountSelector.isComplete(useAccountStore.getState()))
+      navigate({ to: '/' })
+    else navigate({ to: '/account/edit' })
   }
 
   const emailLabel = t('labels.email')
