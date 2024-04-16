@@ -62,7 +62,7 @@ async function signIn(
 }
 
 async function generateTokens(uuid: string) {
-  // get payload info
+  // Get payload info
   const account = await accountService.getAccount(uuid)
   if (!account) return null
 
@@ -70,11 +70,11 @@ async function generateTokens(uuid: string) {
     userData: { uuid },
   }
 
-  // generate tokens
+  // Generate tokens
   const tokens = tokenService.generateTokens(payload)
   const { refreshToken } = tokens
 
-  // save refresh token to db
+  // Save refresh token to db
   await tokenService.saveToken(refreshToken)
 
   return tokens
@@ -89,14 +89,14 @@ async function signOut(refreshToken: string) {
 }
 
 async function refresh(refreshToken: string) {
-  // const uuid = getUuidFromALS()
   const refreshTokenCopy = await tokenService.getRefreshToken(refreshToken)
   if (!refreshTokenCopy) throw new UnauthorizedError('Invalid refresh token')
+  else await tokenService.removeToken(refreshTokenCopy)
 
   const isExpired = await tokenService.isExpired(refreshTokenCopy)
   if (isExpired) throw new UnauthorizedError('Refresh token is expired')
 
-  // generate tokens
+  // Generate new pair of tokens
   const payload = await tokenService.validateRefreshToken(refreshTokenCopy)
   const sessionData = payload as SessionData
   const uuid = sessionData.userData?.uuid
@@ -106,7 +106,7 @@ async function refresh(refreshToken: string) {
   const tokens = await generateTokens(uuid)
   if (!tokens) throw new InternalServerError('Could not generate tokens')
 
-  // save refresh token to db
+  // Save new refresh token to db
   await tokenService.saveToken(tokens.refreshToken)
 
   return { ...tokens }
