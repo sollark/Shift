@@ -120,15 +120,15 @@ export async function signOut(req: Request, res: Response, next: NextFunction) {
 
 // renew access token when it is expired
 export async function refresh(req: Request, res: Response, next: NextFunction) {
-  const { refreshToken: expiredRefreshToken } = req.cookies
+  const { refreshToken: currentRefreshToken } = req.cookies
 
-  const response = await authService.refresh(expiredRefreshToken)
+  const response = await authService.refresh(currentRefreshToken)
   if (!response) {
     res.status(200).json({
       success: false,
       message: 'Cannot refresh access token',
     })
-    // res.redirect('/signin')
+    res.redirect('/signin')
 
     return
   }
