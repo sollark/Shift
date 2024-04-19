@@ -21,7 +21,7 @@ export type Account = {
   uuid: string
   profile: Profile
   status: Status
-  role?: Role
+  role: Role
 }
 
 export type AccountDoc = {

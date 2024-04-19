@@ -1,25 +1,29 @@
 import jwt from 'jsonwebtoken'
 import { config } from '../config.js'
 import RefreshTokenDataModel from '../mongo/models/refreshToken.model.js'
-import { AccessTokenPayload, RefreshTokenPayload } from '../types/token.js'
-import { SessionData } from './als.service.js'
+import {
+  AccessTokenPayload,
+  RefreshTokenPayload,
+  TokenUserData,
+} from '../types/token.js'
 import { log } from './console.service.js'
 
 const { refreshSecret, accessSecret } = config.jwt
 
-function generateTokens(payload: SessionData): {
+// TODO same payload for both tokens
+function generateTokens(userData: TokenUserData): {
   accessToken: string
   refreshToken: string
 } {
   if (!accessSecret) throw new Error('JWT_ACCESS_SECRET is not defined')
   if (!refreshSecret) throw new Error('JWT_REFRESH_SECRET is not defined')
 
-  log('generateTokens, payload', payload)
+  log('generateTokens, userData', userData)
 
-  const accessToken = jwt.sign(payload, accessSecret, {
+  const accessToken = jwt.sign({ userData }, accessSecret, {
     expiresIn: '10m',
   })
-  const refreshToken = jwt.sign(payload, refreshSecret, {
+  const refreshToken = jwt.sign({}, refreshSecret, {
     expiresIn: '1h',
   })
 

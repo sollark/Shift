@@ -10,6 +10,7 @@ import logger from '../../service/logger.service.js'
 import { tokenService } from '../../service/token.service.js'
 import { uuidService } from '../../service/uuid.service.js'
 import { accountService } from '../account/account.service.js'
+import { TokenUserData } from '../../types/token.js'
 
 async function registration(credentials: Credentials) {
   const { email, password } = credentials
@@ -46,13 +47,13 @@ async function signIn(
   }
 
   const { uuid } = auth
-  setUserDataToALS({ uuid: auth.uuid })
-
   const account = await accountService.getAccount(uuid)
   if (!account) {
     logger.error(`authService - Sign in failed for email: ${email}`)
     return null
   }
+
+  setUserDataToALS({ uuid: auth.uuid, role: account.role })
 
   logger.info(
     `authService - Sign in successful for email: ${email}, uuid: ${auth.uuid}`
@@ -66,12 +67,10 @@ async function generateTokens(uuid: string) {
   const account = await accountService.getAccount(uuid)
   if (!account) return null
 
-  const payload: SessionData = {
-    userData: { uuid },
-  }
+  const userData: TokenUserData = { uuid, role: account.role }
 
   // Generate tokens
-  const tokens = tokenService.generateTokens(payload)
+  const tokens = tokenService.generateTokens(userData)
   const { refreshToken } = tokens
 
   // Save refresh token to db

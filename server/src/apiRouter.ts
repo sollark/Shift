@@ -1,16 +1,15 @@
 import express from 'express'
-import { deleteSensitiveData } from './middleware/deleteSensitiveData.js'
+import { accountRoutes } from './api/account/account.routes.js'
 import { authRoutes } from './api/auth/auth.routes.js'
+import { profileRoutes } from './api/profile/profile.routes.js'
+import { deleteSensitiveData } from './middleware/deleteSensitiveData.js'
 
 const router = express.Router()
 
-// router.use(setupAsyncLocalStorage)
 router.use(deleteSensitiveData)
 
 router.use('/auth', authRoutes)
-// router.use('/account', accountRoutes)
-// router.use('/profile', profileRoutes)
-// router.use('/employee', employeeRoutes)
-// router.use('/company', companyRoutes)
+router.use('/account', accountRoutes)
+router.use('/profile', profileRoutes)
 
 export default router

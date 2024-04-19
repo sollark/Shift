@@ -29,7 +29,7 @@ export async function registration(
   }
 
   const account = await authService.registration(credentials)
-  if (!account) {
+  if (!account || !account.uuid) {
     res.status(200).json({
       success: false,
       message: 'Could not create new account.',
@@ -39,15 +39,6 @@ export async function registration(
   }
 
   const { uuid } = account
-  if (!uuid) {
-    res.status(200).json({
-      success: false,
-      message: 'Could not create new account.',
-    })
-
-    return
-  }
-
   const tokens = await authService.generateTokens(uuid)
   if (!tokens) {
     res.status(200).json({
