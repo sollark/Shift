@@ -1,7 +1,6 @@
 import { AsyncLocalStorage } from 'async_hooks'
 import UnauthorizedError from '../errors/UnauthorizedError.js'
 import { TokenUserData } from '../types/token.js'
-import logger from './logger.service.js'
 
 export type RequestData = {
   publicId?: string
@@ -19,8 +18,6 @@ export function setUserDataToALS(userData: TokenUserData) {
   if (!store) return
 
   store.userData = userData
-
-  logger.info(`setUserDataToALS - userData: ${JSON.stringify(userData)}`)
 }
 
 export function setRequestDataToALS(requestData: RequestData) {
@@ -28,9 +25,6 @@ export function setRequestDataToALS(requestData: RequestData) {
   if (!store) return
 
   store.requestData = requestData
-  logger.info(
-    `setRequestDataToALS - requestData: ${JSON.stringify(requestData)}`
-  )
 }
 
 // TODO find error

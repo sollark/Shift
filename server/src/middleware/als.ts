@@ -1,5 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
-import { asyncLocalStorage } from '../service/als.service.js'
+import {
+  asyncLocalStorage,
+  setRequestDataToALS,
+  setUserDataToALS,
+} from '../service/als.service.js'
 import { log } from '../service/console.service.js'
 import logger from '../service/logger.service.js'
 import { tokenService } from '../service/token.service.js'
@@ -39,8 +43,18 @@ async function setupAsyncLocalStorage(
 
     const { uuid, publicId, role } = getUserData(tokenData)
 
-    alsStore.userData = { uuid, publicId, role }
-    logger.info(`User ${uuid} (${role}) is making api request.`)
+    const userData = { uuid, publicId, role }
+    const requestData = { publicId }
+    setUserDataToALS(userData)
+    setRequestDataToALS(requestData)
+
+    // Pathname of the request
+    const url = req.url
+    // Including the query string
+    const originalUrl = req.originalUrl
+    const requestMethod = req.method
+
+    logger.info(`User (${role}) is making ${requestMethod} request to ${url}`)
 
     next()
   })
