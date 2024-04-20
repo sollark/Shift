@@ -41,7 +41,7 @@ const AccountSchema = new Schema({
   status: {
     type: String,
     enum: Object.values(ACCOUNT_STATUS),
-    default: ACCOUNT_STATUS.pending,
+    default: ACCOUNT_STATUS.incomplete,
     required: true,
   },
   role: {

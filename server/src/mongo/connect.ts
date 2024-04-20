@@ -1,5 +1,6 @@
 import * as mongoose from 'mongoose'
 import { config } from '../config.js'
+import { deleteDatabase } from './delete.js'
 
 export const connectMongo = async (db: 'development' | 'production') => {
   const url =

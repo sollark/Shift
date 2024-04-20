@@ -29,7 +29,11 @@ async function createAccount(uuid: string): Promise<Partial<Account>> {
     }
 
     logger.info(
-      `accountService - createAccount, account is created:  ${account}`
+      `accountService - createAccount, account is created: ${JSON.stringify(
+        account,
+        null,
+        2 // Indentation level, adjust as needed
+      )}`
     )
 
     return account
