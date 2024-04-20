@@ -6,6 +6,7 @@ import {
   Account,
   USER_ROLE,
 } from '../../mongo/models/account.model.js'
+import ProfileModel from '../../mongo/models/profile.model.js'
 import { getUuidFromALS } from '../../service/als.service.js'
 import { log } from '../../service/console.service.js'
 import logger from '../../service/logger.service.js'
@@ -35,11 +36,16 @@ export async function updateAccount(
 
   const accountDoc = await accountService.getAccountDoc(uuid)
   if (!accountDoc) throw new InternalServerError('Cannot find account')
-  const { profile } = accountDoc
-  if (!profile) throw new InternalServerError('Cannot find profile')
+
+  let { profile: profileId } = accountDoc
+  if (!profileId) {
+    const profile = await ProfileModel.create({})
+    profileId = profile._id
+    await accountService.setProfile(accountDoc._id, profileId)
+  }
 
   const updatedProfile = await profileService.updateProfile(
-    profile._id,
+    profileId,
     updatedProfileData
   )
   if (!updatedProfile) {

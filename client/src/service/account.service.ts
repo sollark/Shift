@@ -7,21 +7,11 @@ type AccountData = {
   account: Account
 }
 
-async function updateAccount(
-  firstName: string,
-  lastName: string,
-  ID: string,
-  companyName: string,
-  departmentName: string,
-  position: string
-) {
+async function updateAccount(firstName: string, lastName: string, ID: string) {
   const response = await httpService.post<AccountData>('account/update', {
     firstName,
     lastName,
     ID,
-    companyName,
-    departmentName,
-    position,
   })
 
   log('accountService - updateAccount, response', response)

@@ -90,6 +90,36 @@ async function getAccountDoc(uuid: string): Promise<AccountDoc> {
   }
 }
 
+async function setProfile(
+  accountId: Types.ObjectId,
+  profileId: Types.ObjectId
+) {
+  try {
+    const updatedAccount = await AccountModel.findByIdAndUpdate(
+      accountId,
+      { profile: profileId },
+      // returns new version of document, if false returns original version, before updates
+      { new: true }
+    )
+      .populate<{ role: Role }>('role')
+      .populate<{ profile: Profile }>('profile')
+      .populate<{ status: Status }>('status')
+      .lean()
+      .exec()
+    if (!updatedAccount) {
+      logger.warn(
+        `accountService - setProfile, account is not found: ${accountId}`
+      )
+      throw new NotFoundError('Account is not found')
+    }
+
+    return updatedAccount
+  } catch (error) {
+    logger.error(`accountService - setProfile, error: ${error}`)
+    throw new InternalServerError('Error updating account')
+  }
+}
+
 async function updateRole(
   accountId: Types.ObjectId,
   role: Role
@@ -219,6 +249,7 @@ export const accountService = {
   createAccount,
   getAccount,
   getAccountDoc,
+  setProfile,
   updateRole,
   updateStatus,
   updateAccount,
