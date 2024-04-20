@@ -9,8 +9,8 @@ import AccountModel, {
   Status,
 } from '../../mongo/models/account.model.js'
 import ProfileModel, { Profile } from '../../mongo/models/profile.model.js'
-import logger from '../../service/logger.service.js'
 import { log } from '../../service/console.service.js'
+import logger from '../../service/logger.service.js'
 
 async function createAccount(uuid: string): Promise<Partial<Account>> {
   try {
@@ -54,7 +54,13 @@ async function getAccount(
       throw new NotFoundError('Account is not found')
     }
 
-    logger.info(`accountService - getAccount, account fetched: ${account}`)
+    logger.info(
+      `accountService - getAccount, account fetched: ${JSON.stringify(
+        account,
+        null,
+        2 // Indentation level, adjust as needed
+      )}`
+    )
 
     return account
   } catch (error) {
@@ -165,7 +171,11 @@ async function updateAccount(
     }
 
     logger.info(
-      `accountService - updateAccount, account is updated: ${updatedAccount}`
+      `accountService - updateAccount, account is updated: ${JSON.stringify(
+        updatedAccount,
+        null,
+        2 // Indentation level, adjust as needed
+      )}`
     )
 
     return updatedAccount
@@ -211,12 +221,3 @@ export const accountService = {
   deleteAccount,
   sortAccountData,
 }
-
-// expanded logging:
-// logger.info(
-//   `accountService - createAccount, account is created:  ${JSON.stringify(
-//     account,
-//     null,
-//     2 // Indentation level, adjust as needed
-//   )}`
-// )

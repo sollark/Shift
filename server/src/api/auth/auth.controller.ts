@@ -22,14 +22,14 @@ export async function registration(
   if (isMailExists) {
     res.status(200).json({
       success: false,
-      message: 'Email already exists.',
+      message: 'Email already taken.',
     })
 
     return
   }
 
-  const account = await authService.registration(credentials)
-  if (!account || !account.uuid) {
+  const uuid = await authService.registration(credentials)
+  if (!uuid) {
     res.status(200).json({
       success: false,
       message: 'Could not create new account.',
@@ -38,7 +38,6 @@ export async function registration(
     return
   }
 
-  const { uuid } = account
   const tokens = await authService.generateTokens(uuid)
   if (!tokens) {
     res.status(200).json({
@@ -70,15 +69,14 @@ export async function signIn(req: Request, res: Response, next: NextFunction) {
     })
   }
 
-  const account = await authService.signIn(email, password)
-  if (!account) {
+  const uuid = await authService.signIn(email, password)
+  if (!uuid) {
     return res.status(200).json({
       success: false,
       message: 'Invalid credentials',
     })
   }
 
-  const { uuid } = account
   const tokens = await authService.generateTokens(uuid)
   if (!tokens) {
     logger.warn(`authService - signIn, cannot generate tokens for ${email}`)

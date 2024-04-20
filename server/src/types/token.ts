@@ -1,6 +1,7 @@
 import { Role } from '../mongo/models/account.model'
 
 type RefreshTokenPayload = {
+  sub: string
   iat: number
   exp: number
 }
@@ -13,6 +14,7 @@ type AccessTokenPayload = {
 
 type TokenUserData = {
   uuid: string
+  publicId: string
   role: Role
 }
 

@@ -2,15 +2,14 @@ import bcrypt from 'bcrypt'
 import BadRequestError from '../../errors/BadRequestError.js'
 import InternalServerError from '../../errors/InternalServerError.js'
 import UnauthorizedError from '../../errors/UnauthorizedError.js'
-import { Account } from '../../mongo/models/account.model.js'
 import authModel, { Credentials } from '../../mongo/models/auth.model.js'
-import { SessionData, setUserDataToALS } from '../../service/als.service.js'
+import { getPublicIdFromALS } from '../../service/als.service.js'
 import { log } from '../../service/console.service.js'
 import logger from '../../service/logger.service.js'
 import { tokenService } from '../../service/token.service.js'
 import { uuidService } from '../../service/uuid.service.js'
+import { RefreshTokenPayload, TokenUserData } from '../../types/token.js'
 import { accountService } from '../account/account.service.js'
-import { TokenUserData } from '../../types/token.js'
 
 async function registration(credentials: Credentials) {
   const { email, password } = credentials
@@ -24,42 +23,36 @@ async function registration(credentials: Credentials) {
   if (!auth) throw new InternalServerError('Could not create authentication')
   logger.info(`authService - New authentication created for email: ${email}`)
 
-  // create a new account
+  // Create a new account
   const account = await accountService.createAccount(uuid)
   if (!account) throw new BadRequestError('Could not create account')
 
-  return account
+  return uuid
 }
 
-async function signIn(
-  email: string,
-  password: string
-): Promise<Account | null> {
+async function signIn(email: string, password: string): Promise<string | null> {
   const auth = await authModel.findOne({ email }).select('+password')
-  if (!auth) return null
+  if (!auth) {
+    logger.warn(`authService - Sign in with wrong email: ${email}`)
+
+    return null
+  }
 
   const hashPassword = auth.password
   const isPasswordValid = await bcrypt.compare(password, hashPassword)
   if (!isPasswordValid) {
-    logger.warn(`authService - Sign in failed for email: ${email}`)
+    logger.warn(`authService - Sign in with wrong password: ${email}`)
 
     return null
   }
 
   const { uuid } = auth
-  const account = await accountService.getAccount(uuid)
-  if (!account) {
-    logger.error(`authService - Sign in failed for email: ${email}`)
-    return null
-  }
-
-  setUserDataToALS({ uuid: auth.uuid, role: account.role })
 
   logger.info(
     `authService - Sign in successful for email: ${email}, uuid: ${auth.uuid}`
   )
 
-  return account
+  return uuid
 }
 
 async function generateTokens(uuid: string) {
@@ -67,7 +60,10 @@ async function generateTokens(uuid: string) {
   const account = await accountService.getAccount(uuid)
   if (!account) return null
 
-  const userData: TokenUserData = { uuid, role: account.role }
+  const publicId = getPublicIdFromALS()
+  if (!publicId) return null
+
+  const userData: TokenUserData = { uuid, publicId, role: account.role }
 
   // Generate tokens
   const tokens = tokenService.generateTokens(userData)
@@ -97,10 +93,10 @@ async function refresh(refreshToken: string) {
 
   // Generate new pair of tokens
   const payload = await tokenService.validateRefreshToken(refreshTokenCopy)
-  const sessionData = payload as SessionData
-  const uuid = sessionData.userData?.uuid
+  const { sub } = payload as RefreshTokenPayload
+  const uuid = sub
   if (!uuid) throw new InternalServerError('Could not get payload')
-  log('sessiondata and uuid', sessionData, uuid)
+  log('authService - refresh, uuid', uuid)
 
   const tokens = await generateTokens(uuid)
   if (!tokens) throw new InternalServerError('Could not generate tokens')
@@ -113,8 +109,6 @@ async function refresh(refreshToken: string) {
 
 async function isEmailExists(email: string) {
   const existingEmail = await authModel.findOne({ email })
-  if (existingEmail) logger.warn(`authService - email already taken: ${email}`)
-
   return existingEmail ? true : false
 }
 

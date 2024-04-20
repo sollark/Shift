@@ -23,7 +23,7 @@ async function setupAsyncLocalStorage(
   next: NextFunction
 ) {
   log('setupAsyncLocalStorage middleware')
-  
+
   const storage = {}
 
   asyncLocalStorage.run(storage, async () => {
@@ -37,9 +37,9 @@ async function setupAsyncLocalStorage(
     const tokenData = await tokenService.validateAccessToken(accessToken)
     if (!tokenData) return next()
 
-    const { uuid, role } = getUserData(tokenData)
+    const { uuid, publicId, role } = getUserData(tokenData)
 
-    alsStore.userData = { uuid, role }
+    alsStore.userData = { uuid, publicId, role }
     logger.info(`User ${uuid} (${role}) is making api request.`)
 
     next()

@@ -2,15 +2,17 @@ import { NextFunction, Request, Response } from 'express'
 import geoip from 'geoip-lite'
 import { parseUserAgent } from '../lib/UserAgentParser.js'
 import VisitorModel from '../mongo/models/visitor.model.js'
+import { asyncLocalStorage } from '../service/als.service.js'
 import { log } from '../service/console.service.js'
 import logger from '../service/logger.service.js'
 import { uuidService } from '../service/uuid.service.js'
-import { asyncLocalStorage } from '../service/als.service.js'
 
-// cookie for 365 days
+// Cookie for 365 days
 const publicIdCookieOptions = {
   maxAge: 365 * 24 * 60 * 60 * 1000,
   sameSite: 'strict' as const,
+  secure: true,
+  httpOnly: true,
 }
 
 async function collectVisitorInfo(
@@ -29,7 +31,7 @@ async function collectVisitorInfo(
 
   // Get publicId from cookie or create a new one
   let publicId = req.cookies['publicId']
-  log('cookies:', req.cookies)
+  log('cookies:', JSON.stringify(req.cookies))
   if (!publicId) publicId = await uuidService.getVisitorUuid()
   log('publicId:', publicId)
 
@@ -84,7 +86,8 @@ async function collectVisitorInfo(
   // Visitor's geodata
   visitor.geoInfo.country = geo?.country || ''
   visitor.geoInfo.city = geo?.city || ''
-  await visitor.save()
+  // await visitor.save()
+  visitor.save()
 
   // Log visitor info
   logger.info('Visitor', ip, userAgent, device, geo?.country, geo?.city)
