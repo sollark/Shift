@@ -1,19 +1,12 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { SnackbarProvider } from 'notistack'
-import React, { createContext, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLanguage } from './hooks/useLanguage'
-import useThemeMode from './hooks/useThemeMode'
+import ColorModeProvider from './providers/ColorModeProvider'
 import LanguageProvider from './providers/LanguageProvider'
 import MuiThemeProvider from './providers/MuiThemeProvider'
+import NotificationsProvider from './providers/NotificationsProvider'
 import { log } from './service/console.service'
-
-export type ColorModeContextType = {
-  mode: string
-  toggleThemeMode: () => void
-}
-
-export const ColorModeContext = createContext<ColorModeContextType | null>(null)
 
 // All application has access to the same query client to share data
 const queryClient = new QueryClient({
@@ -25,9 +18,6 @@ const queryClient = new QueryClient({
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   log('Providers connected')
-
-  // Light / Dark
-  const [mode, toggleThemeMode] = useThemeMode()
 
   // Hebrew, Russian , English
   const [languageCode] = useLanguage()
@@ -45,15 +35,13 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ColorModeContext.Provider value={{ mode, toggleThemeMode }}>
+      <ColorModeProvider>
         <LanguageProvider>
           <MuiThemeProvider>
-            <SnackbarProvider autoHideDuration={5000} maxSnack={3}>
-              {children}
-            </SnackbarProvider>
+            <NotificationsProvider>{children}</NotificationsProvider>
           </MuiThemeProvider>
         </LanguageProvider>
-      </ColorModeContext.Provider>
+      </ColorModeProvider>
     </QueryClientProvider>
   )
 }
