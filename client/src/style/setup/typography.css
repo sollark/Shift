@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Roboto';
-  src: url('../../../assets/fonts/Roboto/roboto-light-webfont.woff2')
+  src: url('../../assets/fonts/Roboto/roboto-light-webfont.woff2')
       format('woff2'),
     url('../../../assets/fonts/Roboto/roboto-light-webfont.woff') format('woff');
   font-weight: 300;
@@ -8,7 +8,7 @@
 
 @font-face {
   font-family: 'Roboto';
-  src: url('../../../assets/fonts/Roboto/roboto-regular-webfont.woff2')
+  src: url('../../assets/fonts/Roboto/roboto-regular-webfont.woff2')
       format('woff2'),
     url('../../../assets/fonts/Roboto/roboto-regular-webfont.woff')
       format('woff');
@@ -17,7 +17,7 @@
 
 @font-face {
   font-family: 'Roboto';
-  src: url('../../../assets/fonts/Roboto/roboto-medium-webfont.woff2')
+  src: url('../../assets/fonts/Roboto/roboto-medium-webfont.woff2')
       format('woff2'),
     url('../../../assets/fonts/Roboto/roboto-medium-webfont.woff')
       format('woff');
@@ -26,7 +26,7 @@
 
 @font-face {
   font-family: 'Roboto';
-  src: url('../../../assets/fonts/Roboto/roboto-bold-webfont.woff2')
+  src: url('../../assets/fonts/Roboto/roboto-bold-webfont.woff2')
       format('woff2'),
     url('../../../assets/fonts/Roboto/roboto-bold-webfont.woff') format('woff');
   font-weight: 600;
@@ -35,34 +35,33 @@
 // Hebrew
 @font-face {
   font-family: 'Noto';
-  src: url('../../../assets/fonts/Noto Sans Hebrew/noto-sans-hebrew-light.woff2')
+  src: url('../../assets/fonts/Noto Sans Hebrew/noto-sans-hebrew-light.woff2')
     format('woff2');
   font-weight: 300;
 }
 
 @font-face {
   font-family: 'Noto';
-  src: url('../../../assets/fonts/Noto Sans Hebrew/noto-sans-hebrew-regular.woff2')
+  src: url('../../assets/fonts/Noto Sans Hebrew/noto-sans-hebrew-regular.woff2')
     format('woff2');
   font-weight: 400;
 }
 
 @font-face {
   font-family: 'Noto';
-  src: url('../../../assets/fonts/Noto Sans Hebrew/noto-sans-hebrew-medium.woff2')
+  src: url('../../assets/fonts/Noto Sans Hebrew/noto-sans-hebrew-medium.woff2')
     format('woff2');
   font-weight: 500;
 }
 
 @font-face {
   font-family: 'Noto';
-  src: url('../../../assets/fonts/Noto Sans Hebrew/noto-sans-hebrew-bold.woff2')
+  src: url('../../assets/fonts/Noto Sans Hebrew/noto-sans-hebrew-bold.woff2')
     format('woff2');
   font-weight: 700;
 }
 
 html {
-  /* font-family: Roboto, sans-serif; */
   font-weight: 400;
   font-size: 14px;
 }
