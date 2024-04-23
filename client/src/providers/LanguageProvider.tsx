@@ -5,12 +5,12 @@ type LanguageProviderProps = {
   children: ReactNode
 }
 
-type LanguageContextType = {
+export type LanguageContextType = {
   languageCode: string
   setLanguageCode: (languageCode: string) => void
 }
 
-const LanguageContext = createContext<LanguageContextType | null>(null)
+export const LanguageContext = createContext<LanguageContextType | null>(null)
 
 const LanguageProvider: FC<LanguageProviderProps> = ({ children }) => {
   const [languageCode, setLanguageCode] = useLanguage()

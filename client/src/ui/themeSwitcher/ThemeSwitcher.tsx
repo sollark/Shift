@@ -1,4 +1,7 @@
-import { ColorModeContext, ColorModeContextType } from '@/Providers'
+import {
+  ColorModeContext,
+  ColorModeContextType,
+} from '@/providers/ColorModeProvider'
 import {
   Brightness4 as DarkIcon,
   Brightness7 as LightIcon,

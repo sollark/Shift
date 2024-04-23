@@ -6,12 +6,12 @@ type ColorModeProviderProps = {
   children: ReactNode
 }
 
-type ColorModeContextType = {
+export type ColorModeContextType = {
   mode: PaletteMode
   toggleThemeMode: () => void
 }
 
-const ColorModeContext = createContext<ColorModeContextType | null>(null)
+export const ColorModeContext = createContext<ColorModeContextType | null>(null)
 
 const ColorModeProvider: FC<ColorModeProviderProps> = ({ children }) => {
   const [mode, toggleThemeMode] = useThemeMode()
