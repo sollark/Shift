@@ -1,13 +1,12 @@
-import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SnackbarProvider } from 'notistack'
-import React, { createContext, useEffect, useMemo } from 'react'
+import React, { createContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLanguage } from './hooks/useLanguage'
 import useThemeMode from './hooks/useThemeMode'
-import { log } from './service/console.service'
-import { getDesignTokens } from './theme/theme'
 import LanguageProvider from './providers/LanguageProvider'
+import MuiThemeProvider from './providers/MuiThemeProvider'
+import { log } from './service/console.service'
 
 export type ColorModeContextType = {
   mode: string
@@ -31,13 +30,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
   const [mode, toggleThemeMode] = useThemeMode()
 
   // Hebrew, Russian , English
-  const [languageCode, setLanguageCode] = useLanguage()
-
-  // Theme
-  const theme = useMemo(
-    () => createTheme(getDesignTokens(mode, languageCode)),
-    [mode, languageCode]
-  )
+  const [languageCode] = useLanguage()
   const { i18n } = useTranslation()
 
   // Text direction
@@ -54,11 +47,11 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
     <QueryClientProvider client={queryClient}>
       <ColorModeContext.Provider value={{ mode, toggleThemeMode }}>
         <LanguageProvider>
-          <ThemeProvider theme={theme}>
+          <MuiThemeProvider>
             <SnackbarProvider autoHideDuration={5000} maxSnack={3}>
               {children}
             </SnackbarProvider>
-          </ThemeProvider>
+          </MuiThemeProvider>
         </LanguageProvider>
       </ColorModeContext.Provider>
     </QueryClientProvider>
