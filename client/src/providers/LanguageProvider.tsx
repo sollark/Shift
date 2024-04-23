@@ -1,8 +1,8 @@
 import { config } from '@/config/config'
 import { LANGUAGES } from '@/constants/constants'
+import { i18n } from '@/i18n/config'
 import { log } from '@/service/console.service'
 import { FC, ReactNode, createContext, useContext, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import { ThemeContext } from './AppThemeProvider'
 
 const DEFAULT_LANGUAGE = config.defaultLanguage
@@ -29,9 +29,6 @@ const LanguageProvider: FC<LanguageProviderProps> = ({ children }) => {
     throw new Error('LanguageProvider must be used within a AppThemeProvider')
   }
 
-  const { i18n } = useTranslation()
-  const { t } = useTranslation()
-
   useEffect(() => {
     const storedLanguageCode = localStorage.getItem('languageCode')
     const initialLanguageCode = storedLanguageCode || DEFAULT_LANGUAGE
@@ -54,11 +51,10 @@ const LanguageProvider: FC<LanguageProviderProps> = ({ children }) => {
     }
   }
 
-  useEffect(() => {
-    document.body.dir = t('direction')
-    document.documentElement.style.fontSize =
-      languageCode === 'he' ? '16px' : '14px'
-  }, [t, languageCode])
+  // const { i18n } = useTranslation()
+  document.body.dir = i18n.dir()
+  document.documentElement.style.fontSize =
+    languageCode === 'he' ? '16px' : '14px'
 
   return (
     <LanguageContext.Provider value={{ languageCode, changeLanguage }}>
