@@ -1,6 +1,6 @@
-import useThemeMode from '@/hooks/useThemeMode'
 import { PaletteMode } from '@mui/material'
-import { FC, ReactNode, createContext, useMemo } from 'react'
+import { FC, ReactNode, createContext, useContext, useMemo } from 'react'
+import { ThemeContext } from './AppThemeProvider'
 
 type ColorModeProviderProps = {
   children: ReactNode
@@ -14,7 +14,11 @@ export type ColorModeContextType = {
 export const ColorModeContext = createContext<ColorModeContextType | null>(null)
 
 const ColorModeProvider: FC<ColorModeProviderProps> = ({ children }) => {
-  const [mode, toggleThemeMode] = useThemeMode()
+  const themeContext = useContext(ThemeContext)
+  if (!themeContext) {
+    throw new Error('ColorModeProvider must be used within a AppThemeProvider')
+  }
+  const { mode, toggleThemeMode } = themeContext
 
   const value = useMemo(
     () => ({

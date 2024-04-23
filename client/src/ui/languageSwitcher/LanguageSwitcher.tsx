@@ -1,14 +1,13 @@
 import { LANGUAGES } from '@/constants/constants'
-import {
-  LanguageContext,
-  LanguageContextType,
-} from '@/providers/LanguageProvider'
+import { ThemeContext } from '@/providers/AppThemeProvider'
 import { ChangeEvent, FC, useContext } from 'react'
 
 const LanguageSwitcher: FC = () => {
-  const { languageCode, setLanguageCode } = useContext(
-    LanguageContext
-  ) as LanguageContextType
+  const themeContext = useContext(ThemeContext)
+  if (!themeContext) {
+    throw new Error('LanguageSwitcher must be used within a AppThemeProvider')
+  }
+  const { languageCode, setLanguageCode } = themeContext
 
   const handleLanguageChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setLanguageCode(event.target.value)

@@ -30,6 +30,7 @@ const LanguageProvider: FC<LanguageProviderProps> = ({ children }) => {
   }
 
   const { i18n } = useTranslation()
+  const { t } = useTranslation()
 
   useEffect(() => {
     const storedLanguageCode = localStorage.getItem('languageCode')
@@ -54,10 +55,10 @@ const LanguageProvider: FC<LanguageProviderProps> = ({ children }) => {
   }
 
   useEffect(() => {
-    document.body.dir = i18n.dir()
+    document.body.dir = t('direction')
     document.documentElement.style.fontSize =
       languageCode === 'he' ? '16px' : '14px'
-  }, [i18n, languageCode])
+  }, [t, languageCode])
 
   return (
     <LanguageContext.Provider value={{ languageCode, changeLanguage }}>
