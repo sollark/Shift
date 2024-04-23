@@ -36,7 +36,8 @@
     "about": "About us"
   },
   "account_menu": {
-    "account": "Account"
+    "account": "Account",
+    "profile": "Profile"
   },
   "sign_in_page": {
     "Don't have an account?": "Don't have an account?"

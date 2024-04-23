@@ -36,7 +36,8 @@
     "about": "О нас"
   },
   "account_menu": {
-    "account": "Аккаунт"
+    "account": "Аккаунт",
+    "profile": "Профиль"
   },
   "sign_in_page": {
     "Don't have an account?": "Нет аккаунта?"

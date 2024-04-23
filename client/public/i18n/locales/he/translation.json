@@ -37,7 +37,8 @@
     "about": "אודות"
   },
   "account_menu": {
-    "account": "חשבון"
+    "account": "חשבון",
+    "profile": "פרופיל"
   },
   "sign_in_page": {
     "Don't have an account?": "אין חשבון?"
