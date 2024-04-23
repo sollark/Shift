@@ -1,8 +1,8 @@
 import { config } from '@/config/config'
 import { LANGUAGES } from '@/constants/constants'
-import { i18n } from '@/i18n/config'
 import { log } from '@/service/console.service'
 import { FC, ReactNode, createContext, useContext, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ThemeContext } from './AppThemeProvider'
 
 const DEFAULT_LANGUAGE = config.defaultLanguage
@@ -51,7 +51,7 @@ const LanguageProvider: FC<LanguageProviderProps> = ({ children }) => {
     }
   }
 
-  // const { i18n } = useTranslation()
+  const { i18n } = useTranslation()
   document.body.dir = i18n.dir()
   document.documentElement.style.fontSize =
     languageCode === 'he' ? '16px' : '14px'

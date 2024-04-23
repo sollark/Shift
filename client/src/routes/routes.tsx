@@ -1,10 +1,11 @@
-import RootPage from '@/layouts/RootPage'
-import AboutPage from '@/pages/AboutPage'
-import HomePage from '@/pages/HomePage'
-import SettingsPage from '@/pages/SettingsPage'
 import { RootRoute, Route, lazyRouteComponent } from '@tanstack/react-router'
 import { Suspense } from 'react'
 import AuthProtectedRoute from './AuthProtectedRoute'
+
+import RootPage from '@/layouts/RootPage'
+import HomePage from '@/pages/HomePage'
+const AboutPage = lazyRouteComponent(() => import('@/pages/AboutPage'))
+const SettingsPage = lazyRouteComponent(() => import('@/pages/SettingsPage'))
 const AccountPage = lazyRouteComponent(() => import('@/pages/AccountPage'))
 const AccountEditPage = lazyRouteComponent(
   () => import('@/pages/AccountEditPage')

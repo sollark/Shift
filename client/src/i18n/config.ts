@@ -28,6 +28,8 @@ i18next
 export const i18n = i18next
 
 // Usage
+// Add import import './i18n/config' in main.tsx to enable  const {i18n} = useTranslate() hook
+//
 // In component
 // const {t} = useTranslation()
 // t('key') // returns the translation
