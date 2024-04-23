@@ -1,24 +1,19 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SnackbarProvider } from 'notistack'
-import React, { createContext, useMemo } from 'react'
+import React, { createContext, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLanguage } from './hooks/useLanguage'
 import useThemeMode from './hooks/useThemeMode'
 import { log } from './service/console.service'
 import { getDesignTokens } from './theme/theme'
-
-export type LanguageContextType = {
-  currentLanguageCode: string
-  setLanguage: (languageCode: string) => void
-}
+import LanguageProvider from './providers/LanguageProvider'
 
 export type ColorModeContextType = {
   mode: string
   toggleThemeMode: () => void
 }
 
-export const LanguageContext = createContext<LanguageContextType | null>(null)
 export const ColorModeContext = createContext<ColorModeContextType | null>(null)
 
 // All application has access to the same query client to share data
@@ -36,28 +31,35 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
   const [mode, toggleThemeMode] = useThemeMode()
 
   // Hebrew, Russian , English
-  const [currentLanguageCode, setLanguage] = useLanguage()
+  const [languageCode, setLanguageCode] = useLanguage()
 
   // Theme
   const theme = useMemo(
-    () => createTheme(getDesignTokens(mode, currentLanguageCode)),
-    [mode, currentLanguageCode]
+    () => createTheme(getDesignTokens(mode, languageCode)),
+    [mode, languageCode]
   )
+  const { i18n } = useTranslation()
 
   // Text direction
-  const { i18n } = useTranslation()
-  document.body.dir = i18n.dir()
+  useEffect(() => {
+    // Set text direction
+    document.body.dir = i18n.dir()
+
+    // Set font size based on language
+    document.documentElement.style.fontSize =
+      languageCode === 'he' ? '16px' : '14px'
+  }, [i18n, languageCode])
 
   return (
     <QueryClientProvider client={queryClient}>
       <ColorModeContext.Provider value={{ mode, toggleThemeMode }}>
-        <LanguageContext.Provider value={{ currentLanguageCode, setLanguage }}>
+        <LanguageProvider>
           <ThemeProvider theme={theme}>
             <SnackbarProvider autoHideDuration={5000} maxSnack={3}>
               {children}
             </SnackbarProvider>
           </ThemeProvider>
-        </LanguageContext.Provider>
+        </LanguageProvider>
       </ColorModeContext.Provider>
     </QueryClientProvider>
   )
