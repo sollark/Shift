@@ -1,9 +1,12 @@
 import { log } from '@/service/console.service'
 import { Box } from '@mui/material'
 import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const MissingPage: FC = () => {
   log('MissingPage connected')
+
+  const { t } = useTranslation()
 
   return (
     <Box
@@ -17,7 +20,7 @@ const MissingPage: FC = () => {
         maxWidth: ['100%', '100%', '100%', '75%', '75%'],
         backgroundColor: 'primary.light',
       }}>
-      <h1>The page is not found!</h1>
+      <h1>{t('pages.titles.not_found')}</h1>
     </Box>
   )
 }

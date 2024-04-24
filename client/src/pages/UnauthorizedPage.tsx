@@ -1,9 +1,12 @@
 import { log } from '@/service/console.service'
 import { Box } from '@mui/material'
 import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const UnauthorizedPage: FC = () => {
   log('UnauthorizedPage connected')
+
+  const { t } = useTranslation()
 
   return (
     <Box
@@ -17,7 +20,7 @@ const UnauthorizedPage: FC = () => {
         maxWidth: ['100%', '100%', '100%', '75%', '75%'],
         backgroundColor: 'primary.light',
       }}>
-      <h1>You are not authorized</h1>
+      <h1>{t('pages.titles.not_auth')}</h1>
     </Box>
   )
 }

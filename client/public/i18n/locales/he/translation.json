@@ -33,8 +33,14 @@
     "sign_in": "התחברות",
     "registration": "הרשמה",
     "home": "בית",
-    "accounts": "חשבונות",
-    "about": "אודות"
+    "account": "חשבון",
+    "Profile": "פרופיל",
+    "about": "אודות",
+    "settings": "הגדרות",
+    "titles": {
+      "not_found": "עמוד לא נמצא!",
+      "not_auth": "אינך מורשה לראות את העמוד!"
+    }
   },
   "account_menu": {
     "account": "חשבון",
