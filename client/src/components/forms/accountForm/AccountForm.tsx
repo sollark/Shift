@@ -33,10 +33,7 @@ const AccountForm: FC<Props> = (props: Props) => {
     const account = await accountService.updateAccount(
       form.firstName,
       form.lastName,
-      form.ID,
-      form.companyName,
-      form.departmentName,
-      form.position
+      form.ID
     )
 
     log('AccountForm, account: ', account)

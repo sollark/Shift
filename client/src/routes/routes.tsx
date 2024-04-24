@@ -69,11 +69,11 @@ export const accountRoute = new Route({
   getParentRoute: () => rootRoute,
   path: '/account',
   component: () => (
-    // <AuthProtectedRoute>
-    <Suspense fallback={<div>Loading...</div>}>
-      <AccountPage />
-    </Suspense>
-    // </AuthProtectedRoute>
+    <AuthProtectedRoute>
+      <Suspense fallback={<div>Loading...</div>}>
+        <AccountPage />
+      </Suspense>
+    </AuthProtectedRoute>
   ),
 })
 

@@ -6,15 +6,11 @@ export function getUserMenu() {
   return [
     {
       key: 'Profile',
-      link: (
-        <Link to='/profile/details'>{i18next.t('account_menu.profile')}</Link>
-      ),
+      link: <Link to='/profile'>{i18next.t('account_menu.profile')}</Link>,
     },
     {
       key: 'Account',
-      link: (
-        <Link to='/account/details'>{i18next.t('account_menu.account')}</Link>
-      ),
+      link: <Link to='/account'>{i18next.t('account_menu.account')}</Link>,
     },
     {
       key: 'Settings',

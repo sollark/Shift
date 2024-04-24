@@ -13,7 +13,7 @@ export function getUserNavigationLinks() {
     { key: 'Home', link: <Link to='/'>{i18next.t('pages.home')}</Link> },
     {
       key: 'Account',
-      link: <Link to='/account/details'>{i18next.t('pages.profile')}</Link>,
+      link: <Link to='/account'>{i18next.t('pages.profile')}</Link>,
     },
   ]
 }
@@ -23,7 +23,7 @@ export function getAdminNavigationLinks() {
     { key: 'Home', link: <Link to='/'>{i18next.t('pages.home')}</Link> },
     {
       key: 'Account',
-      link: <Link to='/account/details'>{i18next.t('pages.profile')}</Link>,
+      link: <Link to='/account'>{i18next.t('pages.profile')}</Link>,
     },
   ]
 }
