@@ -60,11 +60,11 @@ async function signOut() {
 }
 
 async function refreshTokens() {
-  log('refreshTokens')
+  log('authService - refreshTokens')
 
   const refreshResponse = await httpService.get<AuthData>(`auth/refresh`)
 
-  log('refreshTokens, response data', refreshResponse)
+  log('authService - refreshTokens, response data', refreshResponse)
 
   if (!refreshResponse || !refreshResponse.success)
     return { success: false, message: 'Failed to refresh token' }

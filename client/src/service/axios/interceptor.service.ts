@@ -1,6 +1,7 @@
 import { AxiosInstance, InternalAxiosRequestConfig } from 'axios'
 import { authService } from '../auth.service'
 import { log } from '../console.service'
+import { storeService } from '../store.service'
 import { headerService } from './header.service'
 
 function configureInterceptors(api: AxiosInstance) {
@@ -49,6 +50,8 @@ function configureInterceptors(api: AxiosInstance) {
       ) {
         isRetry = false
 
+        // Unable to confirm authentication, redirect to signin page, clear store
+        storeService.clearStoreStates()
         window.location.href = '/signin'
 
         return

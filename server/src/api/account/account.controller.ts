@@ -20,8 +20,6 @@ import { accountService } from './account.service.js'
 //     "data": { }
 // }
 
-// TODO every updateAccount creates a new profile, employee, company, department
-// TODO make a correct flow to update account(when admin updates status), create new account(that is set to admin and active), and create new account with joinCompany(user, pending)
 export async function updateAccount(
   req: Request,
   res: Response,
