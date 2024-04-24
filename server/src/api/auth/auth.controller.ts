@@ -111,6 +111,7 @@ export async function signOut(req: Request, res: Response, next: NextFunction) {
 export async function refresh(req: Request, res: Response, next: NextFunction) {
   const { refreshToken: currentRefreshToken } = req.cookies
 
+  // TODO checking response is not relevant, because error is thrown
   const response = await authService.refresh(currentRefreshToken)
   if (!response) {
     res.status(200).json({

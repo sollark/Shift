@@ -21,10 +21,10 @@ function generateTokens(userData: TokenUserData): {
   log('generateTokens, userData', userData)
 
   const accessToken = jwt.sign({ userData }, accessSecret, {
-    expiresIn: '10m',
+    expiresIn: '5m',
   })
   const refreshToken = jwt.sign({}, refreshSecret, {
-    expiresIn: '1h',
+    expiresIn: '10h',
   })
 
   return { accessToken, refreshToken }

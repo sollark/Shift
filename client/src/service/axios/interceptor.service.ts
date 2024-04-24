@@ -1,7 +1,7 @@
 import { AxiosInstance, InternalAxiosRequestConfig } from 'axios'
 import { authService } from '../auth.service'
-import { headerService } from './header.service'
 import { log } from '../console.service'
+import { headerService } from './header.service'
 
 function configureInterceptors(api: AxiosInstance) {
   api.interceptors.request.use(
@@ -27,13 +27,10 @@ function configureInterceptors(api: AxiosInstance) {
     async (error) => {
       const originalRequest: InternalAxiosRequestConfig = error.config
 
-      log('get error in response')
       if (error.response?.status === 401 && !isRetry) {
         isRetry = true
 
-        log('the error is 401 first time')
         if (originalRequest.headers.Authorization) {
-          log('send refresh')
           await authService.refreshTokens()
 
           // Retry the original request with the updated headers
@@ -46,7 +43,10 @@ function configureInterceptors(api: AxiosInstance) {
         }
       }
 
-      if (error.response.data.errors[0].message == 'Refresh token is expired') {
+      if (
+        error.response.data.errors[0].message == 'Refresh token is expired' ||
+        error.response.data.errors[0].message == 'Invalid refresh token'
+      ) {
         isRetry = false
 
         window.location.href = '/signin'
