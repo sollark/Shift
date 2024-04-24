@@ -7,6 +7,7 @@
     "moduleResolution": "Node",
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "outDir": "dist",
     "typeRoots": [
       // default type folder
       "node_modules/@types",

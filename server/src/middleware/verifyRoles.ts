@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import UnauthorizedError from '../errors/UnauthorizedError.js'
-import { Role } from '../mongodb/models/account.model.js'
+import { Role } from '../mongo/models/account.model.js'
 
 function verifyRoles(...allowedRoles: Role[]) {
   return async (req: Request, res: Response, next: NextFunction) => {
