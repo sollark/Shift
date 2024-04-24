@@ -5,12 +5,12 @@ import i18next from 'i18next'
 export function getUserMenu() {
   return [
     {
-      key: 'Profile',
-      link: <Link to='/profile'>{i18next.t('account_menu.profile')}</Link>,
-    },
-    {
       key: 'Account',
       link: <Link to='/account'>{i18next.t('account_menu.account')}</Link>,
+    },
+    {
+      key: 'Profile',
+      link: <Link to='/profile'>{i18next.t('account_menu.profile')}</Link>,
     },
     {
       key: 'Settings',

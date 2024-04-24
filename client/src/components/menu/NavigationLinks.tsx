@@ -11,9 +11,10 @@ export function getGuestNavigationLinks() {
 export function getUserNavigationLinks() {
   return [
     { key: 'Home', link: <Link to='/'>{i18next.t('pages.home')}</Link> },
+    { key: 'About', link: <Link to='/about'>{i18next.t('pages.about')}</Link> },
     {
       key: 'Account',
-      link: <Link to='/account'>{i18next.t('pages.profile')}</Link>,
+      link: <Link to='/account'>{i18next.t('pages.account')}</Link>,
     },
   ]
 }
@@ -21,9 +22,10 @@ export function getUserNavigationLinks() {
 export function getAdminNavigationLinks() {
   return [
     { key: 'Home', link: <Link to='/'>{i18next.t('pages.home')}</Link> },
+    { key: 'About', link: <Link to='/about'>{i18next.t('pages.about')}</Link> },
     {
       key: 'Account',
-      link: <Link to='/account'>{i18next.t('pages.profile')}</Link>,
+      link: <Link to='/account'>{i18next.t('pages.account')}</Link>,
     },
   ]
 }
