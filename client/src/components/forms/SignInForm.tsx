@@ -1,15 +1,15 @@
 import { accountService } from '@/service/account.service'
 import { authService } from '@/service/auth.service'
 import { log } from '@/service/console.service'
+import useAccountStore, { accountSelector } from '@/stores/accountStore'
+import { useNavigate } from '@tanstack/react-router'
 import { FC, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 import ErrorMessage from './ErrorMessage'
 import Form from './Form'
 import SubmitButton from './buttons/SubmitButton'
 import Input from './inputs/TextInput/TextInput'
-import { useTranslation } from 'react-i18next'
-import { useNavigate } from '@tanstack/react-router'
-import useAccountStore, { accountSelector } from '@/stores/accountStore'
 
 type SigninForm = {
   email: string
@@ -49,6 +49,10 @@ const SignInForm: FC = () => {
     setErrorMessage('')
 
     const response = await authService.signIn(email, password)
+    if (!response) {
+      setErrorMessage('Could not connect to server')
+      return
+    }
     const { success, message } = response
     if (!success) {
       setErrorMessage(message)

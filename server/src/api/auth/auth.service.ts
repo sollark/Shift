@@ -104,7 +104,7 @@ async function refresh(refreshToken: string) {
   // Save new refresh token to db
   await tokenService.saveToken(tokens.refreshToken)
 
-  return { ...tokens }
+  return tokens
 }
 
 async function isEmailExists(email: string) {

@@ -10,7 +10,6 @@ import { log } from './console.service.js'
 
 const { refreshSecret, accessSecret } = config.jwt
 
-// TODO same payload for both tokens
 function generateTokens(userData: TokenUserData): {
   accessToken: string
   refreshToken: string
@@ -18,7 +17,7 @@ function generateTokens(userData: TokenUserData): {
   if (!accessSecret) throw new Error('JWT_ACCESS_SECRET is not defined')
   if (!refreshSecret) throw new Error('JWT_REFRESH_SECRET is not defined')
 
-  log('generateTokens, userData', userData)
+  log('tokenService - generateTokens, userData', userData)
 
   const accessToken = jwt.sign({ userData }, accessSecret, {
     expiresIn: '5m',
@@ -28,6 +27,19 @@ function generateTokens(userData: TokenUserData): {
   })
 
   return { accessToken, refreshToken }
+}
+
+function splitToken(token: string): {
+  headerPayload: string
+  signature: string
+} {
+  const [header, payload, signature] = token.split('.')
+  if (!header || !payload || !signature) {
+    throw new Error('Invalid token')
+  }
+  const headerPayload = `${header}.${payload}`
+
+  return { headerPayload, signature }
 }
 
 async function saveToken(refreshToken: string) {
@@ -55,11 +67,11 @@ async function validateAccessToken(token: string) {
 
   try {
     const payload = jwt.verify(token, accessSecret)
-    log('validateAccessToken, payload: ', payload)
+    log('tokenService - validateAccessToken, payload: ', payload)
 
     return payload as AccessTokenPayload
   } catch (error: any) {
-    log('validateAccessToken error', error.message)
+    log('tokenService - validateAccessToken error', error.message)
 
     return null
   }
@@ -70,11 +82,11 @@ async function validateRefreshToken(token: string) {
 
   try {
     const payload = jwt.verify(token, refreshSecret)
-    log('validateRefreshToken, payload: ', payload)
+    log('tokenService - validateRefreshToken, payload: ', payload)
 
     return payload as RefreshTokenPayload
   } catch (error: any) {
-    log('validateRefreshToken error', error.message)
+    log('tokenService - validateRefreshToken error', error.message)
 
     return null
   }
@@ -95,6 +107,7 @@ async function isExpired(token: string) {
 
 export const tokenService = {
   generateTokens,
+  splitToken,
   saveToken,
   removeToken,
   getRefreshToken,

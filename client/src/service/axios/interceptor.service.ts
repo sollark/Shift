@@ -1,26 +1,8 @@
 import { AxiosInstance, InternalAxiosRequestConfig } from 'axios'
 import { authService } from '../auth.service'
-import { log } from '../console.service'
 import { storeService } from '../store.service'
-import { headerService } from './header.service'
 
 function configureInterceptors(api: AxiosInstance) {
-  api.interceptors.request.use(
-    (config) => {
-      log('Interceptor, adding headers')
-      // add your custom headers to the request here
-      const headers = headerService.getHeaders()
-      headers.forEach(([headerName, value]) => {
-        config.headers[headerName] = value
-      })
-
-      return config
-    },
-    (error) => {
-      return Promise.reject(error)
-    }
-  )
-
   let isRetry = false
 
   api.interceptors.response.use(
@@ -30,18 +12,9 @@ function configureInterceptors(api: AxiosInstance) {
 
       if (error.response?.status === 401 && !isRetry) {
         isRetry = true
+        await authService.refreshTokens()
 
-        if (originalRequest.headers.Authorization) {
-          await authService.refreshTokens()
-
-          // Retry the original request with the updated headers
-          const headers = headerService.getHeaders()
-          headers.forEach(([headerName, value]) => {
-            originalRequest.headers[headerName] = value
-          })
-
-          return api.request(originalRequest)
-        }
+        return api.request(originalRequest)
       }
 
       if (

@@ -12,6 +12,7 @@ import getCors from './cors.js'
 import setupAsyncLocalStorage from './middleware/als.js'
 import collectVisitorInfo from './middleware/collectVisitorInfo.js'
 import errorHandler from './middleware/errorHandler.js'
+import reconstructToken from './middleware/reconsttructToken.js'
 import requestLimit from './middleware/requestLimit.js'
 import setHeaders from './middleware/setHeaders.js'
 import { connectMongo } from './mongo/connect.js'
@@ -33,6 +34,7 @@ if (config.env === 'production') {
 app.use(cookieParser())
 app.use(compression())
 app.use(bodyParser.json())
+app.use(reconstructToken)
 app.use(setupAsyncLocalStorage)
 app.use(collectVisitorInfo)
 

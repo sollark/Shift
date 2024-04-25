@@ -1,14 +1,30 @@
 import { NextFunction, Request, Response } from 'express'
 import BadRequestError from '../../errors/BadRequestError.js'
 import logger from '../../service/logger.service.js'
+import { tokenService } from '../../service/token.service.js'
 import { authService } from './auth.service.js'
 
-// save refresh token in cookie for 7 days
-const tokenCookieOptions = {
-  maxAge: 7 * 24 * 60 * 60 * 1000,
+// Save refresh token in cookie for 30 days (jwt exp may be different)
+const refreshTokenCookieOptions = {
+  maxAge: 30 * 24 * 60 * 60 * 1000,
   sameSite: 'strict' as const,
   httpOnly: true,
   secure: true,
+}
+
+// Save access token in cookies for 7 days  (jwt exp may be different)
+const accessTokenCookieOptions = {
+  headerPayload: {
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    sameSite: 'strict' as const,
+    secure: true,
+  },
+  signature: {
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    sameSite: 'strict' as const,
+    secure: true,
+    httpOnly: true,
+  },
 }
 
 export async function registration(
@@ -48,12 +64,11 @@ export async function registration(
     return
   }
   const { accessToken, refreshToken } = tokens
-  res.cookie('refreshToken', refreshToken, tokenCookieOptions)
+  setAuthCookies(res, accessToken, refreshToken)
 
   res.status(200).json({
     success: true,
-    message: 'New access token.',
-    data: { accessToken },
+    message: 'Successful registration.',
   })
 }
 
@@ -88,12 +103,11 @@ export async function signIn(req: Request, res: Response, next: NextFunction) {
   }
 
   const { accessToken, refreshToken } = tokens
-  res.cookie('refreshToken', refreshToken, tokenCookieOptions)
+  setAuthCookies(res, accessToken, refreshToken)
 
   res.status(200).json({
     success: true,
-    message: 'New access token.',
-    data: { accessToken },
+    message: 'Successful sign in.',
   })
 }
 
@@ -109,11 +123,13 @@ export async function signOut(req: Request, res: Response, next: NextFunction) {
 
 // renew access token when it is expired
 export async function refresh(req: Request, res: Response, next: NextFunction) {
+  logger.info('Refreshing expired access token')
+
   const { refreshToken: currentRefreshToken } = req.cookies
 
   // TODO checking response is not relevant, because error is thrown
-  const response = await authService.refresh(currentRefreshToken)
-  if (!response) {
+  const tokens = await authService.refresh(currentRefreshToken)
+  if (!tokens) {
     res.status(200).json({
       success: false,
       message: 'Cannot refresh access token',
@@ -123,16 +139,31 @@ export async function refresh(req: Request, res: Response, next: NextFunction) {
     return
   }
 
-  const { accessToken, refreshToken: newRefreshToken } = response
-
-  logger.info('refreshing expired access token')
-
-  // save refresh token in cookie for 7 days
-  res.cookie('refreshToken', newRefreshToken, tokenCookieOptions)
+  const { accessToken, refreshToken: newRefreshToken } = tokens
+  setAuthCookies(res, accessToken, newRefreshToken)
 
   res.status(200).json({
     success: true,
-    message: 'New access token.',
-    data: { accessToken },
+    message: 'Successful token refresh.',
   })
+}
+
+function setAuthCookies(
+  res: Response,
+  accessToken: string,
+  refreshToken: string
+) {
+  const { headerPayload, signature } = tokenService.splitToken(accessToken)
+
+  res.cookie('refreshToken', refreshToken, refreshTokenCookieOptions)
+  res.cookie(
+    'accessTokenHeaderPayload',
+    headerPayload,
+    accessTokenCookieOptions.headerPayload
+  )
+  res.cookie(
+    'accessTokenSignature',
+    signature,
+    accessTokenCookieOptions.signature
+  )
 }

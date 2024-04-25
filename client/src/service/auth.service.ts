@@ -1,6 +1,7 @@
 import { accountService } from './account.service'
 import { httpService } from './axios/http.service'
 import { log } from './console.service'
+import { cookieService } from './cookie.service'
 import { storeService } from './store.service'
 
 type AuthData = {
@@ -17,16 +18,15 @@ async function registration(email: string, password: string) {
     return { success: false, message: 'Cannot connect to server' }
 
   const { success, message } = registrationResponse
+  if (message) log('authService - registration, message: ', message)
   if (success) {
-    const { data } = registrationResponse
-    log('registration, message: ', message)
-
-    const { accessToken } = data
-    storeService.saveAccessToken(accessToken)
+    const headerPayload = cookieService.getCookieValue('headerPayload')
+    if (!headerPayload) {
+      log('authService - registration, headerPayload is missing')
+      return
+    }
+    storeService.saveAccessToken(headerPayload)
   }
-
-  // TODO clear comments
-  // lets make registration with account creation
 
   return { success, message }
 }
@@ -40,10 +40,18 @@ async function signIn(email: string, password: string) {
   if (!signInResponse || !signInResponse.success)
     return { success: false, message: 'Cannot connect to server' }
 
-  const { success, message, data } = signInResponse
-  // Save token in store
-  const { accessToken } = data
-  storeService.saveAccessToken(accessToken)
+  const { success, message } = signInResponse
+  if (message) log('authService - signIn, message: ', message)
+  if (success) {
+    const headerPayload = cookieService.getCookieValue(
+      'accessTokenHeaderPayload'
+    )
+    if (!headerPayload) {
+      log('authService - signIn, accessTokenHeaderPayload is missing')
+      return
+    }
+    storeService.saveAccessToken(headerPayload)
+  }
 
   // Fetch account and save it in store
   await accountService.getAccount()
