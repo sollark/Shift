@@ -71,16 +71,19 @@ async function refreshTokens() {
   log('authService - refreshTokens')
 
   const refreshResponse = await httpService.get<AuthData>(`auth/refresh`)
-
-  log('authService - refreshTokens, response data', refreshResponse)
-
   if (!refreshResponse || !refreshResponse.success)
     return { success: false, message: 'Failed to refresh token' }
 
-  const { data } = refreshResponse
-  const { accessToken } = data
-
-  storeService.saveAccessToken(accessToken)
+  const { success, message } = refreshResponse
+  if (message) log('authService - refreshTokens, message: ', message)
+  if (success) {
+    const headerPayload = cookieService.getCookieValue('headerPayload')
+    if (!headerPayload) {
+      log('authService - refreshTokens, headerPayload is missing')
+      return
+    }
+    storeService.saveAccessToken(headerPayload)
+  }
 }
 
 export const authService = {
