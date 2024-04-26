@@ -19,14 +19,7 @@ async function registration(email: string, password: string) {
 
   const { success, message } = registrationResponse
   if (message) log('authService - registration, message: ', message)
-  if (success) {
-    const headerPayload = cookieService.getCookieValue('headerPayload')
-    if (!headerPayload) {
-      log('authService - registration, headerPayload is missing')
-      return
-    }
-    storeService.saveAccessToken(headerPayload)
-  }
+  if (success) saveAccessToken()
 
   return { success, message }
 }
@@ -42,25 +35,16 @@ async function signIn(email: string, password: string) {
 
   const { success, message } = signInResponse
   if (message) log('authService - signIn, message: ', message)
-  if (success) {
-    const headerPayload = cookieService.getCookieValue(
-      'accessTokenHeaderPayload'
-    )
-    if (!headerPayload) {
-      log('authService - signIn, accessTokenHeaderPayload is missing')
-      return
-    }
-    storeService.saveAccessToken(headerPayload)
-  }
+  if (success) saveAccessToken()
 
-  // Fetch account and save it in store
+  // Fetch account and save it in the store
   await accountService.getAccount()
 
   return { success, message }
 }
 
 async function signOut() {
-  log('signOut')
+  log('authService - signOut')
 
   await httpService.put('auth/signout')
 
@@ -76,14 +60,7 @@ async function refreshTokens() {
 
   const { success, message } = refreshResponse
   if (message) log('authService - refreshTokens, message: ', message)
-  if (success) {
-    const headerPayload = cookieService.getCookieValue('headerPayload')
-    if (!headerPayload) {
-      log('authService - refreshTokens, headerPayload is missing')
-      return
-    }
-    storeService.saveAccessToken(headerPayload)
-  }
+  if (success) saveAccessToken()
 }
 
 export const authService = {
@@ -91,4 +68,13 @@ export const authService = {
   signOut,
   registration,
   refreshTokens,
+}
+
+function saveAccessToken() {
+  const headerPayload = cookieService.getCookieValue('accessTokenHeaderPayload')
+  if (!headerPayload) {
+    log('authService, accessTokenHeaderPayload is missing')
+    return
+  }
+  storeService.saveAccessToken(headerPayload)
 }
