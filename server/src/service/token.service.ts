@@ -22,7 +22,7 @@ function generateTokens(userData: TokenUserData): {
   const accessToken = jwt.sign({ userData }, accessSecret, {
     expiresIn: '5m',
   })
-  const refreshToken = jwt.sign({}, refreshSecret, {
+  const refreshToken = jwt.sign({ sub: userData.uuid }, refreshSecret, {
     expiresIn: '10h',
   })
 

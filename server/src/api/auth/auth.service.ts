@@ -85,17 +85,26 @@ async function signOut(refreshToken: string) {
 
 async function refresh(refreshToken: string) {
   const refreshTokenCopy = await tokenService.getRefreshToken(refreshToken)
-  if (!refreshTokenCopy) return null
-  else await tokenService.removeToken(refreshTokenCopy)
+  if (!refreshTokenCopy) {
+    log('authService - refresh, refresh token not found in db')
+    return null
+  } else await tokenService.removeToken(refreshTokenCopy)
 
   const isExpired = await tokenService.isExpired(refreshTokenCopy)
-  if (isExpired) return null
+  if (isExpired) {
+    log('authService - refresh, refresh token is expired')
+    return null
+  }
 
   // Generate new pair of tokens
   const payload = await tokenService.validateRefreshToken(refreshTokenCopy)
   const { sub } = payload as RefreshTokenPayload
+  // TODO set uuid to token
   const uuid = sub
-  if (!uuid) return null
+  if (!uuid) {
+    log('authService - refresh, uuid not found in refresh token')
+    return null
+  }
   log('authService - refresh, uuid', uuid)
 
   const tokens = await generateTokens(uuid)
