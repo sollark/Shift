@@ -3,6 +3,10 @@ import { Box } from '@mui/material'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 
+// UnauthorizedPage
+// User is logged in and authenticated
+// But does not have permission to access this specific resource
+
 const UnauthorizedPage: FC = () => {
   log('UnauthorizedPage connected')
 

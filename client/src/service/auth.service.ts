@@ -55,12 +55,17 @@ async function refreshTokens() {
   log('authService - refreshTokens')
 
   const refreshResponse = await httpService.get<AuthData>(`auth/refresh`)
-  if (!refreshResponse || !refreshResponse.success)
+  if (!refreshResponse || !refreshResponse.success) {
+    // Delete all states from the store
+    storeService.clearStoreStates()
+
     return { success: false, message: 'Failed to refresh token' }
+  }
 
   const { success, message } = refreshResponse
   if (message) log('authService - refreshTokens, message: ', message)
   if (success) saveAccessToken()
+  else storeService.clearStoreStates()
 }
 
 export const authService = {

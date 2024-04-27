@@ -32,11 +32,14 @@ export default useTokenStore
 
 /*
  Use selector in components:
- const isAuthenticated = useTokenStore(tokenSelectors.isAuthenticated)
+ const token = useTokenStore(tokenSelectors.getToken)
  
  Use selector in function:
- const isAuthenticated = tokenSelectors.isAuthenticated(useTokenStore.getState());
+ const token = tokenSelectors.getToken(useTokenStore.getState());
 */
+
 export const tokenSelectors = {
-  isAuthenticated: (state: TokenState) => state.token !== null,
+  getToken: (state: TokenState) => {
+    return state.token
+  },
 }

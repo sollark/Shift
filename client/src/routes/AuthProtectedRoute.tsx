@@ -1,21 +1,34 @@
-import UnauthorizedPage from '@/pages/UnauthorizedPage'
+import UnauthenticatedPage from '@/pages/UnauthenticatedPage'
+import { authService } from '@/service/auth.service'
 import { log } from '@/service/console.service'
-import useAuthStore, { tokenSelectors } from '@/stores/tokenStore'
-import { ReactNode } from 'react'
+import { tokenService } from '@/service/token.service'
+import useTokenStore, { tokenSelectors } from '@/stores/tokenStore'
+import { useQuery } from '@tanstack/react-query'
+import { FC, ReactNode } from 'react'
 
 type AuthProtectedRouteProps = {
   children: ReactNode
 }
 
-const AuthProtectedRoute = ({
+// TODO refresh is good, but still got unauthorized. check if token triggers rerender
+const AuthProtectedRoute: FC<AuthProtectedRouteProps> = ({
   children,
-}: AuthProtectedRouteProps): JSX.Element => {
-  const isAuthenticated = tokenSelectors.isAuthenticated(
-    useAuthStore.getState()
-  )
-  const isAccessAllowed = isAuthenticated
+}: AuthProtectedRouteProps) => {
+  const token = useTokenStore(tokenSelectors.getToken)
+
+  const { isPending, isError } = useQuery({
+    queryKey: ['refreshToken'],
+    queryFn: authService.refreshTokens,
+    enabled: !!token && tokenService.isTokenExpired(token),
+  })
+
+  if (isPending) return <span>Loading...</span>
+  if (isError) return <UnauthenticatedPage />
+
+  const isAccessAllowed = !!token
   log('AuthProtectedRoute, isAccessAllowed: ', isAccessAllowed)
-  return <>{isAccessAllowed ? children : <UnauthorizedPage />}</>
+
+  return <>{isAccessAllowed ? children : <UnauthenticatedPage />}</>
 }
 
 export default AuthProtectedRoute
