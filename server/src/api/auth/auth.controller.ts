@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from 'express'
-import BadRequestError from '../../errors/BadRequestError.js'
 import logger from '../../service/logger.service.js'
 import { tokenService } from '../../service/token.service.js'
 import { authService } from './auth.service.js'
@@ -114,33 +113,34 @@ export async function signIn(req: Request, res: Response, next: NextFunction) {
 export async function signOut(req: Request, res: Response, next: NextFunction) {
   const { refreshToken } = req.cookies
 
-  const result = await authService.signOut(refreshToken)
+  // Removes refresh token from db
+  await authService.signOut(refreshToken)
+  deleteAuthCookies(res)
 
-  if (result?.deletedCount > 0)
-    res.clearCookie('refreshToken').status(200).json({ message: 'success' })
-  else throw new BadRequestError('No refresh token found')
+  res.status(200).json({ success: true, message: 'Successful sign out.' })
 }
 
-// renew access token when it is expired
+// Renew access token when it is expired
 export async function refresh(req: Request, res: Response, next: NextFunction) {
   logger.info('Refreshing expired access token')
 
-  const { refreshToken: currentRefreshToken } = req.cookies
+  const { refreshToken: oldRefreshToken } = req.cookies
 
-  // TODO checking response is not relevant, because error is thrown
-  const tokens = await authService.refresh(currentRefreshToken)
+  const tokens = await authService.refresh(oldRefreshToken)
   if (!tokens) {
-    res.status(200).json({
-      success: false,
-      message: 'Cannot refresh access token',
-    })
-    res.redirect('/signin')
+    logger.warn(`authService - refresh, cannot generate tokens.`)
 
-    return
+    // Delete old tokens
+    deleteAuthCookies(res)
+
+    return res.status(200).json({
+      success: false,
+      message: 'Cannot generate tokens',
+    })
   }
 
-  const { accessToken, refreshToken: newRefreshToken } = tokens
-  setAuthCookies(res, accessToken, newRefreshToken)
+  const { accessToken, refreshToken } = tokens
+  setAuthCookies(res, accessToken, refreshToken)
 
   res.status(200).json({
     success: true,
@@ -166,4 +166,10 @@ function setAuthCookies(
     signature,
     accessTokenCookieOptions.signature
   )
+}
+
+function deleteAuthCookies(res: Response) {
+  res.clearCookie('refreshToken')
+  res.clearCookie('accessTokenHeaderPayload')
+  res.clearCookie('accessTokenSignature')
 }

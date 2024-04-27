@@ -85,17 +85,17 @@ async function signOut(refreshToken: string) {
 
 async function refresh(refreshToken: string) {
   const refreshTokenCopy = await tokenService.getRefreshToken(refreshToken)
-  if (!refreshTokenCopy) throw new UnauthorizedError('Invalid refresh token')
+  if (!refreshTokenCopy) return null
   else await tokenService.removeToken(refreshTokenCopy)
 
   const isExpired = await tokenService.isExpired(refreshTokenCopy)
-  if (isExpired) throw new UnauthorizedError('Refresh token is expired')
+  if (isExpired) return null
 
   // Generate new pair of tokens
   const payload = await tokenService.validateRefreshToken(refreshTokenCopy)
   const { sub } = payload as RefreshTokenPayload
   const uuid = sub
-  if (!uuid) throw new InternalServerError('Could not get payload')
+  if (!uuid) return null
   log('authService - refresh, uuid', uuid)
 
   const tokens = await generateTokens(uuid)
