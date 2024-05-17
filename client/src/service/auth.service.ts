@@ -63,9 +63,11 @@ async function refreshTokens() {
   }
 
   const { success, message } = refreshResponse
-  if (message) log('authService - refreshTokens, message: ', message)
-  if (success) saveAccessToken()
-  else storeService.clearStoreStates()
+  log('authService - refreshTokens, message: ', message)
+
+  saveAccessToken()
+
+  return { success, message }
 }
 
 export const authService = {

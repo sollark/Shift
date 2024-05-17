@@ -1,4 +1,5 @@
 import { jwtDecode } from 'jwt-decode'
+import { log } from './console.service'
 
 function decodeToken(token: string) {
   const decoded = jwtDecode(token)
@@ -7,6 +8,8 @@ function decodeToken(token: string) {
 }
 
 function isTokenExpired(token: string) {
+  log('Checking if access token is expired ...')
+
   const decoded = decodeToken(token)
   if (!decoded || !decoded.exp) return true
 
