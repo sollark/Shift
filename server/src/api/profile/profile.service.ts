@@ -46,13 +46,13 @@ async function updateProfile(
   return profile
 }
 
-async function getProfileByID(ID: string) {
-  const profile = await ProfileModel.findOne({ ID })
+async function getProfile(profileId: Types.ObjectId) {
+  const profile = await ProfileModel.findById(profileId)
   return profile
 }
 
-async function getProfileByIdentifier(identifier: Types.ObjectId) {
-  const profile = await ProfileModel.findOne(identifier)
+async function getProfileByID(ID: string) {
+  const profile = await ProfileModel.findOne({ ID })
   return profile
 }
 
@@ -64,8 +64,8 @@ export const profileService = {
   createBlankProfile,
   createProfile,
   updateProfile,
+  getProfile,
   getProfileByID,
-  getProfileByIdentifier,
   deleteProfile,
 }
 

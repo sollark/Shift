@@ -13,8 +13,8 @@ const AuthProtectedRoute: FC<AuthProtectedRouteProps> = ({
   log('AuthProtectedRoute is checking if access is allowed')
 
   const token = useTokenStore(tokenSelectors.getToken)
-
   const isAccessAllowed = !!token
+
   log('AuthProtectedRoute, isAccessAllowed: ', isAccessAllowed)
 
   return <>{isAccessAllowed ? children : <UnauthenticatedPage />}</>

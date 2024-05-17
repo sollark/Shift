@@ -120,6 +120,30 @@ async function setProfile(
   }
 }
 
+async function getProfileId(uuid: string): Promise<Types.ObjectId> {
+  try {
+    const account = await AccountModel.findOne({ uuid })
+    if (!account) {
+      logger.warn(
+        `accountService - getProfileId, account is not found: ${uuid}`
+      )
+      throw new BadRequestError('Account is not found')
+    }
+
+    if (!account.profile) {
+      logger.warn(
+        `accountService - getProfileId, account has no profile: ${uuid}`
+      )
+      throw new BadRequestError('Account has no profile')
+    }
+
+    return account.profile
+  } catch (error) {
+    logger.error(`accountService - getProfileId, error: ${error}`)
+    throw new InternalServerError('Error getting profileId')
+  }
+}
+
 async function updateRole(
   accountId: Types.ObjectId,
   role: Role
@@ -250,6 +274,7 @@ export const accountService = {
   getAccount,
   getAccountDoc,
   setProfile,
+  getProfileId,
   updateRole,
   updateStatus,
   updateAccount,
