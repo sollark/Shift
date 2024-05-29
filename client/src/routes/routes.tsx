@@ -19,6 +19,9 @@ const MissingPage = lazyRouteComponent(() => import('@/pages/MissingPage'))
 const UnauthorizedPage = lazyRouteComponent(
   () => import('@/pages/UnauthorizedPage')
 )
+const UnauthenticatedPage = lazyRouteComponent(
+  () => import('@/pages/UnauthenticatedPage')
+)
 
 export const rootRoute = new RootRoute({
   component: RootPage,
@@ -53,6 +56,12 @@ export const unauthorizedRoute = new Route({
   getParentRoute: () => rootRoute,
   path: '/unauthorized',
   component: UnauthorizedPage,
+})
+
+export const unauthenticatedRoute = new Route({
+  getParentRoute: () => rootRoute,
+  path: '/unauthenticated',
+  component: UnauthenticatedPage,
 })
 
 export const profileRoute = new Route({

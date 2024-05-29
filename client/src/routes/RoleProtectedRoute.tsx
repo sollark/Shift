@@ -2,14 +2,14 @@ import { Role } from '@/models/Account'
 import UnauthorizedPage from '@/pages/UnauthorizedPage'
 import { log } from '@/service/console.service'
 import useAccountStore from '@/stores/accountStore'
-import { ReactNode } from 'react'
+import { FC, ReactNode } from 'react'
 
-interface RoleProtectedRouteProps {
+type RoleProtectedRouteProps = {
   children: ReactNode
   allowed: Role[]
 }
 
-const RoleProtectedRoute = ({
+const RoleProtectedRoute: FC<RoleProtectedRouteProps> = ({
   children,
   allowed,
 }: RoleProtectedRouteProps): JSX.Element => {
@@ -19,6 +19,7 @@ const RoleProtectedRoute = ({
     (allowedRole) => allowedRole === userRole
   )
   log('RoleProtectedRoute, isAccessAllowed: ', isAccessAllowed)
+
   return <>{isAccessAllowed ? children : <UnauthorizedPage />}</>
 }
 
