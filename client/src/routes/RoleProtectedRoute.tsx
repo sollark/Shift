@@ -12,12 +12,14 @@ type RoleProtectedRouteProps = {
 const RoleProtectedRoute: FC<RoleProtectedRouteProps> = ({
   children,
   allowed,
-}: RoleProtectedRouteProps): JSX.Element => {
-  log('RoleProtectedRoute, allowed: ', allowed)
+}: RoleProtectedRouteProps) => {
+  log('RoleProtectedRoute is checking if access is allowed')
+
   const userRole = useAccountStore((state) => state.role)
   const isAccessAllowed = allowed.some(
     (allowedRole) => allowedRole === userRole
   )
+
   log('RoleProtectedRoute, isAccessAllowed: ', isAccessAllowed)
 
   return <>{isAccessAllowed ? children : <UnauthorizedPage />}</>
