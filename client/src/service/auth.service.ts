@@ -51,6 +51,25 @@ async function signOut() {
   storeService.clearStoreStates()
 }
 
+async function authCheck() {
+  log('authService - authCheck')
+
+  const authCheckResponse = await httpService.get<AuthData>('auth/check')
+  if (!authCheckResponse || !authCheckResponse.success) {
+    // Delete all states from the store
+    storeService.clearStoreStates()
+
+    return { success: false, message: 'Failed to authenticate' }
+  }
+
+  const { success, message } = authCheckResponse
+  log('authService - authCheck, message: ', message)
+
+  saveAccessToken()
+
+  return { success, message }
+}
+
 async function refreshTokens() {
   log('authService - refreshTokens')
 
@@ -71,9 +90,10 @@ async function refreshTokens() {
 }
 
 export const authService = {
+  registration,
   signIn,
   signOut,
-  registration,
+  authCheck,
   refreshTokens,
 }
 

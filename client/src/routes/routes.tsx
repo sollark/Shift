@@ -1,9 +1,9 @@
+import RootPage from '@/layouts/RootPage'
+import HomePage from '@/pages/HomePage'
+import { authService } from '@/service/auth.service'
 import { RootRoute, Route, lazyRouteComponent } from '@tanstack/react-router'
 import { Suspense } from 'react'
 import AuthProtectedRoute from './AuthProtectedRoute'
-
-import RootPage from '@/layouts/RootPage'
-import HomePage from '@/pages/HomePage'
 const AboutPage = lazyRouteComponent(() => import('@/pages/AboutPage'))
 const SettingsPage = lazyRouteComponent(() => import('@/pages/SettingsPage'))
 const AccountPage = lazyRouteComponent(() => import('@/pages/AccountPage'))
@@ -26,8 +26,8 @@ const UnauthenticatedPage = lazyRouteComponent(
 export const rootRoute = new RootRoute({
   component: RootPage,
   beforeLoad: () => {
-    // TODO
-    // useAuthStore.getState().getAccess()
+    // TODO server api
+    authService.authCheck()
   },
 })
 
