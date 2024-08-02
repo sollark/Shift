@@ -120,6 +120,19 @@ export async function signOut(req: Request, res: Response, next: NextFunction) {
   res.status(200).json({ success: true, message: 'Successful sign out.' })
 }
 
+// Checks if access token is valid
+export async function checkAccessToken(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  // if request passed requireAuth middleware then access token is valid
+  return res.status(200).json({
+    success: true,
+    message: 'Access token is valid.',
+  })
+}
+
 // Renew access token when it is expired
 export async function refresh(req: Request, res: Response, next: NextFunction) {
   logger.info('Refreshing expired access token')
