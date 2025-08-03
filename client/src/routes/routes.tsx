@@ -26,7 +26,6 @@ const UnauthenticatedPage = lazyRouteComponent(
 export const rootRoute = new RootRoute({
   component: RootPage,
   beforeLoad: () => {
-    // TODO server api
     authService.authCheck()
   },
 })

@@ -127,6 +127,7 @@ export async function checkAccessToken(
   next: NextFunction
 ) {
   // if request passed requireAuth middleware then access token is valid
+  logger.info('authService - checkAccessToken, access token is valid.')
   return res.status(200).json({
     success: true,
     message: 'Access token is valid.',
