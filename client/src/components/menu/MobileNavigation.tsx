@@ -1,9 +1,9 @@
-import { useNavigationMenu } from '@/hooks/useNavigationMenu'
-import { Role } from '@/models/Account'
-import useAccountStore from '@/stores/accountStore'
-import { IconButton, Menu, MenuItem, Typography } from '@mui/material'
-import { FC, MouseEvent, useState } from 'react'
-import MenuIcon from '@mui/icons-material/Menu'
+import { useNavigationByPermissions } from "@/hooks/useNavigationByPermissions";
+import { Role } from "@/models/Account";
+import useAccountStore from "@/stores/accountStore";
+import { IconButton, Menu, MenuItem, Typography } from "@mui/material";
+import { FC, MouseEvent, useState } from "react";
+import MenuIcon from "@mui/icons-material/Menu";
 
 // type MobileNavigationProps = {
 //   // anchorElNav: null | HTMLElement
@@ -12,55 +12,57 @@ import MenuIcon from '@mui/icons-material/Menu'
 
 const MobileNavigation: FC = () => {
   // const { handleCloseNavMenu } = props
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
-  const role: Role = useAccountStore((state) => state.role)
-  const pages = useNavigationMenu(role)
+  const role: Role = useAccountStore((state) => state.role);
+  const navigationItems = useNavigationByPermissions(role);
 
   const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget)
-  }
+    setAnchorElNav(event.currentTarget);
+  };
 
   const handleCloseNavMenu: () => void = () => {
-    setAnchorElNav(null)
-  }
+    setAnchorElNav(null);
+  };
 
   return (
     <>
       <IconButton
-        size='large'
-        aria-label='account of current user'
-        aria-controls='menu-appbar'
-        aria-haspopup='true'
+        size="large"
+        aria-label="account of current user"
+        aria-controls="menu-appbar"
+        aria-haspopup="true"
         onClick={handleOpenNavMenu}
-        color='inherit'>
+        color="inherit"
+      >
         <MenuIcon />
       </IconButton>
       <Menu
-        id='menu-appbar'
+        id="menu-appbar"
         anchorEl={anchorElNav}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
+          vertical: "bottom",
+          horizontal: "left",
         }}
         keepMounted
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
+          vertical: "top",
+          horizontal: "left",
         }}
         open={Boolean(anchorElNav)}
         onClose={handleCloseNavMenu}
         sx={{
-          display: { xs: 'block', md: 'none' },
-        }}>
-        {pages.map((page) => (
-          <MenuItem key={page.key} onClick={handleCloseNavMenu}>
-            <Typography textAlign='center'>{page.link}</Typography>
+          display: { xs: "block", md: "none" },
+        }}
+      >
+        {navigationItems.map((item) => (
+          <MenuItem key={item.key} onClick={handleCloseNavMenu}>
+            <Typography textAlign="center">{item.link}</Typography>
           </MenuItem>
         ))}
       </Menu>
     </>
-  )
-}
+  );
+};
 
-export default MobileNavigation
+export default MobileNavigation;

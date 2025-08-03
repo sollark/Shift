@@ -1,24 +1,25 @@
-import { useNavigationMenu } from '@/hooks/useNavigationMenu'
-import { Role } from '@/models/Account'
-import useAccountStore from '@/stores/accountStore'
-import { Button } from '@mui/material'
-import { FC } from 'react'
+import { useNavigationByPermissions } from "@/hooks/useNavigationByPermissions";
+import { Role } from "@/models/Account";
+import useAccountStore from "@/stores/accountStore";
+import { Button } from "@mui/material";
+import { FC } from "react";
 
 const SiteNavigation: FC = () => {
-  const role: Role = useAccountStore((state) => state.role)
-  const pages = useNavigationMenu(role)
+  const role: Role = useAccountStore((state) => state.role);
+  const navigationItems = useNavigationByPermissions(role);
 
   return (
     <>
-      {pages.map((page) => (
+      {navigationItems.map((item) => (
         <Button
-          key={page.key}
-          sx={{ my: 2, color: 'primary.contrastText', display: 'block' }}>
-          {page.link}
+          key={item.key}
+          sx={{ my: 2, color: "primary.contrastText", display: "block" }}
+        >
+          {item.link}
         </Button>
       ))}
     </>
-  )
-}
+  );
+};
 
-export default SiteNavigation
+export default SiteNavigation;

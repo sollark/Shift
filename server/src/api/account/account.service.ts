@@ -1,31 +1,31 @@
-import { Types } from 'mongoose'
-import BadRequestError from '../../errors/BadRequestError.js'
-import InternalServerError from '../../errors/InternalServerError.js'
-import NotFoundError from '../../errors/NotFoundError.js'
+import { Types } from "mongoose";
+import BadRequestError from "../../errors/BadRequestError.js";
+import InternalServerError from "../../errors/InternalServerError.js";
+import NotFoundError from "../../errors/NotFoundError.js";
 import AccountModel, {
   Account,
   AccountDoc,
   Role,
   Status,
-} from '../../mongo/models/account.model.js'
-import ProfileModel, { Profile } from '../../mongo/models/profile.model.js'
-import { log } from '../../service/console.service.js'
-import logger from '../../service/logger.service.js'
+} from "../../mongo/models/account.model.js";
+import ProfileModel, { Profile } from "../../mongo/models/profile.model.js";
+import { log } from "../../service/console.service.js";
+import logger from "../../service/logger.service.js";
 
 async function createAccount(uuid: string): Promise<Partial<Account>> {
   try {
     // Create an account
-    const accountDoc = await AccountModel.create({ uuid })
+    const accountDoc = await AccountModel.create({ uuid });
     if (!accountDoc) {
-      logger.warn(`accountService - cannot create account: ${uuid}`)
-      throw new NotFoundError('Could not create account')
+      logger.warn(`accountService - cannot create account: ${uuid}`);
+      throw new NotFoundError("Could not create account");
     }
 
     // Cast a document to an object
-    const account = accountDoc.toObject() as Account
+    const account = accountDoc.toObject() as Partial<Account>;
     if (!account) {
-      logger.warn(`accountService - cannot get account: ${accountDoc._id}`)
-      throw new NotFoundError('Could not get account')
+      logger.warn(`accountService - cannot get account: ${accountDoc._id}`);
+      throw new NotFoundError("Could not get account");
     }
 
     logger.info(
@@ -34,12 +34,12 @@ async function createAccount(uuid: string): Promise<Partial<Account>> {
         null,
         2 // Indentation level, adjust as needed
       )}`
-    )
+    );
 
-    return account
+    return account;
   } catch (error) {
-    logger.error(`accountService - createAccount, error: ${error}`)
-    throw new InternalServerError('Error creating account')
+    logger.error(`accountService - createAccount, error: ${error}`);
+    throw new InternalServerError("Error creating account");
   }
 }
 
@@ -48,14 +48,14 @@ async function getAccount(
 ): Promise<Account & { _id: Types.ObjectId }> {
   try {
     const account = await AccountModel.findOne({ uuid })
-      .populate<{ role: Role }>('role')
-      .populate<{ profile: Profile }>('profile')
-      .populate<{ status: Status }>('status')
+      .populate<{ role: Role }>("role")
+      .populate<{ profile: Profile }>("profile")
+      .populate<{ status: Status }>("status")
       .lean()
-      .exec()
+      .exec();
     if (!account) {
-      logger.warn(`accountService - getAccount, account is not found: ${uuid}`)
-      throw new NotFoundError('Account is not found')
+      logger.warn(`accountService - getAccount, account is not found: ${uuid}`);
+      throw new NotFoundError("Account is not found");
     }
 
     logger.info(
@@ -64,29 +64,29 @@ async function getAccount(
         null,
         2 // Indentation level, adjust as needed
       )}`
-    )
+    );
 
-    return account
+    return account;
   } catch (error) {
-    logger.error(`accountService - getAccount, error: ${error}`)
-    throw new InternalServerError('Error getting account')
+    logger.error(`accountService - getAccount, error: ${error}`);
+    throw new InternalServerError("Error getting account");
   }
 }
 
 async function getAccountDoc(uuid: string): Promise<AccountDoc> {
   try {
-    const account = await AccountModel.findOne({ uuid })
+    const account = await AccountModel.findOne({ uuid });
     if (!account) {
       logger.warn(
         `accountService - getAccountDoc, account is not found: ${uuid}`
-      )
-      throw new BadRequestError('Account is not found')
+      );
+      throw new BadRequestError("Account is not found");
     }
 
-    return account
+    return account;
   } catch (error) {
-    logger.error(`accountService - getAccountDoc, error: ${error}`)
-    throw new InternalServerError('Error getting account doc')
+    logger.error(`accountService - getAccountDoc, error: ${error}`);
+    throw new InternalServerError("Error getting account doc");
   }
 }
 
@@ -101,46 +101,46 @@ async function setProfile(
       // returns new version of document, if false returns original version, before updates
       { new: true }
     )
-      .populate<{ role: Role }>('role')
-      .populate<{ profile: Profile }>('profile')
-      .populate<{ status: Status }>('status')
+      .populate<{ role: Role }>("role")
+      .populate<{ profile: Profile }>("profile")
+      .populate<{ status: Status }>("status")
       .lean()
-      .exec()
+      .exec();
     if (!updatedAccount) {
       logger.warn(
         `accountService - setProfile, account is not found: ${accountId}`
-      )
-      throw new NotFoundError('Account is not found')
+      );
+      throw new NotFoundError("Account is not found");
     }
 
-    return updatedAccount
+    return updatedAccount;
   } catch (error) {
-    logger.error(`accountService - setProfile, error: ${error}`)
-    throw new InternalServerError('Error updating account')
+    logger.error(`accountService - setProfile, error: ${error}`);
+    throw new InternalServerError("Error updating account");
   }
 }
 
 async function getProfileId(uuid: string): Promise<Types.ObjectId> {
   try {
-    const account = await AccountModel.findOne({ uuid })
+    const account = await AccountModel.findOne({ uuid });
     if (!account) {
       logger.warn(
         `accountService - getProfileId, account is not found: ${uuid}`
-      )
-      throw new BadRequestError('Account is not found')
+      );
+      throw new BadRequestError("Account is not found");
     }
 
     if (!account.profile) {
       logger.warn(
         `accountService - getProfileId, account has no profile: ${uuid}`
-      )
-      throw new BadRequestError('Account has no profile')
+      );
+      throw new BadRequestError("Account has no profile");
     }
 
-    return account.profile
+    return account.profile;
   } catch (error) {
-    logger.error(`accountService - getProfileId, error: ${error}`)
-    throw new InternalServerError('Error getting profileId')
+    logger.error(`accountService - getProfileId, error: ${error}`);
+    throw new InternalServerError("Error getting profileId");
   }
 }
 
@@ -155,22 +155,22 @@ async function updateRole(
       // { new: true } // returns new version of document, if false returns original version, before updates
       { new: true }
     )
-      .populate<{ role: Role }>('role')
-      .populate<{ profile: Profile }>('profile')
-      .populate<{ status: Status }>('status')
+      .populate<{ role: Role }>("role")
+      .populate<{ profile: Profile }>("profile")
+      .populate<{ status: Status }>("status")
       .lean()
-      .exec()
+      .exec();
     if (!updatedAccount) {
       logger.warn(
         `accountService - updateRole, account is not found: ${accountId}`
-      )
-      throw new NotFoundError('Account is not found')
+      );
+      throw new NotFoundError("Account is not found");
     }
 
-    return updatedAccount
+    return updatedAccount;
   } catch (error) {
-    logger.error(`accountService - updateRole, error: ${error}`)
-    throw new InternalServerError('Error updating account')
+    logger.error(`accountService - updateRole, error: ${error}`);
+    throw new InternalServerError("Error updating account");
   }
 }
 
@@ -185,22 +185,22 @@ async function updateStatus(
       // returns new version of document, if false returns original version, before updates
       { new: true }
     )
-      .populate<{ role: Role }>('role')
-      .populate<{ profile: Profile }>('profile')
-      .populate<{ status: Status }>('status')
+      .populate<{ role: Role }>("role")
+      .populate<{ profile: Profile }>("profile")
+      .populate<{ status: Status }>("status")
       .lean()
-      .exec()
+      .exec();
     if (!updatedAccount) {
       logger.warn(
         `accountService - updateStatus, account is not found: ${accountId}`
-      )
-      throw new NotFoundError('Account is not found')
+      );
+      throw new NotFoundError("Account is not found");
     }
 
-    return updatedAccount
+    return updatedAccount;
   } catch (error) {
-    logger.error(`accountService - updateStatus, error: ${error}`)
-    throw new InternalServerError('Error updating account')
+    logger.error(`accountService - updateStatus, error: ${error}`);
+    throw new InternalServerError("Error updating account");
   }
 }
 
@@ -216,16 +216,16 @@ async function updateAccount(
       // returns new version of document, if false returns original version, before updates
       { new: true }
     )
-      .populate<{ role: Role }>('role')
-      .populate<{ profile: Profile }>('profile')
-      .populate<{ status: Status }>('status')
+      .populate<{ role: Role }>("role")
+      .populate<{ profile: Profile }>("profile")
+      .populate<{ status: Status }>("status")
       .lean()
-      .exec()
+      .exec();
     if (!updatedAccount) {
       logger.warn(
         `accountService - updateAccount, account is not found: ${accountId}`
-      )
-      throw new NotFoundError('Account is not found')
+      );
+      throw new NotFoundError("Account is not found");
     }
 
     logger.info(
@@ -234,39 +234,39 @@ async function updateAccount(
         null,
         2 // Indentation level, adjust as needed
       )}`
-    )
+    );
 
-    return updatedAccount
+    return updatedAccount;
   } catch (error) {
-    logger.error(`accountService - updateAccount, error: ${error}`)
-    throw new InternalServerError('Error updating account')
+    logger.error(`accountService - updateAccount, error: ${error}`);
+    throw new InternalServerError("Error updating account");
   }
 }
 
 async function deleteAccount(accountId: Types.ObjectId) {
-  await AccountModel.findByIdAndDelete({ accountId })
+  await AccountModel.findByIdAndDelete({ accountId });
 }
 
 function sortAccountData(
   accountData: any
 ): [updatedProfileData: Partial<Profile>] {
-  const profileSchemaKeys = Object.keys(ProfileModel.schema.paths)
+  const profileSchemaKeys = Object.keys(ProfileModel.schema.paths);
 
   const { updatedProfileData } = Object.entries(accountData).reduce(
     (accumulator: any, [key, value]) => {
       if (profileSchemaKeys.includes(key)) {
-        accumulator.updatedProfileData[key] = value
+        accumulator.updatedProfileData[key] = value;
       }
-      return accumulator
+      return accumulator;
     },
     {
       updatedProfileData: {},
     }
-  )
+  );
 
-  log('sortAccountData, updatedProfileData: ', updatedProfileData)
+  log("sortAccountData, updatedProfileData: ", updatedProfileData);
 
-  return [updatedProfileData as Partial<Profile>]
+  return [updatedProfileData as Partial<Profile>];
 }
 
 export const accountService = {
@@ -280,4 +280,4 @@ export const accountService = {
   updateAccount,
   deleteAccount,
   sortAccountData,
-}
+};
