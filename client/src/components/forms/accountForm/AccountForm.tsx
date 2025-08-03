@@ -1,55 +1,97 @@
-import { ProfileSchema } from '@/models/Profile'
-import { accountService } from '@/service/account.service'
-import { log } from '@/service/console.service'
-import useAccountStore, { accountSelector } from '@/stores/accountStore'
-import useUserStore from '@/stores/userStore'
-import { useNavigate } from '@tanstack/react-router'
-import { FC, ReactElement } from 'react'
-import { z } from 'zod'
-import MultistepForm from '../MultistepForm'
+import { ProfileSchema } from "@/models/Profile";
+import { accountService } from "@/service/account.service";
+import { log } from "@/service/console.service";
+import useAccountStore, { accountSelector } from "@/stores/accountStore";
+import useUserStore from "@/stores/userStore";
+import { useNavigate } from "@tanstack/react-router";
+import { FC, ReactElement } from "react";
+import { z } from "zod";
+import MultistepForm from "../MultistepForm";
+import { useAppState } from "@/hooks/useAppState";
 
 interface Props {
-  children: ReactElement[]
-  [key: string]: any // allow any other prop that is not explicitly defined
+  children: ReactElement[];
+  [key: string]: any; // allow any other prop that is not explicitly defined
 }
 
-const AccountSchema = z.object({}).merge(ProfileSchema)
+const AccountSchema = z.object({}).merge(ProfileSchema);
 
+/**
+ * AccountForm Component - Multi-step form for account updates
+ *
+ * This component demonstrates proper use of the new state management
+ * pattern. Instead of directly calling storeService, it uses the
+ * useAppState hook for clean dependency injection.
+ *
+ * @example
+ * <AccountForm>
+ *   <AccountStep1 />
+ *   <AccountStep2 />
+ * </AccountForm>
+ */
 const AccountForm: FC<Props> = (props: Props) => {
-  const { children } = props
-  const navigate = useNavigate()
+  const { children } = props;
+  const navigate = useNavigate();
 
-  const profile = useUserStore((state) => state.profile)
+  // Get profile data from store
+  const profile = useUserStore((state) => state.profile);
 
+  // Get account completion status
+  const isAccountComplete = useAccountStore(accountSelector.isComplete);
+
+  // Use the new state management hook (replaces storeService)
+  const { saveAccount } = useAppState();
+
+  // Default form values from current profile
   const defaultValues = {
-    firstName: profile?.firstName || '',
-    lastName: profile?.lastName || '',
-    ID: profile?.ID || '',
-  }
+    firstName: profile?.firstName || "",
+    lastName: profile?.lastName || "",
+    ID: profile?.ID || "",
+  };
 
+  /**
+   * Form submission handler
+   *
+   * This function demonstrates the new dependency injection pattern:
+   * - Calls accountService with a callback function
+   * - Uses saveAccount from useAppState hook
+   * - No direct store manipulation
+   *
+   * @param form - Form data from the multi-step form
+   */
   async function submit(form: any) {
-    log('Account form submitted: ', form)
+    log("AccountForm - submit, form data:", form);
 
-    const account = await accountService.updateAccount(
-      form.firstName,
-      form.lastName,
-      form.ID
-    )
+    try {
+      // Call service with dependency injection callback
+      const account = await accountService.updateAccount(
+        form.firstName,
+        form.lastName,
+        form.ID,
+        saveAccount // Inject state update function
+      );
 
-    log('AccountForm, account: ', account)
+      log("AccountForm - account updated:", account);
 
-    if (accountSelector.isComplete(useAccountStore.getState()))
-      navigate({ to: '/' })
+      // Navigate on successful completion
+      if (account && isAccountComplete) {
+        navigate({ to: "/" });
+      }
+    } catch (error) {
+      log("AccountForm - submit error:", error);
+      // Handle error (show notification, etc.)
+    }
   }
 
   return (
     <MultistepForm
       schema={AccountSchema}
       defaultValues={defaultValues}
-      submit={submit}>
+      submit={submit}
+    >
       {children}
     </MultistepForm>
-  )
-}
+  );
+};
 
-export default AccountForm
+export default AccountForm;
