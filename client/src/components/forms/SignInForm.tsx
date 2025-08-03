@@ -1,4 +1,5 @@
 import { authService } from "@/service/auth.service";
+import { navigationService } from "@/service/navigation.service";
 import { log } from "@/service/console.service";
 import useAccountStore, { accountSelector } from "@/stores/accountStore";
 import { useNavigate } from "@tanstack/react-router";
@@ -45,6 +46,9 @@ const SignInForm: FC = () => {
   // Use the new state management hook (replaces storeService usage)
   const { saveAccessToken, saveAccount } = useAppState();
 
+  // Use proper hook pattern instead of direct store access
+  const isAccountComplete = useAccountStore(accountSelector.isComplete);
+
   async function submit(form: SigninForm) {
     log("Signin form submitted: ", form);
 
@@ -67,9 +71,8 @@ const SignInForm: FC = () => {
       return;
     }
 
-    if (accountSelector.isComplete(useAccountStore.getState()))
-      navigate({ to: "/" });
-    else navigate({ to: "/account/edit" });
+    // Use navigation service instead of hardcoded routes
+    navigationService.handlePostAuthNavigation(navigate, isAccountComplete);
   }
 
   const emailLabel = t("labels.email");

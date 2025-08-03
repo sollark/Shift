@@ -1,5 +1,6 @@
 import { ProfileSchema } from "@/models/Profile";
 import { accountService } from "@/service/account.service";
+import { navigationService } from "@/service/navigation.service";
 import { log } from "@/service/console.service";
 import useAccountStore, { accountSelector } from "@/stores/accountStore";
 import useUserStore from "@/stores/userStore";
@@ -73,9 +74,12 @@ const AccountForm: FC<Props> = (props: Props) => {
 
       log("AccountForm - account updated:", account);
 
-      // Navigate on successful completion
+      // Use navigation service instead of hardcoded route
       if (account && isAccountComplete) {
-        navigate({ to: "/" });
+        navigationService.handlePostAccountUpdateNavigation(
+          navigate,
+          isAccountComplete
+        );
       }
     } catch (error) {
       log("AccountForm - submit error:", error);
