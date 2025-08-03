@@ -32,7 +32,7 @@ const PATHS = {
 const ROUTES = {
   api: "/api",
   i18n: "/i18n",
-  clientFallback: "/**",
+  clientFallback: "/*path",
 } as const;
 
 // ============= SERVER SETUP =============
@@ -119,7 +119,7 @@ const configureProductionStatic = (app: express.Application) => {
  */
 const configureClientRouting = (app: express.Application) => {
   // Serve index.html for all other routes (SPA fallback)
-  app.get(ROUTES.clientFallback, (req, res, next) => {
+  app.get("/*path", (req, res, next) => {
     res.sendFile(PATHS.indexHtml);
   });
 };
@@ -129,7 +129,7 @@ const configureClientRouting = (app: express.Application) => {
  */
 const configureErrorHandling = (app: express.Application) => {
   // 404 handler
-  app.use(ROUTES.clientFallback, (req, res, next) => {
+  app.use("/*path", (req, res, next) => {
     const error = new Error(`${req.method} ${req.originalUrl} not found!`);
     next(error);
   });
